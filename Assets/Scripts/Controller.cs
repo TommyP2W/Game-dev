@@ -17,8 +17,8 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        agent = GetComponent<NavMeshAgent>();
+        //agent = GetComponent<NavMeshAgent>();
 
-        agent.SetDestination(playerobj.transform.position);
+        //agent.SetDestination(playerobj.transform.position);
     }
 }

@@ -1165,6 +1165,8 @@ GameObject:
   - component: {fileID: 1118881133962216337}
   - component: {fileID: -2677917811344196054}
   - component: {fileID: -6029316070062003387}
+  - component: {fileID: 3713836288623525226}
+  - component: {fileID: 1009022932382469431}
   m_Layer: 0
   m_Name: (P) Characters_Zombie_Pacient_04
   m_TagString: HspZomNpc
@@ -1182,8 +1184,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3445998230956418556}
   - {fileID: 4760985346372669905}
@@ -1244,6 +1246,46 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3713836288623525226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921367157248738129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d1c9dad96bb5ba48977b19ca789d934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 5
+  agent: {fileID: 0}
+  walkable: 0
+  walkPoint: {x: 0, y: 0, z: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!65 &1009022932382469431
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921367157248738129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 0.30712414, z: 40.9397}
+  m_Center: {x: -0.00786972, y: 1.7117848, z: 20.246561}
 --- !u!1 &5942593079275722547
 GameObject:
   m_ObjectHideFlags: 0

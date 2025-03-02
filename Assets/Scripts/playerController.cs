@@ -8,29 +8,17 @@ public class playerController : MonoBehaviour
     public NavMeshAgent agent;
     //public GameObject player;
     // Start is called before the first frame update
+    public static int health = 10;
     public Camera cam;
     // Update is called once per frame
+
+    public void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameObject[] zombies = GameObject.FindGameObjectsWithTag("HspZomNpc");
-            foreach (GameObject zombie in zombies)
-            {
-                Destroy(zombie);
-            };
-        }
-        //agent.SetDestination(player.transform.position);
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit hit;
-
-        //    if (Physics.Raycast(ray, out hit)){
-        //        // Move our agent
-        //        agent.SetDestination(hit.point);
-        //    };
-        //}
+       
     }
 }

@@ -1,54 +1,79 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using static UnityEngine.EventSystems.EventTrigger;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Placement : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
     [SerializeField]
     private InputManager manager;
-    [SerializeField]
-    private Grid Grid;
+    public static Grid Grid;
     private NavMeshAgent playerobj;
-    [SerializeField]
-    private LineRenderer lineRenderer_1;
-  
-    private Transform points;
+    private GridTest findPath;
+
  
     private void Start()
     {
+        Grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<Grid>();
+        findPath = GameObject.FindGameObjectWithTag("Player").GetComponent<GridTest>();
         playerobj = GameObject.FindGameObjectWithTag("Player").GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
         Vector3 mousePosition = manager.GetSelectedMapPostion();
-        Vector3Int gridPosition = Grid.WorldToCell(mousePosition); 
-        mouseIndicator.transform.position = mousePosition;
-        cellIndicator.transform.position = Grid.CellToWorld(gridPosition);
+        Vector3Int gridPosition = Grid.WorldToCell(mousePosition);
+        Vector3 pointOnGrid = Grid.CellToWorld(gridPosition);
+        //if (!GridTest.gridLayout.ContainsValue(new Vector3Int(gridPosition.x, gridPosition.y ,gridPosition.z))) {
+        //    //Debug.Log(pointOnGrid);  
+        //}
+        
 
-        lineRenderer_1 = GetComponent<LineRenderer>();
+        pointOnGrid.y += 0.1f;
+        mouseIndicator.transform.position = gridPosition;
+        cellIndicator.transform.position = pointOnGrid;
 
-        Vector3[] line_pos = {
-            (cellIndicator.transform.position + (new Vector3(4f,0f,0f))),
-            (cellIndicator.transform.position + (new Vector3(0f, 0f, 0f))),
-            (cellIndicator.transform.position + (new Vector3(0f, 0f, 4f))),
-            (cellIndicator.transform.position + (new Vector3(4f, 0f, 4f))),
-            (cellIndicator.transform.position + (new Vector3(4f, 0f,0f)))
-        };
-        lineRenderer_1.positionCount = line_pos.Length;
-        for (int i = 0; i < line_pos.Length; i++)
+
+        Vector3Int playerPositionOnGrid = Grid.WorldToCell(playerobj.transform.position);
+
+        //if (gridPosition.x - playerPositionOnGrid.x > 7)
+        //{
+        //    int difference = gridPosition.x - playerPositionOnGrid.x + 7;
+        //    cellIndicator.x -= difference;
+        //}
+        //else if (gridPosition.x - playerPositionOnGrid.x < -7)
+        //{
+        //    int difference = gridPosition.x + 7;
+        //    cellIndicator.transform.position.x += (difference - -7);
+        //}
+        //Debug.Log(cellIndicator.transform.position);
+
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            lineRenderer_1.SetPosition(i, line_pos[i]);
-        }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 _offset = new Vector3 (2.5f, 0f, 2.5f);
-            playerobj.SetDestination(cellIndicator.transform.position + _offset);
+            GridCell player = new GridCell();
+            GridCell MouseCell = new GridCell();
+            
+
+
+            player.position = playerPositionOnGrid;
+            MouseCell.position = gridPosition;
+            findPath.findPath(player, MouseCell);
+            //Debug.Log("Hello");
+            float offset = 0.5f;
+            Vector3 vector3 = (Grid.CellToWorld(gridPosition));
+            vector3.x += offset;
+            vector3.z += offset;
+            EndTurn.playerRequestedMove = vector3;
+            
         }
     }
+
 }

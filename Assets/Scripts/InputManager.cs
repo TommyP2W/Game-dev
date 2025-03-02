@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -10,7 +9,7 @@ public class InputManager : MonoBehaviour
     
     private Vector3 lastPosition;
     [SerializeField]
-    private LayerMask placementLayerMask;
+    private LayerMask ground;
 
     public Vector3 GetSelectedMapPostion()
     {
@@ -18,7 +17,7 @@ public class InputManager : MonoBehaviour
         mousePos.z = SceneCamera.nearClipPlane;
         Ray ray = SceneCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100, placementLayerMask))
+        if (Physics.Raycast(ray, out hit, 100, ground))
         {
             lastPosition = hit.point;
         }
