@@ -7,108 +7,180 @@ using UnityEngine.AI;
 
 public class RandMov : MonoBehaviour
 {
-    private int rangex = 3;
-    private int rangez = 3;
-   // private NavMeshAgent agent;
-    [SerializeField] private bool walkable;
-    [SerializeField] private Vector3 walkPoint;
+    private int rangex = 2;
+    private int rangez = 2;
+
     [SerializeField] private LayerMask groundLayer;
-    private bool chase;
+    public bool chasePlayer = false;
     private GameObject player;
-    private Vector3 Direction;
     private GridTest grid;
-    private GridCell drummerPos;
-    private GridCell drummerDestination;
-    private bool finding_path = false;
+    private GridCell EnemyPos;
+    private GridCell EnemyDestination;
+    public  bool finding_path = false;
+    private bool coroutineActive = false;
     private LineRenderer lineRenderer;
+    public bool isWalking = false;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        //agent = GetComponent<NavMeshAgent>();
-        //agent.speed = 0.5f;
+        chasePlayer = false;
         player = GameObject.FindGameObjectWithTag("Player");
-        drummerPos =  new GridCell();
-        drummerDestination = new GridCell();
+        EnemyPos = new GridCell();
+        EnemyDestination = new GridCell();
         grid = gameObject.AddComponent<GridTest>();
         lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
     }
 
     public void SetDestination()
     {
-       
+        // Get a random position from the desired movement range
         int range_x = Random.Range(-rangex, rangex);
         int range_z = Random.Range(-rangez, rangez);
-        walkPoint = new Vector3(transform.position.x + range_x, transform.position.y,transform.position.z + range_z);
-        if (chase)
+
+        if (Vector3.Distance(gameObject.transform.position, player.transform.position) > 1000f)
         {
-            drummerDestination.position = Placement.Grid.WorldToCell(player.transform.position);
+            chasePlayer = false;
+        }
+        // Setting the destination, if chasing, set destination to player point on map, else set it to random walking point with offset
+        Vector3 walkPoint = new Vector3(transform.position.x + range_x, transform.position.y,transform.position.z + range_z);
+        if (chasePlayer)
+        {
+            Debug.Log("chasing player");
+            EnemyDestination.position = Placement.Grid.WorldToCell(player.transform.position);
         }
         else
         {
-            drummerDestination.position = Placement.Grid.WorldToCell(walkPoint);
+            EnemyDestination.position = Placement.Grid.WorldToCell(walkPoint);
         }
-        drummerPos.position = Placement.Grid.WorldToCell(transform.position);
-        grid.findPath(drummerPos, drummerDestination);
+        EnemyPos.position = Placement.Grid.WorldToCell(transform.position);
+        grid.findPath(EnemyPos, EnemyDestination);
         
 
     }
     private void OnTriggerEnter(Collider other)
     {
+        // If collided with player
         if (other.CompareTag("Player"))
         {
-            chase = true;
+            chasePlayer = true;
         }
     }
+
     public void OnTriggerExit(Collider other)
     {
-        chase = false;
+        if (!EndTurn.turnEnd) { 
+            chasePlayer = false;
+        }
     }
     // Update is called once per frame
     void Update()
     {
-      
 
-        if (grid.FinalPath.Count < 1 && !finding_path && !EndTurn.turnEnd)
+        if (grid == null)
         {
-            finding_path = true;
-            SetDestination();
-
+            Debug.Log("grid is null");
         }
-        else
+        if (grid != null)
         {
-            if (EndTurn.turnEnd)
+            // If there is not a path, not finding a path and the turn as not ended
+            if (grid.FinalPath.Count < 1 && !finding_path && !EndTurn.turnEnd)
             {
-                GridTest.drawPath(grid.FinalPath, lineRenderer);
-
-                StartCoroutine("MovePlayer", grid.FinalPath);
+                finding_path = true;
+                SetDestination();
+            }
+            else
+            {
+                // If the corotuine is currently not active
+                if (EndTurn.turnEnd && !coroutineActive)
+                {
+                    coroutineActive = true;
+                    StartCoroutine("MovePlayer", grid.FinalPath);
+                    // Update total number of coroutines active at the end of the turn
+                    EndTurn.CoroutinesActive++;
+                }
             }
         }
-        
+
     }
 
     IEnumerator MovePlayer(List<GridCell> FinalPath)
     {
+        // If the path count is not zero
         while (FinalPath.Count > 0)
         {
+            // Character is walking
+            isWalking = true;
+            // Get the point to walk to and add offset so its centre of the cell
             GridCell currentNode = FinalPath[0];
-            drummerPos.position = Placement.Grid.WorldToCell(transform.position);
+            EnemyPos.position = Placement.Grid.WorldToCell(transform.position);
             Vector3 nodeToWorld = Placement.Grid.CellToWorld(currentNode.position);
+            nodeToWorld.x += 0.5f;
+            nodeToWorld.z += 0.5f;
+            // If there is no difference in x axis
+            if (transform.position.x - nodeToWorld.x == 0)
+            {
+                // If enemy moving forwards
+                if (transform.position.z - nodeToWorld.z < 0)
+                {
+                    if (transform.rotation.y != 0)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                }
+                else
+                {
+                    // Else, rotate enemy backwards
+                    if (transform.rotation.y != -180)
+                    {
+                        transform.rotation = Quaternion.Euler(0, -180, 0);
+                    }
+                }
+            }
+            else
+            {
+                // If enemy moving right
+                if (transform.position.x - nodeToWorld.x < 0)
+                {
+                    if (transform.rotation.y != 90)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
 
+                }
+                else
+                {
+                    // Else rotate enemy left
+                    if (transform.rotation.y != -90)
+                    {
+                        transform.rotation = Quaternion.Euler(0, -90, 0);
+                    }
+                }
+            }
+
+
+
+            // Calculate the distance between the enemy and the node to walk to
             while (Vector3.Distance(transform.position, nodeToWorld) > 0.1f)
 
             {
-                transform.position = Vector3.MoveTowards(transform.position, nodeToWorld, 0.01f * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, nodeToWorld, 1f * Time.deltaTime);
                 yield return null;
             }
             transform.position = nodeToWorld;
-          
-            FinalPath.Remove(currentNode);
+
+            // Draw the path and remove the current target node once reached
             GridTest.drawPath(FinalPath, lineRenderer);
-
-
-
+            FinalPath.Remove(currentNode);
+            
         }
+        // If couroutine has finished, finding_path is false, the coroutine is not active and walking is therefore also false.
         finding_path = false;
+        coroutineActive = false;
+        isWalking = false;
+        // Decrement the number of coroutines active at this moment
+        EndTurn.CoroutinesActive--;
         yield return null;
     }
 

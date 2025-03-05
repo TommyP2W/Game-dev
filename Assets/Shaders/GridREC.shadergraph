@@ -1341,8 +1341,8 @@
     "m_Hidden": false,
     "m_Value": {
         "r": 1.0,
-        "g": 1.0,
-        "b": 1.0,
+        "g": 0.0,
+        "b": 0.0,
         "a": 0.0
     },
     "isMainColor": false,
@@ -1958,10 +1958,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 131.0,
-            "y": -364.0,
-            "width": 153.00003051757813,
-            "height": 173.00003051757813
+            "x": 118.99999237060547,
+            "y": -377.0000305175781,
+            "width": 153.0,
+            "height": 173.0
         }
     },
     "m_Slots": [
@@ -2229,7 +2229,7 @@
         "invert",
         "opposite"
     ],
-    "m_Precision": 0,
+    "m_Precision": 2,
     "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,

@@ -38,6 +38,7 @@ public class GridTest : MonoBehaviour
 
         for (int x = -1; x <= 1; x++)
         {
+            // Ignoring the player's current position
             if (x == 0) continue;
             int checkX = Cell.position.x + x;
             if (checkX >= 0 && checkX < GridManager.height)
@@ -47,8 +48,10 @@ public class GridTest : MonoBehaviour
         }
         for (int z = -1; z <= 1; z++)
         {
+            // Ignoring player's current cell
             if (z == 0) continue;
             int checkZ = Cell.position.z + z;
+            // If its inside of the grid
             if (checkZ >= 0 && checkZ < GridManager.width)
             {
                 neighbours.Add(GridManager.gridLayout[new Vector3Int(Cell.position.x, 0, checkZ)]);
@@ -94,7 +97,12 @@ public class GridTest : MonoBehaviour
 
                     }
                 }
-                //Debug.Log("Cell to search pos" + cellToSearch.position);
+                if (cellToSearch.position == endPos.position)
+                {
+                    constructPath(startPos, cellToSearch);
+                    return;
+
+                }
                 openList.Remove(cellToSearch);
                 closedList.Add(cellToSearch);
 
@@ -109,7 +117,6 @@ public class GridTest : MonoBehaviour
                     //Debug.Log(newMovementToNeighbour);
                     if (newMovementToNeighbour < neighbour.gCost || !openList.Contains(neighbour))
                     {
-                        //Debug.Log("hello");
                         neighbour.gCost = newMovementToNeighbour;
                         neighbour.hCost = calcShortestPath(neighbour.position, endPos.position);
                         neighbour.parent = cellToSearch;
@@ -122,12 +129,7 @@ public class GridTest : MonoBehaviour
                     }
 
                 }
-                if (cellToSearch.position == endPos.position)
-                {
-                    constructPath(startPos, cellToSearch);
-                    return;
-
-                }
+              
             }
         }
 
@@ -140,7 +142,6 @@ public class GridTest : MonoBehaviour
         //List<GridCell> cells = new List<GridCell>();
         FinalPath = new List<GridCell>();
         GridCell currentNode = end;
-        //Debug.Log("The holy jesus christ compels you");
         while (currentNode != start)
         {
             //Debug.Log("jidasj");

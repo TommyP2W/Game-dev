@@ -1,52 +1,55 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 
-public class Drummer_animation_controller : MonoBehaviour
+public class SkeletonMageAnimController : MonoBehaviour
 {
+    // Start is called before the first frame update
+  
+
     // Start is called before the first frame update
     private Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
     float fadeSpeed = 0.1f;
-    private RandMov DrummerMovementScript;
-
+    private RandMov MageRandomMovement;
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-        DrummerMovementScript = GetComponent<RandMov>();
+        MageRandomMovement = GetComponent<RandMov>();
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (!EndTurn.turnEnd)
+        {
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isSummoning", false);
+        }
     }
     public void OnTriggerEnter(Collider other)
     {
         if (!EndTurn.turnEnd)
         {
-            anim.SetBool("Drum_playing", true);
+            anim.SetBool("isSummoning", true);
             anim.SetBool("isAttacking", false);
         }
     }
-    public void OnTriggerExit(Collider other)
-    {
-      
-            anim.SetBool("Drum_playing", false);
-            anim.SetBool("isAttacking", false);
-        
-    }
+
+
+
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
         if (!EndTurn.turnEnd)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+            if (Vector3.Distance(transform.position, player.transform.position) < 0.1f)
             {
-
-                anim.SetBool("Drum_playing", false);
+                anim.SetBool("isSummoning", false);
                 anim.SetBool("isAttacking", true);
                 if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value < 0.485f)
                 {
@@ -56,31 +59,8 @@ public class Drummer_animation_controller : MonoBehaviour
             }
             else
             {
-                anim.SetBool("Drum_playing", true);
+                anim.SetBool("isSummoning", true);
                 anim.SetBool("isAttacking", false);
-
-                GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("Enemy");
-                if (gameobjects == null)
-                {
-                   // Debug.Log("null");
-                }
-                if (gameobjects != null)
-                {
-                    foreach (GameObject enemy in gameobjects)
-                    {
-                        if (Vector3.Distance(transform.position, enemy.transform.position) < 15f)
-                        {
-                            if (enemy == null)
-                            {
-                                Debug.Log("null");
-                            }
-                            enemy.GetComponent<RandMov>().chasePlayer = true;
-                            //Debug.Log(gameObject.name);
-                            //                        Debug.Log(gameObject.GetComponent<RandMov>().chasePlayer);
-                            //                        Debug.Log(gameObject.GetComponent<RandMov>().chasePlayer);
-                        }
-                    }
-                }
                 if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
                 {
                     //Debug.Log("we have got here");
@@ -89,10 +69,12 @@ public class Drummer_animation_controller : MonoBehaviour
             }
         }
     }
+
     public void Update()
     {
-        if (DrummerMovementScript.isWalking)
+        if (MageRandomMovement.isWalking)
         {
+            
             anim.SetBool("isWalking", true);
             anim.SetBool("isAttacking", false);
         }
@@ -103,11 +85,5 @@ public class Drummer_animation_controller : MonoBehaviour
     }
 
 }
-
-
-
-
-
-
 
 

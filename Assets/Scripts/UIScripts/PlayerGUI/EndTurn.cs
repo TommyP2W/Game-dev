@@ -1,105 +1,135 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EndTurn : MonoBehaviour
 {
-    // Start is called before the first frame update
     public static bool turnEnd = false;
     public static bool isMovementBlocked = true;
     public static Vector3 playerRequestedMove;
-    private NavMeshAgent playerNav;
     private GameObject playerPosition;
     private LineRenderer lineRenderer;
     private GridTest gridTest;
+    private GameObject endButton;
+    public static int CoroutinesActive = 0; // Number of coroutines running at this moment
 
 
     public void Start()
     {
+        endButton = GameObject.Find("Button");
         lineRenderer = GameObject.FindGameObjectWithTag("Line renderer").GetComponent<LineRenderer>();
         gridTest = GameObject.FindGameObjectWithTag("Player").GetComponent<GridTest>();
     }
     public void endTurn()
     {
-        turnEnd = true;
         playerPosition = GameObject.FindGameObjectWithTag("Player");
-        //playerNav = GameObject.FindGameObjectWithTag("Player").GetComponent<NavMeshAgent>();
-        //playerNav.SetDestination(playerRequestedMove);
+       
 
         Debug.Log("Ended turn");
 
-        if (gridTest.FinalPath.Count > 1)
+        // If there is a path, the turn has ended, and no other corotuines are running
+        // This stops the player being able to move while other enemies are also still moving previously
+        if (gridTest.FinalPath.Count > 0 && !turnEnd && CoroutinesActive == 0)
+
         {
+            // The turn has ended
+            turnEnd = true;
             StartCoroutine("MovePlayer", gridTest.FinalPath);
         }
     }
 
     IEnumerator MovePlayer(List<GridCell> FinalPath)
     {
-        //Debug.Log(Placement.Grid.WorldToCell(playerPosition.transform.position));
+        // While there is a path
         while (FinalPath.Count > 0)
+
         {
+            // Get the first node of the path
             GridCell currentNode = FinalPath[0];
+            // Transform the current position of the character to a cell, and the cell to a world position
             Vector3Int playerGridPosition = Placement.Grid.WorldToCell(playerPosition.transform.position);
             Vector3 nodeToWorld = Placement.Grid.CellToWorld(currentNode.position);
-            if (playerPosition.transform.position.x - currentNode.position.x == 0)
+            nodeToWorld.x += 0.5f;
+            nodeToWorld.z += 0.5f;
+            // If there is no difference on the x axis
+            if (playerPosition.transform.position.x - nodeToWorld.x == 0)
             {
-                if (playerPosition.transform.position.z - currentNode.position.z < 0)
+                // If the player is moving forwards
+                if (playerPosition.transform.position.z - nodeToWorld.z < 0)
                 {
-                    if (playerPosition.transform.rotation.y != -180)
+                    if (playerPosition.transform.rotation.y != 0)
                     {
-                        playerPosition.transform.Rotate(Vector3.down, -180 * 100f * Time.deltaTime);
+                        playerPosition.transform.rotation = Quaternion.Euler(0, 0, 0);
                     }
                 }
                 else
                 {
-                    if (playerPosition.transform.rotation.y != 0)
+                    // Else, rotate the player backwards
+                    if (playerPosition.transform.rotation.y != -180)
                     {
-                        playerPosition.transform.Rotate(Vector3.up, 0 * 100f * Time.deltaTime);
+                        playerPosition.transform.rotation = Quaternion.Euler(0, -180, 0);
                     }
                 }
             }
             else
             {
-                if (playerPosition.transform.position.x - playerGridPosition.x < 0)
-                {
-                    if (playerPosition.transform.rotation.y != -90)
-                    {
-                        playerPosition.transform.Rotate(Vector3.down, -90 * 100f * Time.deltaTime);
-                    }
-                        
-                }
-                else
+                // If the player is moving right
+                if (playerPosition.transform.position.x - nodeToWorld.x < 0)
                 {
                     if (playerPosition.transform.rotation.y != 90)
                     {
-                        playerPosition.transform.Rotate(Vector3.down, 90 * 100f * Time.deltaTime);
+                        playerPosition.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
+
+                }
+
+                // If the player is moving left
+                else
+                {
+                    if (playerPosition.transform.rotation.y != -90)
+                    {
+                        playerPosition.transform.rotation = Quaternion.Euler(0, -90, 0);
                     }
                 }
             }
-            while (Vector3.Distance(playerPosition.transform.position, nodeToWorld) > 0.05f)
+            
+            // Calculating the difference from the node at the world position to the player
+            while (Vector3.Distance(playerPosition.transform.position, nodeToWorld) > 0.1f)
 
             {
-                playerPosition.transform.position = Vector3.MoveTowards(playerPosition.transform.position, nodeToWorld, 0.05f * Time.deltaTime);
+                // Make the player move towards the node at the world position
+                playerPosition.transform.position = Vector3.MoveTowards(playerPosition.transform.position, nodeToWorld, 1f * Time.deltaTime);
                 yield return null;
             }
-            playerPosition.transform.position = currentNode.position;
-            //Debug.Log("Hello");
-            //Debug.Log(FinalPath.Count);
-            FinalPath.Remove(currentNode);
+            // Ensures no edge cases such as the player not being completely at the node
+            playerPosition.transform.position = nodeToWorld;
+
+            // Remove the path and draw
             GridTest.drawPath(FinalPath, lineRenderer);
+
+            FinalPath.Remove(currentNode);
 
 
         }
+        // Coroutine has finished so set the turn ending to false
         turnEnd = false;
         yield return null;
     }
-    void Update()
+
+    public void Update()
     {
-        if (turnEnd)
+        if (CoroutinesActive > 0)
         {
-            StartCoroutine("MovePlayer", gridTest.FinalPath);
+            endButton.GetComponentInChildren<TextMeshProUGUI>().text = "Loading...";
+        }
+        else
+        {
+            endButton.GetComponentInChildren<TextMeshProUGUI>().text = "End Turn";
         }
     }
+
+
 }

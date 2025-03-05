@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
 
-public class Skeleton_controller : MonoBehaviour
+public class RegOrcAnimationController : MonoBehaviour
 {
+
+    // Start is called before the first frame update
     private Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
@@ -18,22 +19,22 @@ public class Skeleton_controller : MonoBehaviour
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-
+        
     }
     public void OnTriggerExit(Collider other)
-
+        
     {
         if (!EndTurn.turnEnd)
         {
             anim.SetBool("isAttacking", false);
         }
     }
+    
 
 
-
-    // Update is called once per frame
+// Update is called once per frame
     private void OnTriggerStay(Collider other)
-    {
+        {
         if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 2f)
@@ -64,10 +65,11 @@ public class Skeleton_controller : MonoBehaviour
         {
             anim.SetBool("isWalking", true);
             anim.SetBool("isAttacking", false);
-        }
-        else
+        } else
         {
             anim.SetBool("isWalking", false);
         }
     }
 }
+
+

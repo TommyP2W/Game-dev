@@ -35,19 +35,13 @@ public class GridManager : MonoBehaviour
                 //Debug.Log(grid.gameObject.name);
                 if (Physics.Raycast(positionOnMap + Vector3.up * 10f, Vector3.down, 20f, buildingLayer))
                 {
-                    Debug.Log("unreachable");
                     cell.walkable = false;
                 }
                 // So here I am adding the grid cell position, and an abstracted real position of a cell on the grid
                 gridLayout.Add(cellGridPos, cell);
             }
         }
-        foreach (GridCell cell in gridLayout.Values)
-        {
-
-
-        }
-
+      
 
     }
     // Start is called before the first frame update
@@ -57,8 +51,7 @@ public class GridManager : MonoBehaviour
         gridLayout = new Dictionary<Vector3Int, GridCell>();
         generateGrid();
         Vector3 posOnMap = grid.CellToWorld(new Vector3Int(0, 0, 9));
-        Debug.Log(posOnMap);
-        Debug.DrawRay(posOnMap, Vector3.down, Color.red, 5f);
+      
     }
 
     // Update is called once per frame

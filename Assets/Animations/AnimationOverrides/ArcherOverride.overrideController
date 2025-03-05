@@ -6,6 +6,6 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CTL_Orc_Archer
+  m_Name: ArcherOverride
   m_Controller: {fileID: 9100000, guid: 8018c8f050afa404eae22045b2e614ab, type: 2}
   m_Clips: []
