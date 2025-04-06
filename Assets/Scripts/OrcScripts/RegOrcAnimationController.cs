@@ -11,11 +11,9 @@ public class RegOrcAnimationController : MonoBehaviour
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
-    private RandMov randMov;
     float fadeSpeed = 0.1f;
     void Start()
     {
-        randMov = GetComponent<RandMov>();
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
@@ -61,7 +59,7 @@ public class RegOrcAnimationController : MonoBehaviour
 
     public void Update()
     {
-        if (randMov.isWalking)
+        if (gameObject.GetComponent<Characters>().isWalking)
         {
             anim.SetBool("isWalking", true);
             anim.SetBool("isAttacking", false);

@@ -15,13 +15,11 @@ public class SkeletonMageAnimController : MonoBehaviour
     private PostProcessVolume postProcessing;
     private Vignette vin;
     float fadeSpeed = 0.1f;
-    private RandMov MageRandomMovement;
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-        MageRandomMovement = GetComponent<RandMov>();
     }
     public void OnTriggerExit(Collider other)
     {
@@ -72,7 +70,7 @@ public class SkeletonMageAnimController : MonoBehaviour
 
     public void Update()
     {
-        if (MageRandomMovement.isWalking)
+        if (gameObject.GetComponent<Characters>().isWalking)
         {
             
             anim.SetBool("isWalking", true);

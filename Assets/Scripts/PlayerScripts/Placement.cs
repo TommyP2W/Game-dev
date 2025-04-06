@@ -15,7 +15,7 @@ public class Placement : MonoBehaviour
     [SerializeField]
     private InputManager manager;
     public static Grid Grid;
-    private NavMeshAgent playerobj;
+    private GameObject playerobj;
     private GridTest findPath;
 
  
@@ -23,14 +23,14 @@ public class Placement : MonoBehaviour
     {
         Grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<Grid>();
         findPath = GameObject.FindGameObjectWithTag("Player").GetComponent<GridTest>();
-       playerobj = GameObject.FindGameObjectWithTag("Player").GetComponent<NavMeshAgent>();
+        playerobj = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
     {
         Vector3 mousePosition = manager.GetSelectedMapPostion();
-        Vector3Int gridPosition = Grid.WorldToCell(mousePosition);
-        Vector3 pointOnGrid = Grid.CellToWorld(gridPosition);
+        Vector3Int gridPosition = GridManager.grid.WorldToCell(mousePosition);
+        Vector3 pointOnGrid = GridManager.grid.CellToWorld(gridPosition);
      
         
 
@@ -39,19 +39,34 @@ public class Placement : MonoBehaviour
         cellIndicator.transform.position = pointOnGrid;
 
 
-        Vector3Int playerPositionOnGrid = Grid.WorldToCell(playerobj.transform.position);
+        Vector3Int playerPositionOnGrid = GridManager.grid.WorldToCell(playerobj.transform.position);
 
       
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
+            GridCell player = GridManager.gridLayout[playerPositionOnGrid];
+            GridCell MouseCell = GridManager.gridLayout[gridPosition];
+            Debug.Log(MouseCell.position);
 
-            GridCell player = new GridCell();
-            GridCell MouseCell = new GridCell();
-            player.position = playerPositionOnGrid;
-            MouseCell.position = gridPosition;
-            findPath.findPath(player, MouseCell);
-          
+            if (MouseCell.occupied)
+            {
+                Debug.Log("Cannot move, occupied");
+            }
+            else
+            {
+
+                findPath.findPath(player, MouseCell);
+                if (findPath.FinalPath != null )
+                {
+                    Debug.Log("added");
+                    if (findPath.FinalPath.Count > 0)
+                    {
+                        Debug.Log("more than 0");
+                    }
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().ReqPlayerMovement = findPath.FinalPath;
+                }
+            }
            
         }
     }

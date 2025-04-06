@@ -14,14 +14,12 @@ public class Drummer_animation_controller : MonoBehaviour
     private PostProcessVolume postProcessing;
     private Vignette vin;
     float fadeSpeed = 0.1f;
-    private RandMov DrummerMovementScript;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-        DrummerMovementScript = GetComponent<RandMov>();
     }
     public void OnTriggerEnter(Collider other)
     {
@@ -68,16 +66,14 @@ public class Drummer_animation_controller : MonoBehaviour
                 {
                     foreach (GameObject enemy in gameobjects)
                     {
-                        if (Vector3.Distance(transform.position, enemy.transform.position) < 15f)
+                        if (Vector3.Distance(transform.position, enemy.transform.position) < 1000f)
                         {
                             if (enemy == null)
                             {
                                 Debug.Log("null");
                             }
-                            enemy.GetComponent<RandMov>().chasePlayer = true;
-                            //Debug.Log(gameObject.name);
-                            //                        Debug.Log(gameObject.GetComponent<RandMov>().chasePlayer);
-                            //                        Debug.Log(gameObject.GetComponent<RandMov>().chasePlayer);
+                            enemy.GetComponent<Characters>().chasing = true;
+                          
                         }
                     }
                 }
@@ -91,7 +87,7 @@ public class Drummer_animation_controller : MonoBehaviour
     }
     public void Update()
     {
-        if (DrummerMovementScript.isWalking)
+        if (gameObject.GetComponent<Characters>().isWalking)
         {
             anim.SetBool("isWalking", true);
             anim.SetBool("isAttacking", false);

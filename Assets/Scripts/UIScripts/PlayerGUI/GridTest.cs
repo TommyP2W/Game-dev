@@ -64,8 +64,10 @@ public class GridTest : MonoBehaviour
 
     public void findPath(GridCell startPos, GridCell endPos)
     {
+
         if (!EndTurn.turnEnd)
         {
+
             List<GridCell> openList = new List<GridCell>();
             List<GridCell> closedList = new List<GridCell>();
             //  GridCell startingCell = gridLayout[startPos];
@@ -97,7 +99,7 @@ public class GridTest : MonoBehaviour
 
                     }
                 }
-                if (cellToSearch.position == endPos.position)
+                if ((cellToSearch.position == endPos.position))
                 {
                     constructPath(startPos, cellToSearch);
                     return;
@@ -110,6 +112,9 @@ public class GridTest : MonoBehaviour
                 {
                     if (closedList.Contains(neighbour) || !neighbour.walkable)
                     {
+                        //Debug.Log(closedList.Contains(neighbour));
+                        //Debug.Log(!neighbour.walkable);
+                        //Debug.Log("neighbour occupied " + neighbour.occupied);
                         continue;
                     }
                     int newMovementToNeighbour = cellToSearch.gCost + calcShortestPath(cellToSearch.position, neighbour.position);
@@ -148,9 +153,8 @@ public class GridTest : MonoBehaviour
             FinalPath.Add(currentNode);
             currentNode = currentNode.parent;
         }
-
-
-        FinalPath.Reverse();
+        FinalPath.Add(start);
+        FinalPath.Reverse();    
         //drawPath(FinalPath);
         return;
     }

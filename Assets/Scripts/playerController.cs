@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class playerController : MonoBehaviour
+using UnityEngine.TextCore.Text;
+public class playerController : MonoBehaviour, Characters
 {
-    public NavMeshAgent agent;
-    //public GameObject player;
-    // Start is called before the first frame update
-    public static int health = 10;
-    public Camera cam;
-    // Update is called once per frame
+    public int currentHealth { get; set; }
+    public int maxHealth { get; set; }
+    public bool chasing { get; set; }
+    public bool isWalking { get; set; }
 
-    public void Start()
+    public void attack(GameObject character)
     {
-        agent = GetComponent<NavMeshAgent>();
+        Characters _enemy = character.GetComponent<Characters>();
+        _enemy.currentHealth -= 5;
     }
-    void Update()
-    {
 
-       
+    public void death()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -15,7 +15,7 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EndTurn.turnEnd)
+       if (gameObject.GetComponent<Characters>().isWalking)
         {
             animator.SetBool("isWalking", true);
         } else

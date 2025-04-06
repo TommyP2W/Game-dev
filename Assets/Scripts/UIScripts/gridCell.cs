@@ -8,6 +8,7 @@ public class GridCell
     public int gCost = 0;
     public int hCost = 0;
     public bool walkable = true;
+    public bool occupied = false;
     public GridCell parent;
     public int fCost
     {

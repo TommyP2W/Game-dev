@@ -2,15 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
-public class SkeletonMage : MonoBehaviour
+public class SkeletonMage : MonoBehaviour, Characters
 {
     private GridTest gridTest;
+    private int health = 10;
+
+    public int currentHealth { get; set; }
+    public int maxHealth { get; set; } = 24;
+    public bool chasing { get; set; }
+    public bool isWalking { get; set; }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //gridTest = gameObject.AddComponent<GridTest>();
+        currentHealth = maxHealth;
     }
 
 
@@ -20,14 +30,14 @@ public class SkeletonMage : MonoBehaviour
         List<GridCell> neighbours = GridTest.getNeighbours(GridManager.gridLayout[(GridManager.grid.WorldToCell(transform.position))]);
 
 
-
         StartCoroutine(spawnSkeletons(neighbours));
     }
-
-    public void MistEffect()
+    public void playerSmall()
     {
-        VisualEffect effect = gameObject.GetComponent<VisualEffect>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
     }
+
 
     public IEnumerator spawnSkeletons(List<GridCell> neighbours)
     {
@@ -38,8 +48,8 @@ public class SkeletonMage : MonoBehaviour
             {
                 Skeleton.transform.position = neighbours[0].position;
                 Skeleton.SetActive(true);
-                Skeleton.GetComponent<RandMov>().chasePlayer = true;
-                Debug.Log(Skeleton.GetComponent<RandMov>().chasePlayer);
+                Skeleton.GetComponent<Characters>().chasing = true;
+                Debug.Log(Skeleton.GetComponent<Characters>().chasing);
                 neighbours.Remove(neighbours[0]);
             }
             yield return null;
@@ -50,10 +60,20 @@ public class SkeletonMage : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         SpawnSkeletons();
+        playerSmall();
     }
     // Update is called once per frame
-    void Update()
+
+
+    public void attack(GameObject character)
     {
-        
+        SpawnSkeletons();
     }
+
+    public void death()
+    {
+        gameObject.SetActive(false);
+    }
+
+
 }
