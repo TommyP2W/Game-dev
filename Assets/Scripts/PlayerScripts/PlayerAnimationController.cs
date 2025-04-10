@@ -11,6 +11,14 @@ public class PlayerAnimationController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public void startAttack()
+    {
+        animator.SetBool("isAttacking", true);
+    }
+    public void endAttack()
+    {
+        animator.SetBool("isAttacking", false);
+    }
 
     // Update is called once per frame
     void Update()

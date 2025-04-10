@@ -10,7 +10,7 @@ public interface Characters
     bool isWalking { get; set; }
     // Start is called before the first frame update
 
-    void attack(GameObject character);
+    void attack();
 
     void death();
 

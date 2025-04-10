@@ -7,11 +7,10 @@ using UnityEngine.VFX;
 
 public class SkeletonMage : MonoBehaviour, Characters
 {
-    private GridTest gridTest;
-    private int health = 10;
+
 
     public int currentHealth { get; set; }
-    public int maxHealth { get; set; } = 24;
+    public int maxHealth { get; set; } = 15;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
 
@@ -65,7 +64,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     // Update is called once per frame
 
 
-    public void attack(GameObject character)
+    public void attack()
     {
         SpawnSkeletons();
     }

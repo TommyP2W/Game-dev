@@ -15,8 +15,6 @@ public class GridTest : MonoBehaviour
 
     void Start()
     {
-        //player = GameObject.FindGameObjectWithTag("Player");
-        //playerNav = player.GetComponent<NavMeshAgent>();
         FinalPath = new List<GridCell>();
 
     }
@@ -67,13 +65,15 @@ public class GridTest : MonoBehaviour
 
         if (!EndTurn.turnEnd)
         {
-
+            // Revert back to lists if necessary
             List<GridCell> openList = new List<GridCell>();
             List<GridCell> closedList = new List<GridCell>();
             //  GridCell startingCell = gridLayout[startPos];
             openList.Add(startPos);
 
             //Debug.Log("helo");
+
+            // openList.count
             while (openList.Count > 0)
             {
 
@@ -126,7 +126,7 @@ public class GridTest : MonoBehaviour
                         neighbour.hCost = calcShortestPath(neighbour.position, endPos.position);
                         neighbour.parent = cellToSearch;
 
-                        if (!openList.Contains(neighbour) && neighbour.walkable)
+                        if (!openList.Contains(neighbour) && neighbour.walkable && !neighbour.occupied)
                         { 
                      
                             openList.Add(neighbour);

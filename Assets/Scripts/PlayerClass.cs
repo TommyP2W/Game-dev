@@ -10,9 +10,16 @@ public class PlayerClass : MonoBehaviour, Characters
     public bool isWalking { get; set; }
 
     public List<GridCell> ReqPlayerMovement;
-    public void attack(GameObject character)
+    public GameObject RequestedEnemy;
+    public Animator animator;
+    public void attack()
     {
-        
+        if (RequestedEnemy != null)
+        {
+            RequestedEnemy.GetComponent<Characters>().currentHealth -= 5;
+            Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
+            animator.SetBool("isAttacking", true);
+        }
     }
 
     public void death()
@@ -30,5 +37,10 @@ public class PlayerClass : MonoBehaviour, Characters
     void Update()
     {
         
+    }
+    public void Start()
+    {
+        animator = GetComponent<Animator>();
+
     }
 }

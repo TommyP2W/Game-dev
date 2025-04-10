@@ -7,12 +7,13 @@ public class Smoothcamera : MonoBehaviour
     // Start is called before the first frame update
 
     private Vector3 offset;
-    [SerializeField] private Transform Target;
+    [SerializeField] public static Transform Target;
     [SerializeField] private float smoothTime;
     private Vector3 _currentVelocity = Vector3.zero;
 
     private void Awake()
     {
+        Target = GameObject.FindGameObjectWithTag("Player").transform;
         offset = transform.position - Target.position;
     }
 

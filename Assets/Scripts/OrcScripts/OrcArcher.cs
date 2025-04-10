@@ -5,11 +5,11 @@ using UnityEngine;
 public class OrcArcher : MonoBehaviour, Characters
 {
     public int currentHealth { get; set; }
-    public int maxHealth { get; set; }
+    public int maxHealth { get; set; } = 20;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
 
-    public void attack(GameObject character)
+    public void attack()
     {
     }
 
@@ -36,7 +36,7 @@ public class OrcArcher : MonoBehaviour, Characters
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame

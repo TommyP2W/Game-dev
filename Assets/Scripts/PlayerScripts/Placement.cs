@@ -1,6 +1,9 @@
+using Sirenix.OdinInspector.Editor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -51,9 +54,18 @@ public class Placement : MonoBehaviour
 
             if (MouseCell.occupied)
             {
-                Debug.Log("Cannot move, occupied");
+                if (MouseCell.occupiedBy != null)
+                {
+                    playerobj.GetComponent<PlayerClass>().RequestedEnemy = MouseCell.occupiedBy;
+                    GameObject.Find("Attack").GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
+
+                }
+
+            } else
+            {
+                GameObject.Find("Attack").GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
             }
-            else
+            if (!MouseCell.occupied)
             {
 
                 findPath.findPath(player, MouseCell);
@@ -65,6 +77,7 @@ public class Placement : MonoBehaviour
                         Debug.Log("more than 0");
                     }
                     GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().ReqPlayerMovement = findPath.FinalPath;
+                    EndTurn.playerSelectedPath = true;
                 }
             }
            
