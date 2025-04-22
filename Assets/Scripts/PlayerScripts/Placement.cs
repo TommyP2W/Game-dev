@@ -1,14 +1,8 @@
-using Sirenix.OdinInspector.Editor;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
-using Unity.Burst.CompilerServices;
-using UnityEditor;
+
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Placement : MonoBehaviour
 {
@@ -59,6 +53,9 @@ public class Placement : MonoBehaviour
                     playerobj.GetComponent<PlayerClass>().RequestedEnemy = MouseCell.occupiedBy;
                     GameObject.Find("Attack").GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
 
+                } else
+                {
+                    playerobj.GetComponent<PlayerClass>().RequestedEnemy = null;
                 }
 
             } else

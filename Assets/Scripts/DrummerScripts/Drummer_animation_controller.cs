@@ -9,7 +9,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class Drummer_animation_controller : MonoBehaviour
 {
     // Start is called before the first frame update
-    private Animator anim;
+    public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
@@ -23,7 +23,7 @@ public class Drummer_animation_controller : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (!EndTurn.turnEnd)
+        if (!EndTurn.turnEnd && other.gameObject.tag == "Player")
         {
             anim.SetBool("Drum_playing", true);
             anim.SetBool("isAttacking", false);
@@ -41,49 +41,26 @@ public class Drummer_animation_controller : MonoBehaviour
     {
         if (!EndTurn.turnEnd)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+            if (other.gameObject.tag == "Player")
             {
-
-                anim.SetBool("Drum_playing", false);
-                anim.SetBool("isAttacking", true);
-                if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value < 0.485f)
+                if (Vector3.Distance(transform.position, player.transform.position) < 2f)
                 {
-                    vin.intensity.value = Mathf.Clamp(vin.intensity.value + (fadeSpeed * Time.deltaTime), 0.0f, 0.485f);
+                    gameObject.GetComponent<Characters>().attackAction = true;
                 }
-
-            }
-            else
-            {
-                anim.SetBool("Drum_playing", true);
-                anim.SetBool("isAttacking", false);
-
-                GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("Enemy");
-                if (gameobjects == null)
+                else
                 {
-                   // Debug.Log("null");
-                }
-                if (gameobjects != null)
-                {
-                    foreach (GameObject enemy in gameobjects)
-                    {
-                        if (Vector3.Distance(transform.position, enemy.transform.position) < 1000f)
-                        {
-                            if (enemy == null)
-                            {
-                                Debug.Log("null");
-                            }
-                            enemy.GetComponent<Characters>().chasing = true;
-                          
-                        }
-                    }
-                }
-                if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
-                {
-                    //Debug.Log("we have got here");
-                    vin.intensity.value = Mathf.Clamp(vin.intensity.value - (fadeSpeed * Time.deltaTime), 0.0f, 5f);
+                    gameObject.GetComponent<OrcDrummer>().playDrumAction = true;
                 }
             }
         }
+    }
+    public void endDrumming()
+    {
+        anim.SetBool("Drum_playing", false);
+    }
+    public void endAttack()
+    {
+        anim.SetBool("isAttacking", false);
     }
     public void Update()
     {

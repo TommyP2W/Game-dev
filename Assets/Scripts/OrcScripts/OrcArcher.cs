@@ -8,6 +8,7 @@ public class OrcArcher : MonoBehaviour, Characters
     public int maxHealth { get; set; } = 20;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
+    public bool attackAction { get; set; }
 
     public void attack()
     {
@@ -15,6 +16,14 @@ public class OrcArcher : MonoBehaviour, Characters
 
     public void death()
     {
+    }
+
+    public void actionSelector()
+    {
+        if (attackAction)
+        {
+            attack();
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -8,6 +8,14 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
     public int maxHealth { get; set; } = 30;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
+    public bool attackAction { get; set; }
+    public void actionSelector()
+    {
+        if (attackAction)
+        {
+            attack();
+        }
+    }
 
     public void attack()
     {

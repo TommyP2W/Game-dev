@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml;
 using Unity.VisualScripting;
@@ -154,7 +155,12 @@ public class GridTest : MonoBehaviour
             currentNode = currentNode.parent;
         }
         FinalPath.Add(start);
-        FinalPath.Reverse();    
+        FinalPath.Reverse();
+        if (FinalPath.Count > 4)
+        {
+            Debug.Log("Path too long");
+            FinalPath = FinalPath.Take(4).ToList();
+        }
         //drawPath(FinalPath);
         return;
     }

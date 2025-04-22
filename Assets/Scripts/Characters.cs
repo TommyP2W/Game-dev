@@ -8,12 +8,14 @@ public interface Characters
     int maxHealth { get; set; }
     bool chasing { get; set; }
     bool isWalking { get; set; }
+    bool attackAction { get; set; }
     // Start is called before the first frame update
 
     void attack();
 
     void death();
 
+    void actionSelector();
     public void update()
     {
         if (currentHealth == 0)

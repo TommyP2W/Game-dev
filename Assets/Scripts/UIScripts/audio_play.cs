@@ -25,8 +25,13 @@ public class audio_play : MonoBehaviour
     public void play_footstep()
     {
         audio.clip = footstep;
-        checkDistance();
+        //checkDistance();
         audio.Play();
+    }
+    public void end_footstep()
+    {
+        audio.clip = footstep;
+        audio.Stop();
     }
     
     private void checkDistance()

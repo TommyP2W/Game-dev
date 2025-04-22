@@ -1954,6 +1954,8 @@ GameObject:
   - component: {fileID: 914890781873471302}
   - component: {fileID: 7892987819183781790}
   - component: {fileID: 1064699805798523701}
+  - component: {fileID: 957539904640030424}
+  - component: {fileID: 405397578578975015}
   m_Layer: 8
   m_Name: Orc_Warrior
   m_TagString: Enemy
@@ -2011,6 +2013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca73f60ca39381488e19f480c4e2373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!65 &7892987819183781790
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2024,14 +2027,14 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.8619957, y: 1.530601, z: 6.6097565}
-  m_Center: {x: -0.14443016, y: 0.9791813, z: 2.8048782}
+  m_Size: {x: 9.260765, y: 1.530601, z: 15.196259}
+  m_Center: {x: 0.2874794, y: 0.9791813, z: 7.0981293}
 --- !u!114 &1064699805798523701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2044,6 +2047,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b875c6b205fdc42b48dec947c93167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+--- !u!65 &957539904640030424
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881777286351570431}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &405397578578975015
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881777286351570431}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7928308022888034991
 GameObject:
   m_ObjectHideFlags: 0

@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 3151272193403311593}
   m_Layer: 8
   m_Name: SK_Orc_Warrior_Drummer
-  m_TagString: Untagged
+  m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -848,8 +848,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3040070746363284958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7136838, y: 0.17909794, z: 0.15854746, w: 0.6583632}
-  m_LocalPosition: {x: 0.009979629, y: -0.022220878, z: 1.0655878}
+  m_LocalRotation: {x: 0.7136838, y: 0.1790979, z: 0.15854746, w: 0.6583632}
+  m_LocalPosition: {x: 0.009979629, y: -0.02222088, z: 1.0655876}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1856,8 +1856,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5781106855839007740}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.044071518, y: -0.28488737, z: 0.12583227, w: 0.9492435}
-  m_LocalPosition: {x: -0.000000037252903, y: 0.13679463, z: 0.000000067055225}
+  m_LocalRotation: {x: 0.046479426, y: -0.25188115, z: 0.058990467, w: 0.96483976}
+  m_LocalPosition: {x: -0.000000015832484, y: 0.11921904, z: -0.000000070780516}
   m_LocalScale: {x: 0.99999994, y: 1, z: 0.9999999}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2047,8 +2047,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7263251078031690802}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08073036, y: 0.09027955, z: -0.043730818, w: 0.99167526}
-  m_LocalPosition: {x: 0.0062166676, y: 0.27490106, z: -0.021692209}
+  m_LocalRotation: {x: 0.14223997, y: -0.010146149, z: -0.052869912, w: 0.9883672}
+  m_LocalPosition: {x: 0.000000029802322, y: 0.2721269, z: -0.000000033527613}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2072,6 +2072,8 @@ GameObject:
   - component: {fileID: 2449919289946546333}
   - component: {fileID: 5065833779075362196}
   - component: {fileID: 7311404436834224804}
+  - component: {fileID: 3367016924609631820}
+  - component: {fileID: 9003921064541834231}
   m_Layer: 8
   m_Name: Orc_Warrior_Drummer
   m_TagString: Enemy
@@ -2242,7 +2244,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -2262,6 +2264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b875a84013a88e541a3c421e4d9409f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!114 &2449919289946546333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2380,6 +2383,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8e4fcd1640f9d45a99a01e3c21f465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playDrumAction: 0
+  controller: {fileID: 0}
+--- !u!54 &3367016924609631820
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7470047730592250722}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &9003921064541834231
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7470047730592250722}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &7644973658687708035
 GameObject:
   m_ObjectHideFlags: 0

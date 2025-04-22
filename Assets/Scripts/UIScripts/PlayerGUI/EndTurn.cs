@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UI;
 
 public class EndTurn : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class EndTurn : MonoBehaviour
     private LineRenderer lineRenderer;
     private GridTest gridTest;
     private GameObject endButton;
+    private GameObject HealthSlider;
+    private GameObject StaminaSlider;
     public static int CoroutinesActive = 0; // Number of coroutines running at this moment
     public Dictionary<GameObject, List<GridCell>> requestedMovements;
     public GameObject[] enemiesArr;
@@ -30,6 +33,8 @@ public class EndTurn : MonoBehaviour
     public void Start()
     {
         endButton = GameObject.Find("Button");
+        HealthSlider = GameObject.Find("HealthSlider");
+        StaminaSlider = GameObject.Find("StaminaSlider");
         lineRenderer = GameObject.FindGameObjectWithTag("Line renderer").GetComponent<LineRenderer>();
         gridTest = GameObject.FindGameObjectWithTag("Player").GetComponent<GridTest>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -39,112 +44,114 @@ public class EndTurn : MonoBehaviour
     public void SetEnemyDestination(GameObject[] enemies)
     {
         requestedMovements = new Dictionary<GameObject, List<GridCell>>();
-        //GridCell playerCell = GridManager.gridLayout[GridManager.grid.WorldToCell(player.transform.position)];
-        //playerCell.occupied = true;
+
         if (enemies == null)
         {
             return;
         }
-        //foreach (GameObject enemy in enemies)
-        //{
-        //    GridCell enemycell = GridManager.gridLayout[GridManager.grid.WorldToCell(enemy.transform.position)];
-        //    enemycell.occupied = true;
-           
-        Debug.Log("AMOUNT OF ENEMIES + : " +  enemies.Length);
+
+
+        Debug.Log("AMOUNT OF ENEMIES + : " + enemies.Length);
         foreach (GameObject enemy in enemies)
+
         {
-            GridCell enemycell = GridManager.gridLayout[GridManager.grid.WorldToCell(enemy.transform.position)];
-            GridCell EnemyDestination;
-            Debug.Log("enemy cell : " + enemycell.position);
-
-            int range_x = UnityEngine.Random.Range(-2, 2);
-            int range_z = UnityEngine.Random.Range(-2, 2);
-
-            if (Vector3.Distance(enemy.transform.position, player.transform.position) > 15f)
+            if (enemy.gameObject.activeInHierarchy)
             {
-                enemy.GetComponent<Characters>().chasing = false;
-            }
-            // Setting the destination, if chasing, set destination to player point on map, else set it to random walking point with offset
-            Vector3 walkPoint = new Vector3(enemy.transform.position.x + range_x, 0, enemy.transform.position.z + range_z);
-            //Debug.Log("WALKPOINT BEFORE LOOKUP " + GridManager.gridLayout[GridManager.grid.WorldToCell(walkPoint)].position);
-            if (enemy.GetComponent<Characters>().chasing)
-            {
-                // Reference to the player requested movement script.
-                List<GridCell> playerReqMovements = player.GetComponent<PlayerClass>().ReqPlayerMovement;
-                //Debug.Log("chasing player");
-                if (playerReqMovements.Count > 0)
+                GridCell enemycell = GridManager.gridLayout[GridManager.grid.WorldToCell(enemy.transform.position)];
+                GridCell EnemyDestination;
+                Debug.Log("enemy cell : " + enemycell.position);
+
+                int range_x = UnityEngine.Random.Range(-2, 2);
+                int range_z = UnityEngine.Random.Range(-2, 2);
+
+                if (Vector3.Distance(enemy.transform.position, player.transform.position) > 15f)
                 {
-                    if (!GridManager.gridLayout.ContainsValue(playerReqMovements.Last()))
+                    enemy.GetComponent<Characters>().chasing = false;
+                }
+                // Setting the destination, if chasing, set destination to player point on map, else set it to random walking point with offset
+                Vector3 walkPoint = new Vector3(enemy.transform.position.x + range_x, 0, enemy.transform.position.z + range_z);
+                //Debug.Log("WALKPOINT BEFORE LOOKUP " + GridManager.gridLayout[GridManager.grid.WorldToCell(walkPoint)].position);
+                if (enemy.GetComponent<Characters>().chasing)
+                {
+                    // Reference to the player requested movement script.
+                    List<GridCell> playerReqMovements = player.GetComponent<PlayerClass>().ReqPlayerMovement;
+                    //Debug.Log("chasing player");
+                    if (playerReqMovements.Count > 0)
+                    {
+                        if (!GridManager.gridLayout.ContainsValue(playerReqMovements.Last()))
+                        {
+                            Debug.Log("Skipping");
+                            continue;
+                        }
+                        EnemyDestination = playerReqMovements.Last();
+
+                        gridTest.findPath(enemycell, EnemyDestination);
+                    }
+                    else
+                    {
+                        if (!GridManager.gridLayout.ContainsKey(GridManager.grid.WorldToCell(player.transform.position)))
+                        {
+                            Debug.Log("Error");
+                            continue;
+                        }
+                        EnemyDestination = GridManager.gridLayout[GridManager.grid.WorldToCell(player.transform.position)];
+                        gridTest.findPath(enemycell, EnemyDestination);
+                    }
+                    if (gridTest.FinalPath != null && EnemyDestination != null && gridTest.FinalPath.Count > 0)
+                    {
+                        Debug.Log("Final path is not null, enemy destination not null, more than one element");
+                    }
+
+                }
+                else
+                {
+                    if (!GridManager.gridLayout.ContainsKey(GridManager.grid.WorldToCell(walkPoint)))
                     {
                         Debug.Log("Skipping");
                         continue;
                     }
-                    EnemyDestination = playerReqMovements.Last();
+                    EnemyDestination = GridManager.gridLayout[GridManager.grid.WorldToCell(walkPoint)];
 
                     gridTest.findPath(enemycell, EnemyDestination);
-                } else
+                }
+                //Debug.Log("HELLOS");
+                //Debug.Log("Final path " + gridTest.FinalPath);
+                // Get a random position from the desired movement range
+                if (gridTest.FinalPath != null && gridTest.FinalPath.Count > 0)
                 {
-                    if (!GridManager.gridLayout.ContainsKey(GridManager.grid.WorldToCell(player.transform.position)))
+                    if (gridTest.FinalPath.Last().occupied)
                     {
-                        Debug.Log("Error");
-                        continue;
-                    }
-                    EnemyDestination = GridManager.gridLayout[GridManager.grid.WorldToCell(player.transform.position)];
-                    gridTest.findPath(enemycell, EnemyDestination);
-                }
-                if (gridTest.FinalPath != null && EnemyDestination != null && gridTest.FinalPath.Count > 0)
-                {
-                    Debug.Log("Final path is not null, enemy destination not null, more than one element");
-                }
-              
-            }
-            else
-            {
-                if (!GridManager.gridLayout.ContainsKey(GridManager.grid.WorldToCell(walkPoint)))
-                {
-                    Debug.Log("Skipping");
-                    continue;
-                }
-                EnemyDestination = GridManager.gridLayout[GridManager.grid.WorldToCell(walkPoint)];
-               
-                gridTest.findPath(enemycell, EnemyDestination);
-            }
-            //Debug.Log("HELLOS");
-            //Debug.Log("Final path " + gridTest.FinalPath);
-            // Get a random position from the desired movement range
-            if (gridTest.FinalPath != null && gridTest.FinalPath.Count > 0)
-            {            
-                if (gridTest.FinalPath.Last().occupied)
-                { 
-                    Debug.Log("requested : " + gridTest.FinalPath.Last().position);
-                    Debug.Log("requested_occupied? : " + gridTest.FinalPath.Last().occupied);
+                        Debug.Log("requested : " + gridTest.FinalPath.Last().position);
+                        Debug.Log("requested_occupied? : " + gridTest.FinalPath.Last().occupied);
 
-                    List<GridCell> neighbours = GridTest.getNeighbours(EnemyDestination);
-                    if (neighbours.Count > 0)
-                    {
-                      
+                        List<GridCell> neighbours = GridTest.getNeighbours(EnemyDestination);
                         
-                        resolveNeighbours(enemy, enemycell, neighbours);
+                        if (neighbours.Count > 0)
+                        {
+                           
+                                resolveNeighbours(enemy, enemycell, neighbours);
+                        }
+                        else
+                        {
+                            Debug.Log("neighbours empty");
+                        }
 
-                    } else
-                    {
-                        Debug.Log("neighbours empty");
                     }
-                    //resolveNeighbours(enemy,enemycell, neighbours);
-                    //break;
+                    else
+                    {
+                        //     Debug.Log("THRER");
+                        //Debug.Log("sjaidjaidjajaimcacijaicjaca");
+                        gridTest.FinalPath.Last().occupied = true;
+                        gridTest.FinalPath.Last().occupiedBy = enemy;
+                        requestedMovements.Add(enemy, gridTest.FinalPath);
+                    }
                 }
                 else
                 {
-                    //     Debug.Log("THRER");
-                    //Debug.Log("sjaidjaidjajaimcacijaicjaca");
-                    gridTest.FinalPath.Last().occupied = true;
-                    gridTest.FinalPath.Last().occupiedBy = enemy;
-                    requestedMovements.Add(enemy, gridTest.FinalPath);
+                    Debug.Log("idjfoisajdoisajfdoiasjfa");
                 }
-            } else
-            {
-                Debug.Log("idjfoisajdoisajfdoiasjfa");
             }
+
         }
         Debug.Log("finished");
         findingPath = true;
@@ -157,50 +164,81 @@ public class EndTurn : MonoBehaviour
 
     public void resolveNeighbours(GameObject enemy, GridCell enemyPos, List<GridCell> neighbours)
     {
-        for (int i = 0; i < 5; i++)
+        if (neighbours.Count > 0 && neighbours != null)
         {
-            if (neighbours.Count > 0)
+            foreach (GridCell neighbour in neighbours)
             {
-                List<GridCell> new_neighbours = GridTest.getNeighbours(neighbours[0]);
-                foreach (GridCell new_neighbour in new_neighbours)
+                if (!neighbour.occupied)
                 {
-                    //
-                    if (!new_neighbour.occupied)
+                    gridTest.findPath(enemyPos, neighbour);
+                    if (!gridTest.FinalPath.Last().occupied)
                     {
-                        gridTest.findPath(enemyPos, new_neighbour);
-                        if (!gridTest.FinalPath.Last().occupied)
+                        gridTest.FinalPath.Last().occupied = true;
+                        gridTest.FinalPath.Last().occupiedBy = enemy;
+                        requestedMovements.Add(enemy, gridTest.FinalPath);
+                        //Debug.Log("found neighbour");
+                        return;
+                    }
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                if (neighbours.Count > 0 && neighbours != null)
+                {
+                    List<GridCell> new_neighbours = GridTest.getNeighbours(neighbours[0]);
+                    if (new_neighbours.Count > 0)
+                    {
+                        foreach (GridCell new_neighbour in new_neighbours)
                         {
-                            gridTest.FinalPath.Last().occupied = true;
-                            gridTest.FinalPath.Last().occupiedBy = player;
-                            requestedMovements.Add(enemy, gridTest.FinalPath);
-                            //Debug.Log("found neighbour");
-                            return;
+                            //
+                            if (!new_neighbour.occupied)
+                            {
+                                gridTest.findPath(enemyPos, new_neighbour);
+                                if (!gridTest.FinalPath.Last().occupied)
+                                {
+                                    gridTest.FinalPath.Last().occupied = true;
+                                    gridTest.FinalPath.Last().occupiedBy = enemy;
+                                    requestedMovements.Add(enemy, gridTest.FinalPath);
+                                    //Debug.Log("found neighbour");
+                                    return;
+                                }
+
+                            }
+                            else
+                            {
+                                neighbours.Add(new_neighbour);
+                                //Debug.Log("still searching");
+
+                            }
                         }
+                        neighbours.Remove(neighbours[0]);
 
                     }
                     else
                     {
-                        neighbours.Add(new_neighbour);
-                        //Debug.Log("still searching");
-
+                        Debug.Log("No new neighbours");
+                        return;
                     }
                 }
-                neighbours.Remove(neighbours[0]);
-
-                //Debug.Log("iajiasjda");
-
+                else
+                {
+                    Debug.Log("No Remaining neighbours");
+                    return;
+                }
             }
-            else
-            {
-                Debug.Log("searching neighbor list null");
-                return;
-            }
-           
         }
-        
+        else
+        {
+            Debug.Log("searching neighbor list null");
+            return;
+        }
         Debug.Log("ran out of neighbours");
         return;
+
     }
+
+
+
     public void endTurn()
     {
         // Creating a new list full of the player requested movements, previously was a reference so coroutine removed elements before they could be accessed by enemies.
@@ -224,6 +262,8 @@ public class EndTurn : MonoBehaviour
                 playerReqMovement.Last().occupied = true;
                 requestedMovements.Add(player, playerReqMovement);
                 StartCoroutine(MovePlayer(requestedMovements, true));
+
+               
 
             }
         }
@@ -253,7 +293,13 @@ public class EndTurn : MonoBehaviour
             path[person][0].occupiedBy = null;
             path[person].Last().occupied = true;
             path[person].Last().occupiedBy = person;
-            person.GetComponent<Characters>().isWalking = true;
+            if (person.tag == "Player")
+            {
+                person.GetComponent<PlayerClass>().isWalking = true;
+            } else
+            {
+                person.GetComponent<Characters>().isWalking = true;
+            }
             while (path[person].Count > 0)
 
             {
@@ -326,7 +372,14 @@ public class EndTurn : MonoBehaviour
                 
 
             }
-            person.GetComponent<Characters>().isWalking = false;
+            if (person.tag == "Player")
+            {
+                person.GetComponent<PlayerClass>().isWalking = false;
+            }
+            else
+            {
+                person.GetComponent<Characters>().isWalking = false;
+            }
             i++;
             Debug.Log(i);
         }
@@ -343,14 +396,31 @@ public class EndTurn : MonoBehaviour
         } else
         {
             player.GetComponent<PlayerClass>().ReqPlayerMovement.Clear();
-
+            StartCoroutine(EnemyActions(enemiesArr));
         }
 
         yield return null;
     }
+    IEnumerator EnemyActions(GameObject[] enemies)
+    {
+        if (enemies != null && enemies.Length > 0)
+        {
+            Debug.Log("hello");
+
+            foreach (GameObject enemy in enemies)
+
+            {
+                Debug.Log("hello");
+                enemy.GetComponent<Characters>().actionSelector();
+                yield return null;
+            }
+        }
+    }
 
     public void Update()
     {
+        HealthSlider.GetComponentInChildren<Slider>().value = (float)player.GetComponent<PlayerClass>().currentHealth / 100;
+        StaminaSlider.GetComponentInChildren<Slider>().value = (float)player.GetComponent<PlayerClass>().currentStamina / 10;
         if (CoroutinesActive > 0)
         {
             endButton.GetComponentInChildren<TextMeshProUGUI>().text = "Loading...";

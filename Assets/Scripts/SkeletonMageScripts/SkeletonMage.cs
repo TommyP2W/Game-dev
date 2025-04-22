@@ -13,6 +13,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     public int maxHealth { get; set; } = 15;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
+    public bool attackAction { get; set; }
 
 
 
@@ -58,8 +59,11 @@ public class SkeletonMage : MonoBehaviour, Characters
 
     public void OnTriggerEnter(Collider other)
     {
-        SpawnSkeletons();
-        playerSmall();
+        if (other.tag == "Player")
+        {
+            SpawnSkeletons();
+            playerSmall();
+        }
     }
     // Update is called once per frame
 
@@ -74,5 +78,11 @@ public class SkeletonMage : MonoBehaviour, Characters
         gameObject.SetActive(false);
     }
 
-
+    public void actionSelector()
+    {
+        if (attackAction)
+        {
+            attack();
+        }
+    }
 }

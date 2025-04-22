@@ -7,7 +7,7 @@ public class RegOrcAnimationController : MonoBehaviour
 {
 
     // Start is called before the first frame update
-    private Animator anim;
+    public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
@@ -17,6 +17,7 @@ public class RegOrcAnimationController : MonoBehaviour
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
+        vin = new Vignette();
         
     }
     public void OnTriggerExit(Collider other)
@@ -27,10 +28,18 @@ public class RegOrcAnimationController : MonoBehaviour
             anim.SetBool("isAttacking", false);
         }
     }
-    
+    public void OnTriggerEnter(Collider other)
+
+    {
+        if (!EndTurn.turnEnd)
+        {
+            gameObject.GetComponent<Characters>().chasing = true;
+        }
+    }
 
 
-// Update is called once per frame
+
+    // Update is called once per frame
     private void OnTriggerStay(Collider other)
         {
         if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
@@ -38,11 +47,7 @@ public class RegOrcAnimationController : MonoBehaviour
             if (Vector3.Distance(transform.position, player.transform.position) < 2f)
             {
 
-                anim.SetBool("isAttacking", true);
-                if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value < 0.485f)
-                {
-                    vin.intensity.value = Mathf.Clamp(vin.intensity.value + (fadeSpeed * Time.deltaTime), 0.0f, 0.485f);
-                }
+                gameObject.GetComponent<Characters>().attackAction = true;
 
             }
             else
@@ -55,6 +60,11 @@ public class RegOrcAnimationController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void EndAttack()
+    {
+        anim.SetBool("isAttacking", false);
     }
 
     public void Update()

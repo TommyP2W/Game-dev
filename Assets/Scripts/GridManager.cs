@@ -10,6 +10,9 @@ public class GridManager : MonoBehaviour
     public static int width = 50, height = 50;
     private GridCell cell;
     [SerializeField] private LayerMask buildingLayer;
+    [SerializeField] private LayerMask casteLayer;
+    [SerializeField] private LayerMask gateLayer;
+
     public static Grid grid;
 
     private void generateGrid()
@@ -34,6 +37,14 @@ public class GridManager : MonoBehaviour
                 //Debug.Log(grid.CellToWorld(new Vector3Int(0, 0, 1)));
                 //Debug.Log(grid.gameObject.name);
                 if (Physics.Raycast(positionOnMap + Vector3.up * 10f, Vector3.down, 20f, buildingLayer))
+                {
+                    cell.walkable = false;
+                }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, casteLayer))
+                {
+                    cell.walkable = false;
+                }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, gateLayer))
                 {
                     cell.walkable = false;
                 }

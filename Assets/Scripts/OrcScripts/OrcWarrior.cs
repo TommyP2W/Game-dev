@@ -8,8 +8,17 @@ public class OrcWarrior : MonoBehaviour, Characters
     public int maxHealth { get; set; } = 25;
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
+
+    public bool attackAction { get; set; }
+    public RegOrcAnimationController controller;
     public void attack()
     {
+        gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 12);
+        controller.anim.SetBool("isAttacking", true);
+        Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
+
+        attackAction = false;
     }
 
     public void death()
@@ -32,9 +41,20 @@ public class OrcWarrior : MonoBehaviour, Characters
             chasing = false;
         }
     }
+    public void selectAction()
+    {
+        if (attackAction)
+        {
+            attack();
+        }
+       
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
+        controller = gameObject.GetComponent<RegOrcAnimationController>();
         currentHealth = maxHealth;
     }
 
@@ -42,5 +62,13 @@ public class OrcWarrior : MonoBehaviour, Characters
     void Update()
     {
         
+    }
+
+    public void actionSelector()
+    {
+        if (attackAction)
+        {
+            attack();
+        }
     }
 }
