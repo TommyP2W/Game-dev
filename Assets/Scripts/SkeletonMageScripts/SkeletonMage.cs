@@ -15,6 +15,8 @@ public class SkeletonMage : MonoBehaviour, Characters
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
 
+    public int armour_class { get; set; } = 7;
+
 
 
     // Start is called before the first frame update
@@ -43,7 +45,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     {
         while (neighbours.Count > 0)
         {
-            GameObject Skeleton = ObjectPool.SharedInstance.GetPooledObject();
+            GameObject Skeleton = ObjectPool.SharedInstance.GetPooledObject("soldier");
             if (Skeleton != null)
             {
                 Skeleton.transform.position = neighbours[0].position;

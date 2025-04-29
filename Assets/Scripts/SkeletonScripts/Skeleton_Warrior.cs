@@ -9,6 +9,7 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
+    public int armour_class { get; set; } = 15;
     public void actionSelector()
     {
         if (attackAction)

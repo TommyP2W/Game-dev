@@ -49,8 +49,6 @@ public class EndTurn : MonoBehaviour
         {
             return;
         }
-
-
         Debug.Log("AMOUNT OF ENEMIES + : " + enemies.Length);
         foreach (GameObject enemy in enemies)
 
@@ -153,11 +151,9 @@ public class EndTurn : MonoBehaviour
             }
 
         }
-        Debug.Log("finished");
         findingPath = true;
         turnEnd = true;
 
-        Debug.Log("starting corotuine");
         Debug.Log(requestedMovements.Count);
         StartCoroutine(MovePlayer(requestedMovements, false));
     }
@@ -176,7 +172,6 @@ public class EndTurn : MonoBehaviour
                         gridTest.FinalPath.Last().occupied = true;
                         gridTest.FinalPath.Last().occupiedBy = enemy;
                         requestedMovements.Add(enemy, gridTest.FinalPath);
-                        //Debug.Log("found neighbour");
                         return;
                     }
                 }
@@ -199,7 +194,6 @@ public class EndTurn : MonoBehaviour
                                     gridTest.FinalPath.Last().occupied = true;
                                     gridTest.FinalPath.Last().occupiedBy = enemy;
                                     requestedMovements.Add(enemy, gridTest.FinalPath);
-                                    //Debug.Log("found neighbour");
                                     return;
                                 }
 
@@ -207,7 +201,6 @@ public class EndTurn : MonoBehaviour
                             else
                             {
                                 neighbours.Add(new_neighbour);
-                                //Debug.Log("still searching");
 
                             }
                         }
@@ -242,38 +235,36 @@ public class EndTurn : MonoBehaviour
     public void endTurn()
     {
         // Creating a new list full of the player requested movements, previously was a reference so coroutine removed elements before they could be accessed by enemies.
+        // Bool for checking if the tiles have updated since turn ended.
+        Debug.Log("ASDASJDAS");
+        //GridManager.checkingUpdates = true;
         List<GridCell> playerReqMovement = new List<GridCell>(player.GetComponent<PlayerClass>().ReqPlayerMovement);
+        enemiesArr = GameObject.FindGameObjectsWithTag("Enemy");
+
         requestedMovements = new Dictionary<GameObject, List<GridCell>>();
       
-        Debug.Log("Ended turn");
-        Debug.Log("PLAYER REQ MOVEMENT COUNT " + playerReqMovement.Count);
+      
         // If there is a path, the turn has ended, and no other corotuines are running
         // This stops the player being able to move while other enemies are also still moving previously
 
         if (playerReqMovement.Count > 0)
         {
-            Debug.Log("Has the turn ended? : " + turnEnd);
-            Debug.Log("COROUTINES ACTIVE : " + CoroutinesActive);
+            
             if (playerReqMovement.Count > 0 && !turnEnd && CoroutinesActive == 0)
             {
                 // The turn has ended
-                Debug.Log("helo");
                 playerReqMovement[0].occupied = true;
                 playerReqMovement.Last().occupied = true;
                 requestedMovements.Add(player, playerReqMovement);
+                turnEnd = true;
                 StartCoroutine(MovePlayer(requestedMovements, true));
-
-               
 
             }
         }
         // If the player wants to skip their turn without moving
-        Debug.Log(playerReqMovement.Count);
         if  (playerReqMovement.Count == 0)
         {
-            Debug.Log("Skipping");
             SetEnemyDestination(enemiesArr);
-
         }
     }
     
@@ -282,17 +273,15 @@ public class EndTurn : MonoBehaviour
     {
         CoroutinesActive++;
         int i = 0;
-        Debug.Log("e");
         // While there is a path
-        Debug.Log(path.Count);
         foreach (GameObject person in path.Keys)
         {
             Smoothcamera.Target = person.transform;
-            Debug.Log("AMOUNT OF REQUESTS: " + path.Count);
             path[person][0].occupied = false;
             path[person][0].occupiedBy = null;
             path[person].Last().occupied = true;
             path[person].Last().occupiedBy = person;
+
             if (person.tag == "Player")
             {
                 person.GetComponent<PlayerClass>().isWalking = true;
@@ -383,6 +372,7 @@ public class EndTurn : MonoBehaviour
             i++;
             Debug.Log(i);
         }
+
         Smoothcamera.Target = player.transform;
         // Coroutine has finished so set the turn ending to false
         turnEnd = false;
@@ -398,19 +388,16 @@ public class EndTurn : MonoBehaviour
             player.GetComponent<PlayerClass>().ReqPlayerMovement.Clear();
             StartCoroutine(EnemyActions(enemiesArr));
         }
-
+        GridManager.checkingUpdates = true;
         yield return null;
     }
     IEnumerator EnemyActions(GameObject[] enemies)
     {
         if (enemies != null && enemies.Length > 0)
         {
-            Debug.Log("hello");
-
             foreach (GameObject enemy in enemies)
 
             {
-                Debug.Log("hello");
                 enemy.GetComponent<Characters>().actionSelector();
                 yield return null;
             }

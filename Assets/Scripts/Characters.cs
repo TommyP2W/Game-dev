@@ -9,6 +9,8 @@ public interface Characters
     bool chasing { get; set; }
     bool isWalking { get; set; }
     bool attackAction { get; set; }
+
+    int armour_class { get; set; }
     // Start is called before the first frame update
 
     void attack();

@@ -6,11 +6,14 @@ public class OrcWarrior : MonoBehaviour, Characters
 {
     public int currentHealth { get; set; }
     public int maxHealth { get; set; } = 25;
-    public bool chasing { get; set; }
-    public bool isWalking { get; set; }
+    public bool chasing { get; set; } = false;
+    public bool isWalking { get; set; } = false;
 
     public bool attackAction { get; set; }
+    public int armour_class { get; set; } = 8;
     public RegOrcAnimationController controller;
+
+    // Attack function for enemy orc warrior
     public void attack()
     {
         gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
@@ -21,10 +24,14 @@ public class OrcWarrior : MonoBehaviour, Characters
         attackAction = false;
     }
 
+    // Death function, if dead, deactivate
     public void death()
     {
+
+        gameObject.SetActive(false);
     }
 
+    // If trigger enter player, chase
     private void OnTriggerEnter(Collider other)
     {
         // If collided with player
@@ -33,7 +40,7 @@ public class OrcWarrior : MonoBehaviour, Characters
             chasing = true;
         }
     }
-
+    // If trigger exit player, stop chasing
     public void OnTriggerExit(Collider other)
     {
         if (!EndTurn.turnEnd)
@@ -41,14 +48,7 @@ public class OrcWarrior : MonoBehaviour, Characters
             chasing = false;
         }
     }
-    public void selectAction()
-    {
-        if (attackAction)
-        {
-            attack();
-        }
-       
-    }
+  
 
 
     // Start is called before the first frame update
@@ -56,12 +56,17 @@ public class OrcWarrior : MonoBehaviour, Characters
     {
         controller = gameObject.GetComponent<RegOrcAnimationController>();
         currentHealth = maxHealth;
+        chasing = false;
     }
 
     // Update is called once per frame
+    // Checking if the health is below or equal to zero, if so cause its death
     void Update()
     {
-        
+        if (currentHealth <= 0)
+        {
+            death();
+        }
     }
 
     public void actionSelector()

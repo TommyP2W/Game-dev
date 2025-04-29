@@ -11,6 +11,7 @@ public class OrcDrummer : MonoBehaviour, Characters
 
     public bool playDrumAction = false;
     public bool attackAction { get; set; }
+    public int armour_class { get; set; } = 9;
     public Drummer_animation_controller controller;
 
     public void attack()

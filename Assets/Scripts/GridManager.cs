@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     private Vector3Int cellGridPos;
     public static int width = 50, height = 50;
     private GridCell cell;
+    public static bool checkingUpdates = false;
     [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private LayerMask casteLayer;
     [SerializeField] private LayerMask gateLayer;
@@ -31,11 +32,7 @@ public class GridManager : MonoBehaviour
                 cellGridPos = grid.WorldToCell(new Vector3(i, 0, j));  // this will provide cell coords, if wanna check player cell, just convert player pos to cell
                 Vector3 positionOnMap = grid.CellToWorld(cellGridPos);
 
-                //Debug.Log(grid.cellSize);
-                //Debug.Log(grid.CellToWorld(new Vector3Int(0, 0, 0)));
-                //Debug.Log(grid.CellToWorld(new Vector3Int(1, 0, 0)));
-                //Debug.Log(grid.CellToWorld(new Vector3Int(0, 0, 1)));
-                //Debug.Log(grid.gameObject.name);
+              
                 if (Physics.Raycast(positionOnMap + Vector3.up * 10f, Vector3.down, 20f, buildingLayer))
                 {
                     cell.walkable = false;
@@ -52,8 +49,38 @@ public class GridManager : MonoBehaviour
                 gridLayout.Add(cellGridPos, cell);
             }
         }
-      
+    }
 
+    public void checkOccupied()
+    {
+        Debug.Log("checking");
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                GridCell cell = new GridCell();
+                cell.position = grid.WorldToCell(new Vector3(i, 0, j));
+                Vector3Int cellGridPos = grid.WorldToCell(new Vector3(i, 0, j));  // this will provide cell coords, if wanna check player cell, just convert player pos to cell
+                Vector3 positionOnMap = grid.CellToWorld(cellGridPos);
+
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, gateLayer))
+                {
+                    gridLayout[cellGridPos].walkable = false;
+                } else
+                {
+                    gridLayout[cellGridPos].walkable = true;
+                }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, casteLayer))
+                {
+                    gridLayout[cellGridPos].walkable = false;
+                }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, buildingLayer))
+                {
+                    gridLayout[cellGridPos].walkable = false;
+                }
+            }
+        }
+        checkingUpdates = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -66,5 +93,12 @@ public class GridManager : MonoBehaviour
     }
 
     // Update is called once per frame
-   
+    private void Update()
+    {
+        if (checkingUpdates)
+        {
+            checkOccupied();
+        }
+        
+    }
 }

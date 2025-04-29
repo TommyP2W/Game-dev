@@ -44,23 +44,33 @@ public class RegOrcAnimationController : MonoBehaviour
         {
         if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+            foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
             {
-
-                gameObject.GetComponent<Characters>().attackAction = true;
-
-            }
-            else
-            {
-                anim.SetBool("isAttacking", false);
-                if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
+                if (cell.occupiedBy == player)
                 {
-                    //Debug.Log("we have got here");
-                    vin.intensity.value = Mathf.Clamp(vin.intensity.value - (fadeSpeed * Time.deltaTime), 0.0f, 5f);
+
+                    gameObject.GetComponent<Characters>().attackAction = true;
+                }
+            }
+            if (gameObject.GetComponent<Characters>().attackAction == false)
+            {
+                if (gameObject.name == "OrcShaman")
+                {
+                    gameObject.GetComponent<OrcShaman>().healAction = true;
                 }
             }
         }
+        else
+        {
+            anim.SetBool("isAttacking", false);
+            if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
+            {
+                //Debug.Log("we have got here");
+                vin.intensity.value = Mathf.Clamp(vin.intensity.value - (fadeSpeed * Time.deltaTime), 0.0f, 5f);
+            }
+        }
     }
+
 
     public void EndAttack()
     {

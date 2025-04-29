@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.TextCore.Text;
 
 public class PlayerClass : MonoBehaviour
 {
@@ -16,8 +18,11 @@ public class PlayerClass : MonoBehaviour
     public int damage_upper = 8;
 
     public int armor_class = 7;
-    
+    private float shake = 0.0f;
+    private float shakeAmount = 0.7f;
+    private float decreaseFactor = 1.0f;
 
+    private GameObject cam;
     public List<GridCell> ReqPlayerMovement;
     public PlayerAnimationController playerAnimController;
     public GameObject RequestedEnemy;
@@ -35,13 +40,19 @@ public class PlayerClass : MonoBehaviour
                 {
                     if (cell.occupiedBy == RequestedEnemy)
                     {
-
+                        
                         gameObject.transform.LookAt(RequestedEnemy.transform.position);
-                        RequestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, damage_upper);
-                        Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
                         playerAnimController.startAttack();
-
-                        currentStamina -= 2;
+                        if (UnityEngine.Random.Range(1, 20) > RequestedEnemy.GetComponent<Characters>().armour_class)
+                        {
+                            //shake += 2;
+                            playerAnimController.startAttack();
+                            int damage = UnityEngine.Random.Range(1, damage_upper);
+                            RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
+                            Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
+                            AttackManager.showAttackInfo(RequestedEnemy, damage);
+                        }
+                        //currentStamina -= 2;
                         break;
                     }
                 }
@@ -88,7 +99,14 @@ public class PlayerClass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //if (shake > 0)
+        //{
+        //    cam.transform.localPosition = UnityEngine.Random.insideUnitSphere * shakeAmount;
+        //    shake -= Time.deltaTime * decreaseFactor;
+        //} else
+        //{
+        //    shake = 0.0f;
+        //}
     }
     public void Start()
     {
@@ -96,7 +114,7 @@ public class PlayerClass : MonoBehaviour
         currentHealth = maxHealth;
         damage_upper = 8;
         armor_class = 7;
-
+        cam = GameObject.FindGameObjectWithTag("CameraPivot");
 
     }
 

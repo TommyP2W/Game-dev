@@ -9,13 +9,14 @@ public class OrcArcher : MonoBehaviour, Characters
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
-
+    public int armour_class { get; set; } = 6;
     public void attack()
     {
     }
 
     public void death()
     {
+        gameObject.SetActive(false);
     }
 
     public void actionSelector()
@@ -51,6 +52,9 @@ public class OrcArcher : MonoBehaviour, Characters
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentHealth <= 0)
+        {
+            death();
+        }
     }
 }
