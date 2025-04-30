@@ -1,4 +1,5 @@
 
+using JetBrains.Annotations;
 using TMPro;
 
 using UnityEngine;
@@ -64,17 +65,28 @@ public class Placement : MonoBehaviour
             }
             if (!MouseCell.occupied)
             {
-
-                findPath.findPath(player, MouseCell);
-                if (findPath.FinalPath != null )
+                if (!Possession.isPossessed)
                 {
-                    Debug.Log("added");
-                    if (findPath.FinalPath.Count > 0)
+                    findPath.findPath(player, MouseCell);
+                    if (findPath.FinalPath != null)
                     {
-                        Debug.Log("more than 0");
+                        Debug.Log("added");
+                        if (findPath.FinalPath.Count > 0)
+                        {
+                            Debug.Log("more than 0");
+                        }
+                        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().ReqPlayerMovement = findPath.FinalPath;
+                        EndTurn.playerSelectedPath = true;
+
                     }
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().ReqPlayerMovement = findPath.FinalPath;
-                    EndTurn.playerSelectedPath = true;
+                }
+                else
+                {
+                    findPath.findPath(GridManager.gridLayout[GridManager.grid.WorldToCell(playerobj.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Transform>().position)], MouseCell);
+                    if (findPath.FinalPath != null)
+                    {
+                        Possession.possessionPath.Add(playerobj.GetComponent<PlayerClass>().possessedEnemy, findPath.FinalPath);
+                    }
                 }
             }
            

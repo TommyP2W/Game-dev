@@ -16,7 +16,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     public bool attackAction { get; set; }
 
     public int armour_class { get; set; } = 7;
-
+    public GameObject requestedEnemy { get; set; } = null;
 
 
     // Start is called before the first frame update

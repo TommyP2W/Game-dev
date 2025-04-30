@@ -236,7 +236,6 @@ public class EndTurn : MonoBehaviour
     {
         // Creating a new list full of the player requested movements, previously was a reference so coroutine removed elements before they could be accessed by enemies.
         // Bool for checking if the tiles have updated since turn ended.
-        Debug.Log("ASDASJDAS");
         //GridManager.checkingUpdates = true;
         List<GridCell> playerReqMovement = new List<GridCell>(player.GetComponent<PlayerClass>().ReqPlayerMovement);
         enemiesArr = GameObject.FindGameObjectsWithTag("Enemy");
@@ -389,6 +388,7 @@ public class EndTurn : MonoBehaviour
             StartCoroutine(EnemyActions(enemiesArr));
         }
         GridManager.checkingUpdates = true;
+        Sanity.checkingSanity = true;
         yield return null;
     }
     IEnumerator EnemyActions(GameObject[] enemies)
@@ -406,6 +406,7 @@ public class EndTurn : MonoBehaviour
 
     public void Update()
     {
+        //Debug.Log("Player " + player.name);
         HealthSlider.GetComponentInChildren<Slider>().value = (float)player.GetComponent<PlayerClass>().currentHealth / 100;
         StaminaSlider.GetComponentInChildren<Slider>().value = (float)player.GetComponent<PlayerClass>().currentStamina / 10;
         if (CoroutinesActive > 0)

@@ -16,6 +16,10 @@ public class PlayerClass : MonoBehaviour
     public bool isWalking { get; set; }
     // Initialise this and put as upper part of range tomorrow for both damage types;
     public int damage_upper = 8;
+    
+    public int sanity = 10;
+    public int experience = 0;
+    public int risk = 0;
 
     public int armor_class = 7;
     private float shake = 0.0f;
@@ -26,6 +30,7 @@ public class PlayerClass : MonoBehaviour
     public List<GridCell> ReqPlayerMovement;
     public PlayerAnimationController playerAnimController;
     public GameObject RequestedEnemy;
+    public GameObject possessedEnemy;
     
     
     
@@ -96,9 +101,12 @@ public class PlayerClass : MonoBehaviour
         playerAnimController = gameObject.GetComponent<PlayerAnimationController>();
     }
 
+  
     // Update is called once per frame
     void Update()
     {
+
+      //  Debug.Log(RequestedEnemy.name);
         //if (shake > 0)
         //{
         //    cam.transform.localPosition = UnityEngine.Random.insideUnitSphere * shakeAmount;

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +12,17 @@ public class PlayerInfo :MonoBehaviour {
 
     private GameObject PlayerInfoWindow;
     private GameObject slider;
-    private int healthTier = 0;
-    private int damageTier = 0;
+    //private int healthTier = 0;
+    //private int damageTier = 0;
     private int playerLevel = 0;
-    private int armourTier = 0;
-    private int staminaTier = 0;
+    //private int armourTier = 0;
+    //private int staminaTier = 0;
 
     private PlayerClass playerClass;
     private GameObject skillInformation;
+    private GameObject experienceBar;
+    private GameObject sanityBar;
+    public StatManager stats;
 
     private TextMeshProUGUI DamageTierInfo;
     private TextMeshProUGUI MaxHealthInfo;
@@ -27,6 +31,15 @@ public class PlayerInfo :MonoBehaviour {
     private TextMeshProUGUI STInfo;
 
     public void Start()
+    {
+        stats = GameObject.Find("StatManager").GetComponent<StatManager>();
+        DontDestroyOnLoad(gameObject);
+        PlayerInfoWindow = GameObject.Find("PlayerInfo");
+        Debug.Log("name " + PlayerInfoWindow.name);
+        PlayerInfoWindow.SetActive(false);
+
+    }
+    public void Awake()
     {
            // Colour brown for wooden sword
         Color colour = new Color(150f/255, 70f/255, 0f/255);
@@ -40,11 +53,16 @@ public class PlayerInfo :MonoBehaviour {
         GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = colour;
 
         // Deactivating the skill panel on startup
-        skillInformation = GameObject.Find("SkillInformation");
-        skillInformation.SetActive(false);
+// skillInformation = GameObject.Find("SkillInformation");
+        // skillInformation.SetActive(false);
+        experienceBar = GameObject.Find("ExperienceBar");
+        sanityBar = GameObject.Find("SanityBar");
+        //experienceBar.SetActive(false);
+        //sanityBar.SetActive(false);
 
-        PlayerInfoWindow = GameObject.Find("PlayerInfo");
+        //PlayerInfoWindow = GameObject.Find("PlayerInfo");
         slider = GameObject.Find("PreviewSlider");
+        skillInformation = GameObject.Find("SkillInformation");
 
         // Getting the references for now, can set the references before deactivation
         DamageTierInfo = GameObject.Find("DamageTierInfo").GetComponent<TextMeshProUGUI>();
@@ -54,14 +72,14 @@ public class PlayerInfo :MonoBehaviour {
         STInfo = GameObject.Find("MaxStaminaInfo").GetComponent<TextMeshProUGUI>();
 
 
-        PlayerInfoWindow.SetActive(false);
+        //PlayerInfoWindow.SetActive(false);
         playerClass = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>();       
     }
 
     // Responsible for opening info panel when button clicked.
     public void openInfo()
     {
-        if (PlayerInfoWindow.activeSelf)
+        if (PlayerInfoWindow.activeInHierarchy)
         {
             PlayerInfoWindow.SetActive(false);
             return;
@@ -70,10 +88,11 @@ public class PlayerInfo :MonoBehaviour {
         PlayerInfoWindow.SetActive(true);
         ACInfo.text = "Armour class : " + playerClass.armor_class;
         STInfo.text = "Max Stamina : " + playerClass.maxStamina;
-        DamageTierInfo.text = "Damage Tier : " + damageTier;
+        DamageTierInfo.text = "Damage Tier : " + stats.damageTier;
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         MaxStaminaInfo.text = "Max Stamina : " + playerClass.maxStamina;
-
+        //sanityBar.GetComponent<Slider>().value = playerClass.sanity / 100;
+        //experienceBar.GetComponent<Slider>().value = playerClass.experience / 100;
         return;
     }
 
@@ -81,27 +100,27 @@ public class PlayerInfo :MonoBehaviour {
     {
         if (requested_tier == 0) {
             playerLevel = 1;
-            if (healthTier == 0 && playerLevel == 1)
+            if (stats.healthTier == 0 && playerLevel == 1)
             {
-                healthTier = 1;
+                stats.healthTier = 1;
                 playerClass.maxHealth += 5;
                 GameObject.Find("Tier1HP").GetComponentInChildren<Button>().interactable = false;
 ;
             }
         } else if (requested_tier == 1) {
             playerLevel = 2;
-            if (healthTier == 1 && playerLevel == 2)
+            if (stats.healthTier == 1 && playerLevel == 2)
             {
-                healthTier = 2;
+                stats.healthTier = 2;
                 playerClass.maxHealth += 10;
                 GameObject.Find("Tier2HP").GetComponentInChildren<Button>().interactable = false;
 
             }
         } else if (requested_tier == 2) {
             playerLevel++;
-            if (healthTier == 2 && playerLevel == 3)
+            if (stats.healthTier == 2 && playerLevel == 3)
             {
-                healthTier = 3;
+                stats.healthTier = 3;
                 playerClass.maxHealth += 15;
                 GameObject.Find("Tier3HP").GetComponentInChildren<Button>().interactable = false;
             }
@@ -114,9 +133,9 @@ public class PlayerInfo :MonoBehaviour {
         if (requested_tier == 0)
         {
             playerLevel = 1;
-            if (armourTier == 0 && playerLevel == 1)
+            if (stats.armourTier == 0 && playerLevel == 1)
             {
-                armourTier = 1;
+                stats.armourTier = 1;
                 playerClass.armor_class += 2;
                 GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.grey;
                 GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.grey;
@@ -128,9 +147,9 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 1)
         {
             playerLevel = 2;
-            if (armourTier == 1 && playerLevel == 2)
+            if (stats.armourTier == 1 && playerLevel == 2)
             {
-                armourTier = 2;
+                stats.armourTier = 2;
                 playerClass.armor_class += 2;
                 GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.green;
                 GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.green;
@@ -143,9 +162,9 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 2)
         {
             playerLevel++;
-            if (armourTier == 2 && playerLevel == 3)
+            if (stats.armourTier == 2 && playerLevel == 3)
             {
-                armourTier = 3;
+                stats.armourTier = 3;
                 playerClass.armor_class += 2;
                 GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.yellow;
                 GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.yellow;
@@ -215,9 +234,9 @@ public class PlayerInfo :MonoBehaviour {
         {
             playerLevel = 1;
 
-            if (damageTier == 0 && playerLevel == 1)
+            if (stats.damageTier == 0 && playerLevel == 1)
             {
-                damageTier = 1;
+                stats.damageTier = 1;
                 playerClass.damage_upper += 2;
                 GameObject.Find("Tier1DMG").GetComponentInChildren<Button>().interactable = false;
                 GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.red;
@@ -227,9 +246,9 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 1)
         {
             playerLevel = 2; 
-            if (damageTier == 1 && playerLevel == 2)
+            if (stats.damageTier == 1 && playerLevel == 2)
             {
-                damageTier = 2;
+                stats.damageTier = 2;
                 playerClass.damage_upper += 3;
                 GameObject.Find("Tier2DMG").GetComponentInChildren<Button>().interactable = false;
                 GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.yellow;
@@ -240,16 +259,16 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 2)
         {
             playerLevel = 3;
-            if (damageTier == 2 && playerLevel == 3)
+            if (stats.damageTier == 2 && playerLevel == 3)
             {
-                damageTier = 3;
+                stats.damageTier = 3;
                 playerClass.damage_upper += 4;
                 GameObject.Find("Tier3DMG").GetComponentInChildren<Button>().interactable = false;
                 GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.green;
                 GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.green;
             }
         }
-        DamageTierInfo.text = "Damage Tier : " + damageTier + " Upper boundary : " + playerClass.damage_upper;
+        DamageTierInfo.text = "Damage Tier : " + stats.damageTier + " Upper boundary : " + playerClass.damage_upper;
         return;
 
     }
@@ -258,9 +277,9 @@ public class PlayerInfo :MonoBehaviour {
         if (requested_tier == 0)
         {
             playerLevel = 1;
-            if (staminaTier == 0 && playerLevel == 1)
+            if (stats.staminaTier == 0 && playerLevel == 1)
             {
-                staminaTier = 1;
+                stats.staminaTier = 1;
                 playerClass.maxStamina += 2;
                 GameObject.Find("Tier1ST").GetComponentInChildren<Button>().interactable = false;
                 
@@ -269,9 +288,9 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 1)
         {
             playerLevel = 2;
-            if (staminaTier == 1 && playerLevel == 2)
+            if (stats.staminaTier == 1 && playerLevel == 2)
             {
-                staminaTier = 2;
+                stats.staminaTier = 2;
                 playerClass.maxStamina += 3;
                 GameObject.Find("Tier2ST").GetComponentInChildren<Button>().interactable = false;
 
@@ -280,9 +299,9 @@ public class PlayerInfo :MonoBehaviour {
         else if (requested_tier == 2)
         {
             playerLevel++;
-            if (staminaTier == 2 && playerLevel == 3)
+            if (stats.staminaTier == 2 && playerLevel == 3)
             {
-                staminaTier = 3;
+                stats.staminaTier = 3;
                 playerClass.maxStamina += 4;
                 GameObject.Find("Tier3ST").GetComponentInChildren<Button>().interactable = false;
             }
@@ -299,5 +318,10 @@ public class PlayerInfo :MonoBehaviour {
 
     }
 
+    public void Update()
+    {
 
+       // Debug.Log("Health tier " + stats.healthTier);
+
+    }
 }

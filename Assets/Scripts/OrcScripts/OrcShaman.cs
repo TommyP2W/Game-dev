@@ -12,6 +12,7 @@ public class OrcShaman : MonoBehaviour, Characters
     public bool attackAction { get; set; }
     public bool healAction { get; set; }
     public int armour_class { get; set; } = 4;
+    public GameObject requestedEnemy { get; set; } = null;
 
     public void actionSelector()
     {

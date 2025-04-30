@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField]
     public Camera SceneCamera;
     
     private Vector3 lastPosition;
     [SerializeField]
     private LayerMask ground;
 
+    public void Start()
+    {
+        SceneCamera = GameObject.Find("CameraPivot").GetComponent<Camera>();
+    }
     public Vector3 GetSelectedMapPostion()
     {
+        SceneCamera = GameObject.Find("CameraPivot").GetComponent<Camera>();
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = SceneCamera.nearClipPlane;
         Ray ray = SceneCamera.ScreenPointToRay(mousePos);

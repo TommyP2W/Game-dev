@@ -9,7 +9,7 @@ public class Smoothcamera : MonoBehaviour
 
     private Vector3 offset;
     private float speed = 3.5f;
-    [SerializeField] public Camera cam;
+    [SerializeField] public static Camera cam;
     [SerializeField] public static Transform Target;
     [SerializeField] private float smoothTime;
     private Vector3 _currentVelocity = Vector3.zero;
@@ -19,7 +19,10 @@ public class Smoothcamera : MonoBehaviour
         Target = GameObject.FindGameObjectWithTag("Player").transform;
         offset = transform.position - Target.position;
     }
-
+    private void Start()
+    {
+        cam = GetComponent<Camera>(); 
+    }
     private void LateUpdate()
     {
         Vector3 targetPosition = Target.position + offset;

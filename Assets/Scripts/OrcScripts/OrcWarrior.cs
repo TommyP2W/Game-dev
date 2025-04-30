@@ -8,20 +8,30 @@ public class OrcWarrior : MonoBehaviour, Characters
     public int maxHealth { get; set; } = 25;
     public bool chasing { get; set; } = false;
     public bool isWalking { get; set; } = false;
+    public GameObject requestedEnemy { get; set; } = null;
 
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 8;
     public RegOrcAnimationController controller;
-
     // Attack function for enemy orc warrior
     public void attack()
     {
-        gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 12);
-        controller.anim.SetBool("isAttacking", true);
-        Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
+        if (requestedEnemy == null)
+        {
+            gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 12);
+            controller.anim.SetBool("isAttacking", true);
+            Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
 
-        attackAction = false;
+            attackAction = false;
+        } else
+        {
+            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
+            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 12);
+            controller.anim.SetBool("isAttacking", true);
+            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
+            requestedEnemy = null;
+        }
     }
 
     // Death function, if dead, deactivate

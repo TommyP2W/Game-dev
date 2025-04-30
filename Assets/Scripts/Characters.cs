@@ -11,6 +11,7 @@ public interface Characters
     bool attackAction { get; set; }
 
     int armour_class { get; set; }
+    GameObject requestedEnemy {  get; set; }
     // Start is called before the first frame update
 
     void attack();

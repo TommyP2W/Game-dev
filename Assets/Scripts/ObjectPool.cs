@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Timeline;
 
 
@@ -11,8 +12,11 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool SharedInstance;
     public List<GameObject> pooledObjects;
     public List<GameObject> gravePooledObjects;
+    public List<GameObject> ghosts;
+    public GameObject ghostsToPool;
     public GameObject objectToPool;
     public GameObject graveToPool;
+    public int ghostsAmountToPool;
     public int amountToPool;
     public int graveAmountToPool;
     // Start is called before the first frame update
@@ -28,6 +32,12 @@ public class ObjectPool : MonoBehaviour
             pooledObjects.Add(tmp);
         }
 
+        for (int i = 0; i < ghostsAmountToPool; i++)
+        {
+            tmp = Instantiate(ghostsToPool);
+            tmp.SetActive(false);
+            ghosts.Add(tmp);
+        }
 
         for (int i = 0; i < graveAmountToPool; i++)
         {
@@ -57,6 +67,15 @@ public class ObjectPool : MonoBehaviour
                 }
             }
             return null;
+        } else if (type.Equals("ghosts"))
+        {
+            for (int i = 0; i < ghostsAmountToPool; i++)
+            {
+                if (!ghosts[i].activeInHierarchy)
+                {
+                    return ghosts[i];
+                }
+            }
         }
         return null;
     }

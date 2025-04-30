@@ -8,7 +8,7 @@ using UnityEngine;
 public class AttackManager : MonoBehaviour
 {
     // Start is called before the first frame update
-   public static GameObject Text;
+    public static GameObject Text;
     static public AttackManager instance;
 
     void Start()

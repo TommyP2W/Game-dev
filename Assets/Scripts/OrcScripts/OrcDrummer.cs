@@ -12,13 +12,25 @@ public class OrcDrummer : MonoBehaviour, Characters
     public bool playDrumAction = false;
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 9;
+    public GameObject requestedEnemy { get; set; } = null;
     public Drummer_animation_controller controller;
 
     public void attack()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 18);
-        Debug.Log("Player Health "  + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
-        controller.anim.SetBool("isAttacking", true);
+        if (requestedEnemy == null)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 18);
+            Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
+            controller.anim.SetBool("isAttacking", true);
+
+        } else
+        {
+            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
+            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 18);
+            controller.anim.SetBool("isAttacking", true);
+            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
+            requestedEnemy = null;
+        }
     }
 
     private void playDrum()

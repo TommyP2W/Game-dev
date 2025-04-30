@@ -8,6 +8,7 @@ public class SkeletonClass : MonoBehaviour, Characters
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 3;
+    public GameObject requestedEnemy { get; set; } = null;
     public void actionSelector()
     {
         if (attackAction)
