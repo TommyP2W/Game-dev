@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 8532715069012391698}
   - component: {fileID: 4670563316446862709}
   m_Layer: 0
-  m_Name: SK_Orc_Warrior_Cleaver
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

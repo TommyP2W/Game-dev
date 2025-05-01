@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.TextCore.Text;
 
 public class PlayerClass : MonoBehaviour
@@ -31,9 +32,12 @@ public class PlayerClass : MonoBehaviour
     public PlayerAnimationController playerAnimController;
     public GameObject RequestedEnemy;
     public GameObject possessedEnemy;
-    
-    
-    
+
+    public Volume vim;
+    public Vignette hurt;
+
+
+
     public void attack(string requested_attack)
     {
         if (RequestedEnemy != null && currentStamina != 0)
@@ -56,6 +60,10 @@ public class PlayerClass : MonoBehaviour
                             RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
                             Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
                             AttackManager.showAttackInfo(RequestedEnemy, damage);
+                            //                            Material mat = RequestedEnemy.GetComponent<Renderer>().material;
+                            Debug.Log("EmissionBeforeSet");
+
+                            StartCoroutine(Flash.flash(RequestedEnemy));
                         }
                         //currentStamina -= 2;
                         break;
@@ -89,6 +97,11 @@ public class PlayerClass : MonoBehaviour
         }
     }
 
+    //public void healthVisual()
+    //{
+        
+    //}
+
     public void death()
     {
         
@@ -106,7 +119,7 @@ public class PlayerClass : MonoBehaviour
     void Update()
     {
 
-      //  Debug.Log(RequestedEnemy.name);
+        //  Debug.Log(RequestedEnemy.name);
         //if (shake > 0)
         //{
         //    cam.transform.localPosition = UnityEngine.Random.insideUnitSphere * shakeAmount;
@@ -115,14 +128,23 @@ public class PlayerClass : MonoBehaviour
         //{
         //    shake = 0.0f;
         //}
+
+        if (currentHealth < maxHealth)
+        {
+            if (vim.profile.TryGet<Vignette>(out hurt))
+            {
+                hurt.intensity.Override((float)currentHealth / 100);
+            }
+        }
     }
     public void Start()
     {
         currentStamina = maxStamina;
-        currentHealth = maxHealth;
+        currentHealth = 50;
         damage_upper = 8;
         armor_class = 7;
         cam = GameObject.FindGameObjectWithTag("CameraPivot");
+        vim = GameObject.Find("pp").GetComponent<Volume>();
 
     }
 

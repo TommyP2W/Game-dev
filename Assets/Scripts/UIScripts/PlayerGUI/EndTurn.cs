@@ -389,6 +389,7 @@ public class EndTurn : MonoBehaviour
         }
         GridManager.checkingUpdates = true;
         Sanity.checkingSanity = true;
+        BearTrap.checkingTraps = true;
         yield return null;
     }
     IEnumerator EnemyActions(GameObject[] enemies)

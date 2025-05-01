@@ -11,6 +11,7 @@ public class Sanity : MonoBehaviour
     public int risk = 0;
     public static bool checkingSanity = false;
     public Volume vim;
+    public FilmGrain grain;
 
     private void Start()
     {
@@ -23,22 +24,28 @@ public class Sanity : MonoBehaviour
         if (sanity >= 75 && sanity < 100)
         {
             risk = 1;
-            vim.GetComponent<FilmGrain>().active = true;
-            vim.GetComponent<FilmGrain>().intensity.value = 0.25f;
+            if (vim.profile.TryGet<FilmGrain>(out grain))
+            {
+                grain.intensity.Override(0.25f);               
+            }
+          
             
         } else if (sanity >= 50 && sanity < 75)
         {
             risk = 2;
-            vim.GetComponent<FilmGrain>().active = true;
-            vim.GetComponent<FilmGrain>().intensity.value = 0.5f;
+            if (vim.profile.TryGet<FilmGrain>(out grain))
+            {
+                grain.intensity.Override(0.50f);
+            }
 
         }
         else if (sanity < 50 )
         {
             risk = 3;
-            vim.GetComponent<FilmGrain>().active = true;
-            vim.GetComponent<FilmGrain>().intensity.value = 0.75f;
-
+            if (vim.profile.TryGet<FilmGrain>(out grain))
+            {
+                grain.intensity.Override(0.75f);
+            }
 
         }
         sanity_consequence();

@@ -23,6 +23,10 @@ public class SkeletonClass : MonoBehaviour, Characters
 
     public void death()
     {
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+        gameObject.SetActive(false);
+
     }
 
     // Start is called before the first frame update
@@ -34,6 +38,9 @@ public class SkeletonClass : MonoBehaviour, Characters
     // Update is called once per frame
     void Update()
     {
-
+        if (currentHealth <= 0)
+        {
+            death();
+        } 
     }
 }

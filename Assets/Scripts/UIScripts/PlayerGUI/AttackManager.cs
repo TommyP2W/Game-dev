@@ -15,7 +15,11 @@ public class AttackManager : MonoBehaviour
     {
         Text = GameObject.Find("DamageText");
         Debug.Log("text" + Text);
-        Text.SetActive(false);
+        if (Text != null)
+        {
+            Text.SetActive(false);
+            Debug.Log("Hello");
+        }
         instance = this;
     }
 

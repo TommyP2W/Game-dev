@@ -91,8 +91,24 @@ public class PlayerInfo :MonoBehaviour {
         DamageTierInfo.text = "Damage Tier : " + stats.damageTier;
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         MaxStaminaInfo.text = "Max Stamina : " + playerClass.maxStamina;
-        //sanityBar.GetComponent<Slider>().value = playerClass.sanity / 100;
-        //experienceBar.GetComponent<Slider>().value = playerClass.experience / 100;
+        sanityBar.GetComponent<Slider>().value = (float)playerClass.sanity / 100;
+        experienceBar.GetComponent<Slider>().value = (float)playerClass.experience / 100;
+
+        if (sanityBar.GetComponent<Slider>().value >= 0.50f && sanityBar.GetComponent<Slider>().value < 0.75f)
+        {
+            GameObject.Find("SanityFill").GetComponent<Image>().color = Color.yellow;
+        }
+        if (sanityBar.GetComponent<Slider>().value >= 0.25f && sanityBar.GetComponent<Slider>().value < 0.50f)
+        {
+            GameObject.Find("SanityFill").GetComponent<Image>().color = Color.magenta;
+        }
+        if (sanityBar.GetComponent<Slider>().value < 0.25f)
+        {
+            GameObject.Find("SanityFill").GetComponent<Image>().color = Color.red;
+        }
+
+
+
         return;
     }
 
