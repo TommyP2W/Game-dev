@@ -48,7 +48,10 @@ public class Sanity : MonoBehaviour
             }
 
         }
-        sanity_consequence();
+        if (risk > 0)
+        {
+            sanity_consequence();
+        }
         checkingSanity = false;
     }
     public void sanity_consequence()
@@ -86,7 +89,8 @@ public class Sanity : MonoBehaviour
     {
        if (checkingSanity)
         {
-            checkSanity(transform.GetComponent<PlayerClass>().sanity);
+            checkSanity(transform.GetComponent<PlayerClass>().current_sanity);
+            Debug.Log(transform.GetComponent<PlayerClass>().current_sanity);
         }
     }
 }

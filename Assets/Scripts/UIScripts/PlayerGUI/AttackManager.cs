@@ -10,9 +10,12 @@ public class AttackManager : MonoBehaviour
     // Start is called before the first frame update
     public static GameObject Text;
     static public AttackManager instance;
+    public static GameObject trapSlider;
 
     void Start()
     {
+        trapSlider = GameObject.Find("TrapSlider");
+        trapSlider.SetActive(false);
         Text = GameObject.Find("DamageText");
         Debug.Log("text" + Text);
         if (Text != null)

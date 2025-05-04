@@ -47,7 +47,7 @@ public class Placement : MonoBehaviour
             GridCell MouseCell = GridManager.gridLayout[gridPosition];
             Debug.Log(MouseCell.position);
 
-            if (MouseCell.occupied)
+            if (MouseCell.occupied && !PlayerClass.movementBlocked)
             {
                 if (MouseCell.occupiedBy != null)
                 {
@@ -63,7 +63,7 @@ public class Placement : MonoBehaviour
             {
                 GameObject.Find("Attack").GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
             }
-            if (!MouseCell.occupied)
+            if (!MouseCell.occupied && !PlayerClass.movementBlocked)
             {
                 if (!Possession.isPossessed)
                 {
@@ -85,6 +85,7 @@ public class Placement : MonoBehaviour
                     findPath.findPath(GridManager.gridLayout[GridManager.grid.WorldToCell(playerobj.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Transform>().position)], MouseCell);
                     if (findPath.FinalPath != null)
                     {
+                        Possession.possessionPath = new System.Collections.Generic.Dictionary<GameObject, System.Collections.Generic.List<GridCell>>();
                         Possession.possessionPath.Add(playerobj.GetComponent<PlayerClass>().possessedEnemy, findPath.FinalPath);
                     }
                 }

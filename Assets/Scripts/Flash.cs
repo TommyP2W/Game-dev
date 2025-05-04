@@ -22,7 +22,7 @@ public class Flash : MonoBehaviour
         Color original = RequestedEnemy.transform.Find("body").GetComponentInChildren<Renderer>().material.GetColor("_EmissionColor");
         RequestedEnemy.transform.Find("body").GetComponentInChildren<Renderer>().material.SetColor("_EmissionColor", Color.red * 500f);
         
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         RequestedEnemy.transform.Find("body").GetComponentInChildren<Renderer>().material.SetColor("_EmissionColor", original);
 

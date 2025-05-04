@@ -9,6 +9,7 @@ public class GridCell
     public int hCost = 0;
     public bool walkable = true;
     public bool occupied = false;
+    public bool armed = false;
     public GameObject occupiedBy;
     public GridCell parent;
     public int HeapIndex { get; set; }

@@ -49,7 +49,7 @@ public class Possession : MonoBehaviour
     public void attackPossessed()
     {
         GameObject enemy = playerClass.GetComponent<PlayerClass>().RequestedEnemy;
-
+        playerClass.GetComponent<PlayerClass>().current_sanity -= 5;
         foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(playerClass.GetComponent<PlayerClass>().possessedEnemy.transform.position)]))
         {
             if (cell.occupiedBy == enemy)
@@ -170,7 +170,7 @@ public class Possession : MonoBehaviour
             i++;
             Debug.Log(i);
         }
-        possessionPath = new Dictionary<GameObject, List<GridCell>>();
+        possessionPath.Remove(playerClass.GetComponent<PlayerClass>().possessedEnemy);
         Smoothcamera.Target = playerClass.GetComponent<PlayerClass>().RequestedEnemy.transform;
         // Coroutine has finished so set the turn ending to false
      

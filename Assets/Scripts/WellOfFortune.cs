@@ -10,7 +10,7 @@ public class WellOfFortune : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InfoText = GameObject.Find("LeverText");
+        InfoText = GameObject.Find("BuildingText");
         player = GameObject.FindGameObjectWithTag("Player"); 
     }
 
@@ -18,7 +18,7 @@ public class WellOfFortune : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            InfoText.GetComponent<TextMeshPro>().text = "Trade stamina for a chance at fortune!";
+            InfoText.GetComponent<TextMeshProUGUI>().text = "Trade stamina for a chance at fortune!";
         }
 
     }
@@ -28,7 +28,8 @@ public class WellOfFortune : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                //if (Player)
+                other.gameObject.GetComponent<PlayerClass>().currentStamina -= 4;
+                gameObject.SetActive(false);
             }
         }
     }

@@ -15,10 +15,13 @@ public class PlayerClass : MonoBehaviour
     public int currentStamina { get; set; }
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
+
+    public static bool movementBlocked { get; set; } = false;
     // Initialise this and put as upper part of range tomorrow for both damage types;
     public int damage_upper = 8;
     
-    public int sanity = 10;
+    public int max_sanity = 100;
+    public int current_sanity;
     public int experience = 0;
     public int risk = 0;
 
@@ -59,6 +62,7 @@ public class PlayerClass : MonoBehaviour
                             int damage = UnityEngine.Random.Range(1, damage_upper);
                             RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
                             Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
+                            UIanager.showText(RequestedEnemy);
                             AttackManager.showAttackInfo(RequestedEnemy, damage);
                             //                            Material mat = RequestedEnemy.GetComponent<Renderer>().material;
                             Debug.Log("EmissionBeforeSet");
@@ -133,16 +137,17 @@ public class PlayerClass : MonoBehaviour
         {
             if (vim.profile.TryGet<Vignette>(out hurt))
             {
-                hurt.intensity.Override((float)currentHealth / 100);
+                hurt.intensity.Override(-((float)currentHealth / 100));
             }
         }
     }
     public void Start()
     {
         currentStamina = maxStamina;
-        currentHealth = 50;
+        currentHealth = maxHealth;
         damage_upper = 8;
         armor_class = 7;
+        current_sanity = max_sanity;
         cam = GameObject.FindGameObjectWithTag("CameraPivot");
         vim = GameObject.Find("pp").GetComponent<Volume>();
 

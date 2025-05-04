@@ -101,7 +101,7 @@ public class FOWPlane : MonoBehaviour
                     hiddenEnemies.Remove(hiddenEnemies[i]);
                 }
             }
-            if (hiddenEnemies.Count == 0)
+            if (hiddenEnemies.Count == 0 || hiddenEnemies == null)
             {
                 Debug.Log("no enemies left");
                 unblock();

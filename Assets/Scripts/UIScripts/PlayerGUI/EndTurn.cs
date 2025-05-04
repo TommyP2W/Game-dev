@@ -153,7 +153,7 @@ public class EndTurn : MonoBehaviour
         }
         findingPath = true;
         turnEnd = true;
-
+        Debug.Log(turnEnd);
         Debug.Log(requestedMovements.Count);
         StartCoroutine(MovePlayer(requestedMovements, false));
     }
@@ -263,6 +263,7 @@ public class EndTurn : MonoBehaviour
         // If the player wants to skip their turn without moving
         if  (playerReqMovement.Count == 0)
         {
+            Debug.Log("NOMVOEMENTS");
             SetEnemyDestination(enemiesArr);
         }
     }
@@ -273,6 +274,12 @@ public class EndTurn : MonoBehaviour
         CoroutinesActive++;
         int i = 0;
         // While there is a path
+        if (path.Count == 0)
+        {
+            yield return new WaitForSeconds(1f);
+            turnEnd = false;
+        }
+
         foreach (GameObject person in path.Keys)
         {
             Smoothcamera.Target = person.transform;
@@ -283,6 +290,12 @@ public class EndTurn : MonoBehaviour
 
             if (person.tag == "Player")
             {
+                yield return null;
+                if (PlayerClass.movementBlocked)
+                {
+                    Debug.Log("skid");
+                    continue;
+                }
                 person.GetComponent<PlayerClass>().isWalking = true;
             } else
             {
