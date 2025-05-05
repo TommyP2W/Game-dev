@@ -62,16 +62,20 @@ public class PlayerClass : MonoBehaviour
                             int damage = UnityEngine.Random.Range(1, damage_upper);
                             RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
                             Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
-                            UIanager.showText(RequestedEnemy);
+                            textController.showText(gameObject,RequestedEnemy, "Attack", damage: damage);
                             AttackManager.showAttackInfo(RequestedEnemy, damage);
                             //                            Material mat = RequestedEnemy.GetComponent<Renderer>().material;
                             Debug.Log("EmissionBeforeSet");
 
                             StartCoroutine(Flash.flash(RequestedEnemy));
                         }
+                        else
+                        {
+                            textController.showText(gameObject, RequestedEnemy, "Attack");
+                        }
                         //currentStamina -= 2;
                         break;
-                    }
+                    } 
                 }
             }
             else if (requested_attack.Equals("Lightning") && currentStamina >= 7)

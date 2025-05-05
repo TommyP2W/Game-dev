@@ -6,7 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class Skeleton_controller : MonoBehaviour
 {
-    private Animator anim;
+    public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
@@ -26,7 +26,14 @@ public class Skeleton_controller : MonoBehaviour
             anim.SetBool("isAttacking", false);
         }
     }
+    public void OnTriggerEnter(Collider other)
 
+    {
+        if (!EndTurn.turnEnd)
+        {
+            gameObject.GetComponent<Characters>().chasing = true;
+        }
+    }
 
 
     // Update is called once per frame
@@ -34,21 +41,19 @@ public class Skeleton_controller : MonoBehaviour
     {
         if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+            foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
             {
+                if (cell.occupiedBy == player)
+                {
 
-                anim.SetBool("isAttacking", true);
-                //if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value < 0.485f)
-                //{
-                //    vin.intensity.value = Mathf.Clamp(vin.intensity.value + (fadeSpeed * Time.deltaTime), 0.0f, 0.485f);
-                //}
-
+                    gameObject.GetComponent<Characters>().attackAction = true;
+                }
             }
-            else
-            {
-                anim.SetBool("isAttacking", false);
-               
-            }
+        }
+        else
+        {
+            anim.SetBool("isAttacking", false);
+           
         }
     }
 
@@ -63,5 +68,9 @@ public class Skeleton_controller : MonoBehaviour
         {
             anim.SetBool("isWalking", false);
         }
+    }
+    public void EndAttack()
+    {
+        anim.SetBool("isAttacking", false);
     }
 }

@@ -77,7 +77,7 @@ public class OrcShaman : MonoBehaviour, Characters
             }
             Debug.Log("Healed");
         }
-
+        textController.showText(gameObject, lowestHealthObject, "Heal");
         healAction = false;
     }
     public void death()

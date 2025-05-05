@@ -55,6 +55,10 @@ public class EndTurn : MonoBehaviour
         {
             if (enemy.gameObject.activeInHierarchy)
             {
+                if (enemy.gameObject.GetComponent<Characters>().attackAction)
+                {
+                    continue;
+                }
                 GridCell enemycell = GridManager.gridLayout[GridManager.grid.WorldToCell(enemy.transform.position)];
                 GridCell EnemyDestination;
                 Debug.Log("enemy cell : " + enemycell.position);
@@ -282,6 +286,7 @@ public class EndTurn : MonoBehaviour
 
         foreach (GameObject person in path.Keys)
         {
+            
             Smoothcamera.Target = person.transform;
             path[person][0].occupied = false;
             path[person][0].occupiedBy = null;
@@ -297,9 +302,12 @@ public class EndTurn : MonoBehaviour
                     continue;
                 }
                 person.GetComponent<PlayerClass>().isWalking = true;
-            } else
+            }
+            else
             {
+                              
                 person.GetComponent<Characters>().isWalking = true;
+
             }
             while (path[person].Count > 0)
 

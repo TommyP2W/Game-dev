@@ -105,6 +105,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!65 &8425424119419236724
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -124,8 +127,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.1153564, y: 2.2751076, z: 10.968979}
-  m_Center: {x: -0.100746155, y: 0.63755393, z: 4.9844894}
+  m_Size: {x: 28.503876, y: 2.2751076, z: 38.76635}
+  m_Center: {x: -0.114715576, y: 0.63755393, z: 18.883175}
 --- !u!114 &1216742861675496250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92c7ab817964c7f4ab60c392acaa6b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
 --- !u!54 &8443578612263080968
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2249,7 +2253,7 @@ GameObject:
   - component: {fileID: 8210109534857078483}
   - component: {fileID: 7006294889256897962}
   m_Layer: 8
-  m_Name: SK_Orc_Archer
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

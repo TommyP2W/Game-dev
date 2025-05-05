@@ -33,7 +33,6 @@ public class PlayerInfo :MonoBehaviour {
     public void Start()
     {
         stats = GameObject.Find("StatManager").GetComponent<StatManager>();
-        DontDestroyOnLoad(gameObject);
         PlayerInfoWindow = GameObject.Find("PlayerInfo");
         Debug.Log("name " + PlayerInfoWindow.name);
         PlayerInfoWindow.SetActive(false);

@@ -6,37 +6,55 @@ using UnityEngine;
 public class UIanager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] Transform maincam;
+    Transform maincam;
     Transform unit;
     Transform worldSpace;
     public static UIanager ts;
     public bool showing = false;
     public TextMeshProUGUI textMeshProUGUIelement;
     public Vector3 Offset = new Vector3(0, 2, 0);
-    public void Start()
+    public void Awake()
     {
-        ts = this;
         textMeshProUGUIelement = GetComponent<TextMeshProUGUI>();
-       // maincam = Camera.main.transform;
+        maincam = GameObject.FindGameObjectWithTag("CameraPivot").transform;
         unit = GameObject.FindGameObjectWithTag("Player").transform;
         worldSpace = GameObject.Find("InfoCanvas").transform;
-
         transform.SetParent(worldSpace);
-        textMeshProUGUIelement.enabled = false;
-
     }
 
-    public static void showText(GameObject entity)
+  
+    public void show(GameObject origin,GameObject entity, string option, int amount = 0)
     {
-        ts.show();
-    }
-    public void show()
-    {
-        textMeshProUGUIelement.enabled = true;
-
-
+        gameObject.GetComponent<TextMeshProUGUI>().enabled = true;
+        gameObject.GetComponent<TextMeshProUGUI>().alpha = 1;
         transform.rotation = Quaternion.LookRotation(transform.position - maincam.position);
-        transform.position = unit.position + Offset;
+        transform.position = entity.transform.position + Offset;
+        if (option.Equals("Attack")) {
+            if (amount == 0)
+            {
+                gameObject.GetComponent<TextMeshProUGUI>().text = "Missed!";
+            } else
+            {
+                if (origin.GetComponent<OrcArcher>() != null)
+                {
+                    gameObject.GetComponent<TextMeshProUGUI>().text = "Struck with piercing arrow of " + amount + " damage!";
+                } else
+                {
+                    gameObject.GetComponent<TextMeshProUGUI>().text = "Struck with piercing strike of " + amount + " damage!";
+
+                }
+            }
+        } else if (option.Equals("Heal"))
+        {
+             gameObject.GetComponent<TextMeshProUGUI>().text = "A devilish prescence heals " + entity.name + " for " + amount + " HP !" ;
+        } else if (option.Equals("Summon")){
+            gameObject.GetComponent<TextMeshProUGUI>().text = "Darkness summons upon thee!";
+        } else if (option.Equals("Drumming"))
+        {
+            gameObject.GetComponent<TextMeshProUGUI>().text = "A thunderous roar fills the space among us.";
+
+        }
+
         showing = true;
     }
 
@@ -46,15 +64,14 @@ public class UIanager : MonoBehaviour
     {
         if (showing)
         {
-            if (textMeshProUGUIelement.enabled)
+            if (gameObject.GetComponent<TextMeshProUGUI>().enabled)
             {
                 transform.Translate(Vector3.up * 2f * Time.deltaTime);
                 gameObject.GetComponent<TextMeshProUGUI>().alpha -= Time.deltaTime / 2;
 
                 if (gameObject.GetComponent<TextMeshProUGUI>().alpha <= 0)
                 {
-                    textMeshProUGUIelement.enabled = false;
-                    showing = false;
+                    Destroy(gameObject);
                 }
             }
         }

@@ -11,6 +11,7 @@ public class RegOrcAnimationController : MonoBehaviour
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;
+    public LayerMask playerLayer;
     float fadeSpeed = 0.1f;
     void Start()
     {
@@ -23,17 +24,28 @@ public class RegOrcAnimationController : MonoBehaviour
     public void OnTriggerExit(Collider other)
         
     {
-        if (!EndTurn.turnEnd)
-        {
-            anim.SetBool("isAttacking", false);
-        }
+        
+            if (other.tag == "Player")
+            {
+                Debug.Log("sdadajsdasdasdsad");
+                gameObject.GetComponent<Characters>().attackAction = false;
+                gameObject.GetComponent<Characters>().chasing = false;
+
+                anim.SetBool("isAttacking", false);
+
+            }
+        
     }
     public void OnTriggerEnter(Collider other)
 
     {
         if (!EndTurn.turnEnd)
         {
-            gameObject.GetComponent<Characters>().chasing = true;
+            if (other.tag == "Player")
+            {
+
+                gameObject.GetComponent<Characters>().chasing = true;
+            }
         }
     }
 
@@ -41,16 +53,19 @@ public class RegOrcAnimationController : MonoBehaviour
 
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
-        {
+    {
         if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
         {
-            foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
+            if (other.tag == "Player") { 
+
+                foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
             {
                 if (cell.occupiedBy == player)
                 {
 
                     gameObject.GetComponent<Characters>().attackAction = true;
                 }
+            
             }
             if (gameObject.GetComponent<Characters>().attackAction == false)
             {
@@ -59,9 +74,34 @@ public class RegOrcAnimationController : MonoBehaviour
                     gameObject.GetComponent<OrcShaman>().healAction = true;
                 }
             }
+                if (gameObject.GetComponent<OrcArcher>() != null)
+                {
+                    if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 5f)
+                    {
+                        // Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+
+                        if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                        {
+
+                            if (hit.collider.gameObject.layer == 14)
+                            {
+                                Debug.Log("Hit" + hit.collider.name + hit.collider.gameObject.layer);
+                                Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                                gameObject.GetComponent<OrcArcher>().attackAction = true;
+                            }
+                            else
+                            {
+                                Debug.Log("HitSOmethingelse");
+                            }
+                        }
+
+                    }
+                }
+            }
         }
         else
         {
+
             anim.SetBool("isAttacking", false);
             //if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
             //{

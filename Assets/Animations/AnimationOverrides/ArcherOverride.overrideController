@@ -8,4 +8,10 @@ AnimatorOverrideController:
   m_PrefabAsset: {fileID: 0}
   m_Name: ArcherOverride
   m_Controller: {fileID: 9100000, guid: 8018c8f050afa404eae22045b2e614ab, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 2913524843883905267, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
+    m_OverrideClip: {fileID: 2913524843883905267, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
+  - m_OriginalClip: {fileID: -4187071074428146043, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
+    m_OverrideClip: {fileID: -4187071074428146043, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
+  - m_OriginalClip: {fileID: 151451739853291138, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
+    m_OverrideClip: {fileID: 151451739853291138, guid: a0f73654cc92451479fb1864474cb67a, type: 3}
