@@ -37,6 +37,7 @@ public class OrcDrummer : MonoBehaviour, Characters
     {
         controller.anim.SetBool("Drum_Playing", true);
         GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("Enemy");
+        textController.showText(gameObject, gameObject, "Drumming");
         if (gameobjects == null)
         {
             // Debug.Log("null");
@@ -59,6 +60,9 @@ public class OrcDrummer : MonoBehaviour, Characters
     }
     public void death()
     {
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+        gameObject.SetActive(false);
     }
 
     public void actionSelector()

@@ -1237,6 +1237,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &2926894924941974077
 Animator:
   serializedVersion: 5
@@ -1345,7 +1348,7 @@ GameObject:
   - component: {fileID: 3370520388186108753}
   - component: {fileID: 155218821139874436}
   m_Layer: 0
-  m_Name: SK_Orc_Shaman
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

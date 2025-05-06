@@ -908,6 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2883ccd836f507743b5704dfb534594d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!114 &5045442119996747044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1667,7 +1668,7 @@ GameObject:
   - component: {fileID: 1961567929028463761}
   - component: {fileID: 6102897029016252375}
   m_Layer: 0
-  m_Name: skeleton-soldier
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

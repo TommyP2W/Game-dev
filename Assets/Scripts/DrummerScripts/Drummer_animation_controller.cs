@@ -26,6 +26,7 @@ public class Drummer_animation_controller : MonoBehaviour
         if (!EndTurn.turnEnd && other.gameObject.tag == "Player")
         {
             anim.SetBool("Drum_playing", true);
+            gameObject.GetComponent<OrcDrummer>().playDrumAction = true;
             anim.SetBool("isAttacking", false);
         }
     }
@@ -34,7 +35,10 @@ public class Drummer_animation_controller : MonoBehaviour
       
             anim.SetBool("Drum_playing", false);
             anim.SetBool("isAttacking", false);
-        
+            gameObject.GetComponent<OrcDrummer>().playDrumAction = false;
+            gameObject.GetComponent<Characters>().attackAction = false;
+
+
     }
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
@@ -45,11 +49,16 @@ public class Drummer_animation_controller : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, player.transform.position) < 2f)
                 {
+                    gameObject.GetComponent<OrcDrummer>().playDrumAction = false;
                     gameObject.GetComponent<Characters>().attackAction = true;
                 }
                 else
                 {
+                    gameObject.GetComponent<Characters>().attackAction = false;
+
                     gameObject.GetComponent<OrcDrummer>().playDrumAction = true;
+                    anim.SetBool("Drum_playing", true);
+
                 }
             }
         }

@@ -19,6 +19,7 @@ public class SkeletonClass : MonoBehaviour, Characters
 
     public void attack()
     {
+        attackAction = false;
     }
 
     public void death()

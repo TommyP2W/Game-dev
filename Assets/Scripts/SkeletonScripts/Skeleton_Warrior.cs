@@ -21,6 +21,7 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
 
     public void attack()
     {
+        attackAction = false;
     }
 
     public void death()

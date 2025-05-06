@@ -9,6 +9,7 @@ public class FOWPlane : MonoBehaviour
     public List<GameObject> hiddenEnemies;
     public List<GameObject> gateBlockers;
     public List<GameObject> hiddenBuildings;
+    [SerializeField] public bool drains_sanity = false;
     // Start is called before the first frame update
 
     public void Start()

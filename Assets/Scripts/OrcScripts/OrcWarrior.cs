@@ -38,8 +38,9 @@ public class OrcWarrior : MonoBehaviour, Characters
     public void death()
     {
 
-        gameObject.SetActive(false);
         GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+        gameObject.SetActive(false);
     }
 
     // If trigger enter player, chase

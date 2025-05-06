@@ -82,7 +82,11 @@ public class OrcShaman : MonoBehaviour, Characters
     }
     public void death()
     {
+
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
         gameObject.SetActive(false);
+
     }
 
     // Start is called before the first frame update
@@ -95,6 +99,10 @@ public class OrcShaman : MonoBehaviour, Characters
     void Update()
     {
       
+        if (currentHealth <= 0)
+        {
+            death();
+        }
         if (attackAction == false)
         {
             healAction = true;

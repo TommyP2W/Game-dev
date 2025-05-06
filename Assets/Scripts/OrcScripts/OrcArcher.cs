@@ -51,6 +51,8 @@ public class OrcArcher : MonoBehaviour, Characters
 
     public void death()
     {
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
         gameObject.SetActive(false);
     }
 
@@ -62,21 +64,7 @@ public class OrcArcher : MonoBehaviour, Characters
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    // If collided with player
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        chasing = true;
-    //    }
-    //}
-
-    //public void OnTriggerExit(Collider other)
-    //{
-    //    if (!EndTurn.turnEnd)
-    //    {
-    //        chasing = false;
-    //    }
+    
     //}
     // Start is called before the first frame update
     void Start()

@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 927163274026231642}
   - component: {fileID: 3151272193403311593}
   m_Layer: 8
-  m_Name: SK_Orc_Warrior_Drummer
+  m_Name: body
   m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -103,11 +103,7 @@ public class RegOrcAnimationController : MonoBehaviour
         {
 
             anim.SetBool("isAttacking", false);
-            //if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
-            //{
-            //    //Debug.Log("we have got here");
-            //    vin.intensity.value = Mathf.Clamp(vin.intensity.value - (fadeSpeed * Time.deltaTime), 0.0f, 5f);
-            //}
+  
         }
     }
 

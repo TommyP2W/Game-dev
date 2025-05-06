@@ -77,6 +77,8 @@ public class SkeletonMage : MonoBehaviour, Characters
 
     public void death()
     {
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
         gameObject.SetActive(false);
     }
 
