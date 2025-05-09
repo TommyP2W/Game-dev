@@ -13,6 +13,9 @@ public class OrcDrummer : MonoBehaviour, Characters
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 9;
     public GameObject requestedEnemy { get; set; } = null;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+
     public Drummer_animation_controller controller;
 
     public void attack()
@@ -60,9 +63,7 @@ public class OrcDrummer : MonoBehaviour, Characters
     }
     public void death()
     {
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-        gameObject.SetActive(false);
+        controller.anim.SetBool("Die", true);
     }
 
     public void actionSelector()
@@ -100,11 +101,24 @@ public class OrcDrummer : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller = gameObject.GetComponent<Drummer_animation_controller>();
+        attackType = Attacksvulnerablities.attackTypes.Blunt;
+        vulnerability = Attacksvulnerablities.attackTypes.Sharp;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (currentHealth <= 0 )
+        {
+            death();
+        }
+        if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            gameObject.SetActive(false);
+        }
     }
 }

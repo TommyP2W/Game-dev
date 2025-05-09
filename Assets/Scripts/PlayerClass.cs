@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,9 @@ public class PlayerClass : MonoBehaviour
     public GameObject RequestedEnemy;
     public GameObject possessedEnemy;
 
+
+    public Attacksvulnerablities.attackTypes attackType;
+    public Attacksvulnerablities.attackTypes vulnerabilities;
     public Volume vim;
     public Vignette hurt;
 
@@ -55,17 +59,20 @@ public class PlayerClass : MonoBehaviour
                         
                         gameObject.transform.LookAt(RequestedEnemy.transform.position);
                         playerAnimController.startAttack();
-                        if (UnityEngine.Random.Range(1, 20) > RequestedEnemy.GetComponent<Characters>().armour_class)
+                        int damage = UnityEngine.Random.Range(1, 20);
+                        if (damage > RequestedEnemy.GetComponent<Characters>().armour_class)
                         {
-                            //shake += 2;
                             playerAnimController.startAttack();
-                            int damage = UnityEngine.Random.Range(1, damage_upper);
-                            RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
-                            Debug.Log("Current enemy health : " + RequestedEnemy.GetComponent<Characters>().currentHealth);
+                            if (attackType == RequestedEnemy.GetComponent<Characters>().vulnerability)
+                            {
+                                RequestedEnemy.GetComponent<Characters>().currentHealth -= (int)(damage * 1.5f);
+                            } else
+                            {
+                                RequestedEnemy.GetComponent<Characters>().currentHealth -= damage;
+                            }
+
+
                             textController.showText(gameObject,RequestedEnemy, "Attack", damage: damage);
-                            AttackManager.showAttackInfo(RequestedEnemy, damage);
-                            //                            Material mat = RequestedEnemy.GetComponent<Renderer>().material;
-                            Debug.Log("EmissionBeforeSet");
 
                             StartCoroutine(Flash.flash(RequestedEnemy));
                         }
@@ -127,15 +134,7 @@ public class PlayerClass : MonoBehaviour
     void Update()
     {
 
-        //  Debug.Log(RequestedEnemy.name);
-        //if (shake > 0)
-        //{
-        //    cam.transform.localPosition = UnityEngine.Random.insideUnitSphere * shakeAmount;
-        //    shake -= Time.deltaTime * decreaseFactor;
-        //} else
-        //{
-        //    shake = 0.0f;
-        //}
+     
 
         if (currentHealth < maxHealth)
         {
@@ -152,6 +151,10 @@ public class PlayerClass : MonoBehaviour
         damage_upper = 8;
         armor_class = 7;
         current_sanity = max_sanity;
+
+        attackType = Attacksvulnerablities.attackTypes.Sharp;
+        vulnerabilities = Attacksvulnerablities.attackTypes.Sharp;
+
         cam = GameObject.FindGameObjectWithTag("CameraPivot");
         vim = GameObject.Find("pp").GetComponent<Volume>();
 

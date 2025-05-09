@@ -13,6 +13,10 @@ public class OrcShaman : MonoBehaviour, Characters
     public bool healAction { get; set; }
     public int armour_class { get; set; } = 4;
     public GameObject requestedEnemy { get; set; } = null;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+
+    public RegOrcAnimationController controller;
 
     public void actionSelector()
     {
@@ -82,17 +86,14 @@ public class OrcShaman : MonoBehaviour, Characters
     }
     public void death()
     {
-
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-        gameObject.SetActive(false);
-
+        controller.anim.SetBool("Die", true);
     }
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        controller = gameObject.GetComponent<RegOrcAnimationController>();
     }
 
     // Update is called once per frame
@@ -106,6 +107,12 @@ public class OrcShaman : MonoBehaviour, Characters
         if (attackAction == false)
         {
             healAction = true;
+        }
+        if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            gameObject.SetActive(false);
         }
     }
 }

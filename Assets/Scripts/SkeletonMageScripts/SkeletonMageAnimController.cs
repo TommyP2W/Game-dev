@@ -10,7 +10,7 @@ public class SkeletonMageAnimController : MonoBehaviour
   
 
     // Start is called before the first frame update
-    private Animator anim;
+    public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
     private Vignette vin;

@@ -11,8 +11,13 @@ public class OrcArcher : MonoBehaviour, Characters
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 6;
     public int damage_upper = 12;
+     
 
     public GameObject requestedEnemy { get; set; } = null;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+   
+
     public RegOrcAnimationController controller;
 
 
@@ -27,10 +32,17 @@ public class OrcArcher : MonoBehaviour, Characters
             // If the attack misses or not
             if (damage > player.GetComponent<PlayerClass>().armor_class) { 
 
-                player.GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, damage);
                 controller.anim.SetBool("isAttacking", true);
+                if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
+                {
+                    Debug.Log("Original damage" + damage);
+                    damage = (int)(damage * 1.5f);
+                }
+                player.GetComponent<PlayerClass>().currentHealth -= damage;
+
                 textController.showText(gameObject,player, "Attack", damage: damage);
 
+             
 
                 attackAction = false;   
             } else
@@ -51,9 +63,7 @@ public class OrcArcher : MonoBehaviour, Characters
 
     public void death()
     {
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-        gameObject.SetActive(false);
+        controller.anim.SetBool("Die", true);
     }
 
     public void actionSelector()
@@ -71,6 +81,7 @@ public class OrcArcher : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller = GetComponent<RegOrcAnimationController>();
+        attackType = Attacksvulnerablities.attackTypes.Sharp;
     }
 
     // Update is called once per frame
@@ -80,6 +91,12 @@ public class OrcArcher : MonoBehaviour, Characters
         if (currentHealth <= 0)
         {
             death();
+        }
+        if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            gameObject.SetActive(false);
         }
     }
 }

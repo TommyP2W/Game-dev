@@ -17,12 +17,17 @@ public class SkeletonMage : MonoBehaviour, Characters
 
     public int armour_class { get; set; } = 7;
     public GameObject requestedEnemy { get; set; } = null;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set  ; }
+
+    public SkeletonMageAnimController controller;
 
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        controller= GetComponent<SkeletonMageAnimController>();
     }
 
 
@@ -77,9 +82,7 @@ public class SkeletonMage : MonoBehaviour, Characters
 
     public void death()
     {
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-        gameObject.SetActive(false);
+        controller.anim.SetBool("Die", true);
     }
 
     public void actionSelector()
@@ -87,6 +90,20 @@ public class SkeletonMage : MonoBehaviour, Characters
         if (attackAction)
         {
             attack();
+        }
+    }
+
+    void Update()
+    {
+        if (currentHealth <= 0)
+        {
+            death();
+        }
+        if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            gameObject.SetActive(false);
         }
     }
 }

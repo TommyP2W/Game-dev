@@ -14,6 +14,7 @@ public class dwarfController : MonoBehaviour
     public Animator anim;
     private GameObject player;
     public LayerMask playerLayer;
+    
     void Start()
     {
         anim = GetComponent<Animator>();

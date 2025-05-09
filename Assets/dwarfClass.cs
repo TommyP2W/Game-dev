@@ -15,6 +15,9 @@ public class dwarfClass : MonoBehaviour, Characters
 
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 14;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+
     public dwarfController controller;
 
     // Attack function for enemy orc warrior

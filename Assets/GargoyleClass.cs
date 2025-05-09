@@ -15,11 +15,17 @@ public class GargoyleClass : MonoBehaviour, Characters
 
         public bool attackAction { get; set; }
         public int armour_class { get; set; } = 8;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+
+    public int number_of_attacks = 0;
+    
         public gargoyleController controller;
 
         // Attack function for enemy orc warrior
         public void attack()
         {
+            number_of_attacks++;
             if (requestedEnemy == null)
             {
                 gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
@@ -38,15 +44,19 @@ public class GargoyleClass : MonoBehaviour, Characters
                 Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
                 requestedEnemy = null;
             }
+            number_of_attacks++;
+            if (number_of_attacks == 2)
+            {
+                number_of_attacks = 0;
+                attackAction = false;
+            }
         }
      
         // Death function, if dead, deactivate
         public void death()
         {
+            controller.anim.SetBool("Die", true);
 
-            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-            gameObject.SetActive(false);
         }
 
         // If trigger enter player, chase
@@ -67,16 +77,31 @@ public class GargoyleClass : MonoBehaviour, Characters
             {
                 death();
             }
-        }
+
+            if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+                GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+                gameObject.SetActive(false);
+            }
+            if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("attacking") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+               attack();
+            }
+        }  
 
         public void actionSelector()
         {
             if (attackAction)
             {
+            
                 attack();
+
+            }
+            
             }
            
         }
-    }
+    
 
 

@@ -12,7 +12,12 @@ public class OrcWarrior : MonoBehaviour, Characters
 
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 8;
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
+
     public RegOrcAnimationController controller;
+    public GameObject prefab;
+
     // Attack function for enemy orc warrior
     public void attack()
     {
@@ -38,9 +43,7 @@ public class OrcWarrior : MonoBehaviour, Characters
     public void death()
     {
 
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
-        GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-        gameObject.SetActive(false);
+        controller.anim.SetBool("Die", true);
     }
 
     // If trigger enter player, chase
@@ -68,7 +71,10 @@ public class OrcWarrior : MonoBehaviour, Characters
     {
         controller = gameObject.GetComponent<RegOrcAnimationController>();
         currentHealth = maxHealth;
+        attackType = Attacksvulnerablities.attackTypes.Sharp;
+        vulnerability = Attacksvulnerablities.attackTypes.Sharp;
         chasing = false;
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
     }
 
     // Update is called once per frame
@@ -79,6 +85,14 @@ public class OrcWarrior : MonoBehaviour, Characters
         {
             death();
         }
+        if (controller.anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && controller.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
+            GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            gameObject.SetActive(false);
+        }
+
+
     }
 
     public void actionSelector()

@@ -85,13 +85,8 @@ public class RegOrcAnimationController : MonoBehaviour
 
                             if (hit.collider.gameObject.layer == 14)
                             {
-                                Debug.Log("Hit" + hit.collider.name + hit.collider.gameObject.layer);
                                 Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
                                 gameObject.GetComponent<OrcArcher>().attackAction = true;
-                            }
-                            else
-                            {
-                                Debug.Log("HitSOmethingelse");
                             }
                         }
 
