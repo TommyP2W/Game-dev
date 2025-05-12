@@ -17,6 +17,7 @@ public class OrcDrummer : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public Drummer_animation_controller controller;
+    public GameObject prefab;
 
     public void attack()
     {
@@ -80,22 +81,7 @@ public class OrcDrummer : MonoBehaviour, Characters
         }
     }
    
-    private void OnTriggerEnter(Collider other)
-    {
-        // If collided with player
-        if (other.CompareTag("Player"))
-        {
-            chasing = true;
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (!EndTurn.turnEnd)
-        {
-            chasing = false;
-        }
-    }
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -103,6 +89,8 @@ public class OrcDrummer : MonoBehaviour, Characters
         controller = gameObject.GetComponent<Drummer_animation_controller>();
         attackType = Attacksvulnerablities.attackTypes.Blunt;
         vulnerability = Attacksvulnerablities.attackTypes.Sharp;
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
 
     }
 

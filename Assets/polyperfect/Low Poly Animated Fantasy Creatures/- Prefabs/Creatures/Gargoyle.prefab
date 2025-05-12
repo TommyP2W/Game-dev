@@ -294,7 +294,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef52c5356ee46442ae8a014006cade5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  number_of_attacks: 0
   controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!65 &2170350798067618838
 BoxCollider:
   m_ObjectHideFlags: 0

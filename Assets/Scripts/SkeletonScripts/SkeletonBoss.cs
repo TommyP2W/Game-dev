@@ -19,6 +19,7 @@ public class SkeletonBoss : MonoBehaviour, Characters
     public bool statsBoosted = false;
     public int statRetention = 0;
     public Skeleton_controller controller;
+    public GameObject prefab;
     public void actionSelector()
     {
         if (statRetention > 0)
@@ -96,6 +97,8 @@ public class SkeletonBoss : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller = GetComponent<Skeleton_controller>();
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerInfo :MonoBehaviour {
@@ -20,6 +21,7 @@ public class PlayerInfo :MonoBehaviour {
 
     private PlayerClass playerClass;
     private GameObject skillInformation;
+    private GameObject sanityInformation;
     private GameObject experienceBar;
     private GameObject sanityBar;
     public StatManager stats;
@@ -35,6 +37,34 @@ public class PlayerInfo :MonoBehaviour {
         stats = GameObject.Find("StatManager").GetComponent<StatManager>();
         PlayerInfoWindow = GameObject.Find("PlayerInfo");
         Debug.Log("name " + PlayerInfoWindow.name);
+
+
+        if (stats != null)
+        {
+            Debug.Log(stats.name);
+        } else
+        {
+            Debug.Log("null");
+        }
+        upgradeArmourHelper(StatManager.armourTier);
+        upgradeHealthHelper(StatManager.healthTier);
+        upgradeDamageHelper(StatManager.damageTier);
+        upgradeStaminaHelper(StatManager.staminaTier);
+
+        if (StatManager.damageClass)
+        {
+            upgradeDamage();
+        } 
+        if (StatManager.armourClass)
+        {
+            upgradeTank();
+        }
+        if (StatManager.staminaClass)
+        {
+            upgradeStamina();
+        }
+
+
         PlayerInfoWindow.SetActive(false);
 
     }
@@ -62,6 +92,7 @@ public class PlayerInfo :MonoBehaviour {
         //PlayerInfoWindow = GameObject.Find("PlayerInfo");
         slider = GameObject.Find("PreviewSlider");
         skillInformation = GameObject.Find("SkillInformation");
+        sanityInformation = GameObject.Find("SanityInformation");
 
         // Getting the references for now, can set the references before deactivation
         DamageTierInfo = GameObject.Find("DamageTierInfo").GetComponent<TextMeshProUGUI>();
@@ -72,9 +103,12 @@ public class PlayerInfo :MonoBehaviour {
 
 
         //PlayerInfoWindow.SetActive(false);
-        playerClass = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>();       
+        playerClass = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>();
+ 
     }
 
+
+ 
     // Responsible for opening info panel when button clicked.
     public void openInfo()
     {
@@ -86,12 +120,16 @@ public class PlayerInfo :MonoBehaviour {
 
         PlayerInfoWindow.SetActive(true);
         ACInfo.text = "Armour class : " + playerClass.armor_class;
+        Debug.Log(playerClass.armor_class);
         STInfo.text = "Max Stamina : " + playerClass.maxStamina;
-        DamageTierInfo.text = "Damage Tier : " + stats.damageTier;
+        DamageTierInfo.text = "Damage Tier : " + StatManager.damageTier;
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         MaxStaminaInfo.text = "Max Stamina : " + playerClass.maxStamina;
         sanityBar.GetComponent<Slider>().value = (float)playerClass.current_sanity / 100;
         experienceBar.GetComponent<Slider>().value = (float)playerClass.experience / 100;
+
+        sanityInformation.GetComponentInChildren<TextMeshProUGUI>().text = "Current Sanity Level : " + playerClass.current_sanity + "\n Risk Level : " + Sanity.risk;
+
 
         if (sanityBar.GetComponent<Slider>().value >= 0.50f && sanityBar.GetComponent<Slider>().value < 0.75f)
         {
@@ -113,85 +151,130 @@ public class PlayerInfo :MonoBehaviour {
 
     public void upgradeHealth(int requested_tier)
     {
-        if (requested_tier == 0) {
-            playerLevel = 1;
-            if (stats.healthTier == 0 && playerLevel == 1)
+        if (requested_tier == 1) {
+            StatManager.playerLevel = 1;
+            if (StatManager.healthTier == 0 && StatManager.playerLevel == 1)
             {
-                stats.healthTier = 1;
-                playerClass.maxHealth += 5;
-                GameObject.Find("Tier1HP").GetComponentInChildren<Button>().interactable = false;
-;
-            }
-        } else if (requested_tier == 1) {
-            playerLevel = 2;
-            if (stats.healthTier == 1 && playerLevel == 2)
-            {
-                stats.healthTier = 2;
-                playerClass.maxHealth += 10;
-                GameObject.Find("Tier2HP").GetComponentInChildren<Button>().interactable = false;
-
+                StatManager.prevHealth = playerClass.maxHealth + 5;
+                StatManager.healthTier = 1;
+                upgradeHealthHelper(1);
             }
         } else if (requested_tier == 2) {
-            playerLevel++;
-            if (stats.healthTier == 2 && playerLevel == 3)
+            StatManager.playerLevel = 2;
+            if (StatManager.healthTier == 1 && StatManager.playerLevel == 2)
             {
-                stats.healthTier = 3;
-                playerClass.maxHealth += 15;
-                GameObject.Find("Tier3HP").GetComponentInChildren<Button>().interactable = false;
+                StatManager.prevHealth = playerClass.maxHealth + 10;
+                StatManager.healthTier = 2;
+                upgradeHealthHelper(2);
+
+            }
+        } else if (requested_tier == 3) {
+            StatManager.playerLevel = 3;
+            if (StatManager.healthTier == 2 && StatManager.playerLevel == 3)
+            {
+                StatManager.healthTier = 3;
+                StatManager.prevHealth = playerClass.maxHealth + 15;
+                upgradeHealthHelper(3);
             }
         }
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         return;
     }
+
+    public void upgradeHealthHelper(int tier) 
+    {
+        switch (tier)
+        {
+            case 1:
+                playerClass.maxHealth = StatManager.prevHealth;
+                GameObject.Find("Tier1HP").GetComponentInChildren<Button>().interactable = false;
+                break;
+            case 2:
+                playerClass.maxHealth = StatManager.prevHealth;
+                GameObject.Find("Tier1HP").GetComponentInChildren<Button>().interactable = false;
+                GameObject.Find("Tier2HP").GetComponentInChildren<Button>().interactable = false;
+                break;
+            case 3:
+                playerClass.maxHealth = StatManager.prevHealth;
+                GameObject.Find("Tier1HP").GetComponentInChildren<Button>().interactable = false;
+                GameObject.Find("Tier2HP").GetComponentInChildren<Button>().interactable = false;
+                GameObject.Find("Tier3HP").GetComponentInChildren<Button>().interactable = false;
+                break;
+        }
+    }
+
     public void upgradeArmour(int requested_tier)
     {
-        if (requested_tier == 0)
+        if (requested_tier == 1)
         {
-            playerLevel = 1;
-            if (stats.armourTier == 0 && playerLevel == 1)
+            StatManager.playerLevel = 1;
+            if (StatManager.armourTier == 0 && StatManager.playerLevel == 1)
+
             {
-                stats.armourTier = 1;
-                playerClass.armor_class += 2;
-                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.grey;
-                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.grey;
+                StatManager.prevArmour = playerClass.armor_class + 2;
 
-                GameObject.Find("Tier1AC").GetComponentInChildren<Button>().interactable = false;
-                ;
-            }
-        }
-        else if (requested_tier == 1)
-        {
-            playerLevel = 2;
-            if (stats.armourTier == 1 && playerLevel == 2)
-            {
-                stats.armourTier = 2;
-                playerClass.armor_class += 2;
-                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.green;
-                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.green;
-
-
-                GameObject.Find("Tier2AC").GetComponentInChildren<Button>().interactable = false;
-
+                StatManager.armourTier = 1;
+                upgradeArmourHelper(1);
+               
             }
         }
         else if (requested_tier == 2)
         {
-            playerLevel++;
-            if (stats.armourTier == 2 && playerLevel == 3)
+            StatManager.playerLevel = 2;
+            if (StatManager.armourTier == 1 && StatManager.playerLevel == 2)
             {
-                stats.armourTier = 3;
-                playerClass.armor_class += 2;
-                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.yellow;
-                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.yellow;
+                StatManager.prevArmour = playerClass.armor_class + 2;
+                StatManager.armourTier = 2;
+                upgradeArmourHelper(2);
 
-
-                GameObject.Find("Tier3AC").GetComponentInChildren<Button>().interactable = false;
+            }
+        }
+        else if (requested_tier == 3)
+        {
+            StatManager.playerLevel = 3;
+            if (StatManager.armourTier == 2 && StatManager.playerLevel == 3)
+            {
+                StatManager.prevArmour = playerClass.armor_class + 2;
+                StatManager.armourTier = 3;
+                upgradeArmourHelper(3);
             }
         }
         ACInfo.text = "Armour class : " + playerClass.armor_class;
         return;
     }
+    public void upgradeArmourHelper(int tier)
+    {
+        switch (tier)
+        {
+            case 1:
+                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.grey;
+                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.grey;
 
+                GameObject.Find("Tier1AC").GetComponentInChildren<Button>().interactable = false;
+                playerClass.armor_class = StatManager.prevArmour;
+                break;
+            case 2:
+                playerClass.armor_class = StatManager.prevArmour;
+                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.green;
+                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.green;
+
+                GameObject.Find("Tier1AC").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier2AC").GetComponentInChildren<Button>().interactable = false;
+                break;
+            case 3:
+                playerClass.armor_class = StatManager.prevArmour;
+                GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.yellow;
+                GameObject.Find("Character_Knight_prev").GetComponent<Renderer>().material.color = Color.yellow;
+
+                GameObject.Find("Tier1AC").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier2AC").GetComponentInChildren<Button>().interactable = false;
+                GameObject.Find("Tier3AC").GetComponentInChildren<Button>().interactable = false;
+                break;
+
+        }
+    }
     // Onclick event functions, was supposed to be all integrated into showSkillInfo but unity does not allow event functions with more than one parameter inputs.
     public void showDamageInfo(int tier)
     {
@@ -245,86 +328,146 @@ public class PlayerInfo :MonoBehaviour {
     }
     public void upgradeDamage(int requested_tier)
     {
-        if (requested_tier == 0)
+        if (requested_tier == 1)
         {
-            playerLevel = 1;
+            StatManager.playerLevel = 1;
 
-            if (stats.damageTier == 0 && playerLevel == 1)
+            if (StatManager.damageTier == 0 && StatManager.playerLevel == 1)
+
             {
-                stats.damageTier = 1;
-                playerClass.damage_upper += 2;
-                GameObject.Find("Tier1DMG").GetComponentInChildren<Button>().interactable = false;
-                GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.red;
-                GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.red;
+
+                StatManager.damageTier = 1;
+                StatManager.prevDamage = playerClass.damage_upper  + 2;
+                upgradeDamageHelper(1);
+            
             }
         }
-        else if (requested_tier == 1)
+        else if (requested_tier == 2)
         {
-            playerLevel = 2; 
-            if (stats.damageTier == 1 && playerLevel == 2)
+            StatManager.playerLevel = 2; 
+            if (StatManager.damageTier == 1 && StatManager.playerLevel == 2)
             {
-                stats.damageTier = 2;
-                playerClass.damage_upper += 3;
+
+                StatManager.damageTier = 2;
+                StatManager.prevDamage = playerClass.damage_upper + 3;
+                upgradeDamageHelper(2);
+
+
+            }
+        }
+        else if (requested_tier == 3)
+        {
+            StatManager.playerLevel = 3;
+            if (StatManager.damageTier == 2 && StatManager.playerLevel == 3)
+
+            {
+
+                StatManager.damageTier = 3;
+                StatManager.prevDamage = playerClass.damage_upper + 4;
+                upgradeDamageHelper(3);
+
+            }
+        }
+        DamageTierInfo.text = "Damage Tier : " + StatManager.damageTier + " Upper boundary : " + playerClass.damage_upper;
+        return;
+    }
+
+    public void upgradeDamageHelper(int tier)
+    {
+        switch (tier)
+        {
+            case 1:
+                playerClass.damage_upper = StatManager.prevDamage;
+                GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.red;
+                GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.red;
+                GameObject.Find("Tier1DMG").GetComponentInChildren<Button>().interactable = false;
+                break;
+            case 2:
+                playerClass.damage_upper = StatManager.prevDamage;
+                GameObject.Find("Tier1DMG").GetComponentInChildren<Button>().interactable = false;
+
                 GameObject.Find("Tier2DMG").GetComponentInChildren<Button>().interactable = false;
                 GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.yellow;
                 GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.yellow;
 
-            }
-        }
-        else if (requested_tier == 2)
-        {
-            playerLevel = 3;
-            if (stats.damageTier == 2 && playerLevel == 3)
-            {
-                stats.damageTier = 3;
-                playerClass.damage_upper += 4;
+                break;
+            case 3:
+                playerClass.damage_upper = StatManager.prevDamage;
+                GameObject.Find("Tier1DMG").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier2DMG").GetComponentInChildren<Button>().interactable = false;
+
                 GameObject.Find("Tier3DMG").GetComponentInChildren<Button>().interactable = false;
                 GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.green;
                 GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.green;
-            }
+                break;
         }
-        DamageTierInfo.text = "Damage Tier : " + stats.damageTier + " Upper boundary : " + playerClass.damage_upper;
-        return;
-
     }
     public void upgradeStamina(int requested_tier)
     {
-        if (requested_tier == 0)
+        if (requested_tier == 1)
         {
-            playerLevel = 1;
-            if (stats.staminaTier == 0 && playerLevel == 1)
+            StatManager.playerLevel = 1;
+            if (StatManager.staminaTier == 0 && StatManager.playerLevel == 1)
             {
-                stats.staminaTier = 1;
-                playerClass.maxStamina += 2;
-                GameObject.Find("Tier1ST").GetComponentInChildren<Button>().interactable = false;
-                
-            }
-        }
-        else if (requested_tier == 1)
-        {
-            playerLevel = 2;
-            if (stats.staminaTier == 1 && playerLevel == 2)
-            {
-                stats.staminaTier = 2;
-                playerClass.maxStamina += 3;
-                GameObject.Find("Tier2ST").GetComponentInChildren<Button>().interactable = false;
 
+                StatManager.staminaTier = 1;
+                StatManager.prevStamina = playerClass.maxStamina + 2;
+                upgradeStaminaHelper(1);                
             }
         }
         else if (requested_tier == 2)
         {
-            playerLevel++;
-            if (stats.staminaTier == 2 && playerLevel == 3)
+            StatManager.playerLevel = 2;
+            if (StatManager.staminaTier == 1 && StatManager.playerLevel == 2)
             {
-                stats.staminaTier = 3;
-                playerClass.maxStamina += 4;
-                GameObject.Find("Tier3ST").GetComponentInChildren<Button>().interactable = false;
+
+                StatManager.staminaTier = 2;
+                StatManager.prevStamina = playerClass.maxStamina + 3;
+
+                upgradeStaminaHelper(2);
+            }
+        }
+        else if (requested_tier == 3)
+        {
+            StatManager.playerLevel = 3;
+            if (StatManager.staminaTier == 2 && StatManager.playerLevel == 3)
+            {
+
+                StatManager.staminaTier = 3;
+                StatManager.prevStamina = playerClass.maxStamina + 4;
+                upgradeStaminaHelper(3);
             }
         }
         STInfo.text = "Max Stamina : " + playerClass.maxStamina;
         return;
     }
+    public void upgradeStaminaHelper(int tier)
+    {
+        switch (tier)
+        {
+            case 1:
+                playerClass.maxStamina = StatManager.prevStamina;
+                GameObject.Find("Tier1ST").GetComponentInChildren<Button>().interactable = false;
 
+                break;
+            case 2:
+                playerClass.maxStamina = StatManager.prevStamina;
+                GameObject.Find("Tier1ST").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier2ST").GetComponentInChildren<Button>().interactable = false;
+                break;
+            case 3:
+                playerClass.maxStamina = StatManager.prevStamina;
+                GameObject.Find("Tier1ST").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier2ST").GetComponentInChildren<Button>().interactable = false;
+
+                GameObject.Find("Tier3ST").GetComponentInChildren<Button>().interactable = false;
+
+                break;
+        }
+    }
     public void SpinCharacterPreview()
     {
 
@@ -333,10 +476,43 @@ public class PlayerInfo :MonoBehaviour {
 
     }
 
-    public void Update()
+    public void upgradeTank()
     {
+        if (StatManager.armourTier == 3 && StatManager.healthTier == 3)
+        {
+            StatManager.armourClass = true;
 
-       // Debug.Log("Health tier " + stats.healthTier);
+            //StatManager.armourTier = 4;
+            StatManager.prevArmour = playerClass.armor_class + 4;
+            playerClass.armor_class = StatManager.prevArmour;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            GameObject.Find("Character_Knight_01").GetComponent<Renderer>().material.color = Color.cyan;
 
+        }
     }
+    public void upgradeDamage()
+    {
+        if (StatManager.damageTier == 3)
+        {
+            StatManager.damageClass = true;
+            //StatManager.damageTier = 4;
+            StatManager.prevDamage = playerClass.damage_upper + 10;
+            playerClass.damage_upper = StatManager.prevDamage;
+            GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.magenta;
+            GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.magenta;
+        }
+    }
+    public void upgradeStamina()
+    {
+        if (StatManager.staminaTier == 3)
+        {
+            StatManager.staminaClass = true;
+            //StatManager.damageTier = 4;
+            StatManager.prevStamina = playerClass.maxStamina + 6;
+            playerClass.maxStamina = StatManager.prevStamina;
+            GameObject.Find("SM_Wep_Broadsword_01").GetComponent<Renderer>().material.color = Color.magenta;
+            GameObject.Find("SM_Wep_Broadsword_02").GetComponent<Renderer>().material.color = Color.magenta;
+        }
+    }
+   
 }

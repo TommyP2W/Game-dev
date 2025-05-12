@@ -17,7 +17,7 @@ public class OrcShaman : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public RegOrcAnimationController controller;
-
+    public GameObject prefab;
     public void actionSelector()
     {
         if (attackAction)
@@ -94,6 +94,8 @@ public class OrcShaman : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller = gameObject.GetComponent<RegOrcAnimationController>();
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame

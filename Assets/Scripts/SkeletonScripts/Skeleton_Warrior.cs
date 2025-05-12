@@ -15,6 +15,8 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public Skeleton_controller controller;
+
+    public GameObject prefab;
     public void actionSelector()
     {
         if (attackAction)
@@ -38,6 +40,8 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller = GetComponent<Skeleton_controller>();
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame

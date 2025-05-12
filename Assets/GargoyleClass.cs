@@ -21,6 +21,7 @@ public class GargoyleClass : MonoBehaviour, Characters
     public int number_of_attacks = 0;
     
         public gargoyleController controller;
+    public GameObject prefab;
 
         // Attack function for enemy orc warrior
         public void attack()
@@ -67,11 +68,13 @@ public class GargoyleClass : MonoBehaviour, Characters
             controller = gameObject.GetComponent<gargoyleController>();
             currentHealth = maxHealth;
             chasing = false;
+            Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
         }
 
-        // Update is called once per frame
-        // Checking if the health is below or equal to zero, if so cause its death
-        void Update()
+    // Update is called once per frame
+    // Checking if the health is below or equal to zero, if so cause its death
+    void Update()
         {
             if (currentHealth <= 0)
             {
@@ -88,6 +91,7 @@ public class GargoyleClass : MonoBehaviour, Characters
             {
                attack();
             }
+        Debug.Log(chasing);
         }  
 
         public void actionSelector()

@@ -39,14 +39,13 @@ public class RegOrcAnimationController : MonoBehaviour
     public void OnTriggerEnter(Collider other)
 
     {
-        if (!EndTurn.turnEnd)
-        {
+       
             if (other.tag == "Player")
             {
 
                 gameObject.GetComponent<Characters>().chasing = true;
             }
-        }
+        
     }
 
 

@@ -1143,6 +1143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2883ccd836f507743b5704dfb534594d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!114 &662336955309872709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1155,6 +1156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5fce6d9d9231634da751950fafe9172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!1 &4250335631443538881
 GameObject:
   m_ObjectHideFlags: 0

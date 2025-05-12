@@ -19,6 +19,7 @@ public class dwarfClass : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public dwarfController controller;
+    public GameObject prefab;
 
     // Attack function for enemy orc warrior
     public void attack()
@@ -59,6 +60,8 @@ public class dwarfClass : MonoBehaviour, Characters
         controller = gameObject.GetComponent<dwarfController>();
         currentHealth = maxHealth;
         chasing = false;
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame

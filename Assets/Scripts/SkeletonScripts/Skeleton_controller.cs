@@ -17,13 +17,27 @@ public class Skeleton_controller : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
 
+        if (anim == null)
+        {
+            Debug.Log("ANIM NULL");
+        }
+        else
+        {
+            Debug.Log("ANIM NOT NULL");
+        }
+
     }
     public void OnTriggerExit(Collider other)
 
     {
-        if (!EndTurn.turnEnd)
+        if (other.tag == "Player")
         {
+            Debug.Log("sdadajsdasdasdsad");
+            gameObject.GetComponent<Characters>().attackAction = false;
+            gameObject.GetComponent<Characters>().chasing = false;
+
             anim.SetBool("isAttacking", false);
+
         }
     }
     public void OnTriggerEnter(Collider other)
@@ -31,7 +45,11 @@ public class Skeleton_controller : MonoBehaviour
     {
         if (!EndTurn.turnEnd)
         {
-            gameObject.GetComponent<Characters>().chasing = true;
+            if (other.tag == "Player")
+            {
+
+                gameObject.GetComponent<Characters>().chasing = true;
+            }
         }
     }
 
@@ -52,6 +70,8 @@ public class Skeleton_controller : MonoBehaviour
         }
         else
         {
+            gameObject.GetComponent<Characters>().attackAction = false;
+
             anim.SetBool("isAttacking", false);
            
         }

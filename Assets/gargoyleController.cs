@@ -18,8 +18,7 @@ public class gargoyleController : MonoBehaviour
     public void OnTriggerEnter(Collider other)
 
     {
-        if (!EndTurn.turnEnd)
-        {
+     
             if (other.tag == "Player")
             {
                 gameObject.tag = "Enemy";
@@ -31,7 +30,7 @@ public class gargoyleController : MonoBehaviour
 
                 }
             }
-        }
+        
     }
 
 

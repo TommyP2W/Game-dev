@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class Sanity : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int risk = 0;
+    public static int risk = 0;
     public static bool checkingSanity = false;
     public Volume vim;
     public FilmGrain grain;
@@ -21,6 +21,10 @@ public class Sanity : MonoBehaviour
     public void checkSanity(int sanity)
     {
     
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth <= 75)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().current_sanity -= UnityEngine.Random.Range(0, 5);
+        }
         if (sanity >= 75 && sanity < 100)
         {
             risk = 1;

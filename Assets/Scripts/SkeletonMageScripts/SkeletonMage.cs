@@ -21,6 +21,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes attackType { get; set  ; }
 
     public SkeletonMageAnimController controller;
+    public GameObject prefab;
 
 
     // Start is called before the first frame update
@@ -28,6 +29,8 @@ public class SkeletonMage : MonoBehaviour, Characters
     {
         currentHealth = maxHealth;
         controller= GetComponent<SkeletonMageAnimController>();
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
 

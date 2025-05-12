@@ -19,6 +19,8 @@ public class OrcArcher : MonoBehaviour, Characters
    
 
     public RegOrcAnimationController controller;
+    public GameObject prefab;
+
 
 
     public void attack()
@@ -82,6 +84,8 @@ public class OrcArcher : MonoBehaviour, Characters
         currentHealth = maxHealth;
         controller = GetComponent<RegOrcAnimationController>();
         attackType = Attacksvulnerablities.attackTypes.Sharp;
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame

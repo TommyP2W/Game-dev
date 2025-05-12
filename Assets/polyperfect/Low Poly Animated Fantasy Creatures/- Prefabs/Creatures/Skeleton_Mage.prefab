@@ -1047,13 +1047,12 @@ GameObject:
   - component: {fileID: 3571846030547967879}
   - component: {fileID: 5411550980689552667}
   - component: {fileID: 2105804526621236118}
-  - component: {fileID: 3091463840443864447}
   - component: {fileID: 1900958751118672024}
   - component: {fileID: 523498435530333815}
   - component: {fileID: 2651161203678136464}
   m_Layer: 0
   m_Name: Skeleton_Mage
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1108,25 +1107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11dc2ed4b1ee3d4a86e5515f4d17aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkeletonPrefab: {fileID: 0}
---- !u!114 &3091463840443864447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4240824761258804541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d1c9dad96bb5ba48977b19ca789d934, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkPoint: {x: 0, y: 0, z: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  finding_path: 0
-  isWalking: 0
+  controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!65 &1900958751118672024
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1233,6 +1215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5045bb53b4661c645bfbd8147fc803f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!1 &4386150831792178070
 GameObject:
   m_ObjectHideFlags: 0

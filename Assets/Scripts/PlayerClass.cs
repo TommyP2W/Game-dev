@@ -146,10 +146,33 @@ public class PlayerClass : MonoBehaviour
     }
     public void Start()
     {
-        currentStamina = maxStamina;
+        if (StatManager.healthTier != 0)
+        {
+            maxHealth = StatManager.prevHealth;
+        }
+    
         currentHealth = maxHealth;
-        damage_upper = 8;
-        armor_class = 7;
+
+        if (StatManager.damageTier != 0)
+        {
+            damage_upper = StatManager.prevDamage;
+        } else
+        {
+            damage_upper = 8;
+        }
+        
+        if (StatManager.armourTier == 0)
+        {
+            armor_class = 7;
+        } else
+        {
+            armor_class = StatManager.prevArmour;
+        }
+        if (StatManager.staminaTier != 0)
+        {
+            maxStamina = StatManager.prevStamina;
+        }
+        currentStamina = maxStamina;
         current_sanity = max_sanity;
 
         attackType = Attacksvulnerablities.attackTypes.Sharp;
