@@ -57,7 +57,7 @@ public class GargoyleClass : MonoBehaviour, Characters
         public void death()
         {
             controller.anim.SetBool("Die", true);
-
+        StatManager.experience += 7;
         }
 
         // If trigger enter player, chase

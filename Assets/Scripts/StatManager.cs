@@ -11,6 +11,7 @@ public class StatManager : MonoBehaviour
     public static int armourTier = 0;
     public static int staminaTier = 0;
 
+    public static int experience = 0;
 
     public static int prevHealth = 0;
     public static int prevDamage = 0;
@@ -40,6 +41,10 @@ public class StatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (experience >= 100)
+        {
+            experience = 0;
+            playerLevel++;
+        }
     }
 }

@@ -65,6 +65,7 @@ public class OrcDrummer : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 6;
     }
 
     public void actionSelector()

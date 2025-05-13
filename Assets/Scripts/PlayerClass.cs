@@ -43,8 +43,6 @@ public class PlayerClass : MonoBehaviour
     public Volume vim;
     public Vignette hurt;
 
-
-
     public void attack(string requested_attack)
     {
         if (RequestedEnemy != null && currentStamina != 0)
@@ -80,7 +78,7 @@ public class PlayerClass : MonoBehaviour
                         {
                             textController.showText(gameObject, RequestedEnemy, "Attack");
                         }
-                        //currentStamina -= 2;
+                        currentStamina -= 2;
                         break;
                     } 
                 }

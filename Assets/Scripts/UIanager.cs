@@ -52,7 +52,15 @@ public class UIanager : MonoBehaviour
         } else if (option.Equals("Drumming"))
         {
             gameObject.GetComponent<TextMeshProUGUI>().text = "A thunderous roar fills the space among us.";
-
+        } else if (option.Equals("FortuneWell"))
+        {
+            if (amount == 0)
+            {
+                gameObject.GetComponent<TextMeshProUGUI>().text = "Too bad! (-4 HP)";
+            } else
+            {
+                gameObject.GetComponent<TextMeshProUGUI>().text = "Gained 4 XP!";
+            }
         }
 
         showing = true;

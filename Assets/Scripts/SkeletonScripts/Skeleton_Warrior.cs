@@ -33,6 +33,7 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 6;
     }
 
     // Start is called before the first frame update

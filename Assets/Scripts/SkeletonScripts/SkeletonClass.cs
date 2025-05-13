@@ -30,6 +30,7 @@ public class SkeletonClass : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 4;
 
     }
 

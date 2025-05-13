@@ -89,6 +89,8 @@ public class OrcWarrior : MonoBehaviour, Characters
         {
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            StatManager.experience += 3;
+
             gameObject.SetActive(false);
         }
 

@@ -126,7 +126,7 @@ public class PlayerInfo :MonoBehaviour {
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         MaxStaminaInfo.text = "Max Stamina : " + playerClass.maxStamina;
         sanityBar.GetComponent<Slider>().value = (float)playerClass.current_sanity / 100;
-        experienceBar.GetComponent<Slider>().value = (float)playerClass.experience / 100;
+        experienceBar.GetComponent<Slider>().value = (float)StatManager.experience * 0.01f;
 
         sanityInformation.GetComponentInChildren<TextMeshProUGUI>().text = "Current Sanity Level : " + playerClass.current_sanity + "\n Risk Level : " + Sanity.risk;
 

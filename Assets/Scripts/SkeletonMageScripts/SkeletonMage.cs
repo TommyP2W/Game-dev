@@ -86,6 +86,7 @@ public class SkeletonMage : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 5;
     }
 
     public void actionSelector()

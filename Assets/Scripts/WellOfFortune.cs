@@ -18,7 +18,7 @@ public class WellOfFortune : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            InfoText.GetComponent<TextMeshProUGUI>().text = "Trade stamina for a chance at fortune!";
+            InfoText.GetComponent<TextMeshProUGUI>().text = "Feeling lucky?";
         }
 
     }
@@ -28,15 +28,24 @@ public class WellOfFortune : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                other.gameObject.GetComponent<PlayerClass>().currentStamina -= 4;
+                InfoText.SetActive(false);
+                if (UnityEngine.Random.Range(0, 2) == 1)
+                {
+                    StatManager.experience += 5;
+                    textController.showText(gameObject, gameObject, "FortuneWell", 5);
+
+
+                }
+                else
+                {
+                    other.gameObject.GetComponent<PlayerClass>().currentStamina -= 4;
+                    textController.showText(gameObject, gameObject, "FortuneWell", 0);
+
+                }
                 gameObject.SetActive(false);
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

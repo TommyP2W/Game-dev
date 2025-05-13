@@ -87,6 +87,7 @@ public class OrcShaman : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 4;
     }
 
     // Start is called before the first frame update

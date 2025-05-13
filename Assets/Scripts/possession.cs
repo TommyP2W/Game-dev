@@ -13,6 +13,7 @@ public class Possession : MonoBehaviour
     public static bool isPossessed;
     public static GameObject playerClass;
     public int possessionTime;
+    public static int possessionCooldown = 0;
     
     public static Dictionary<GameObject, List<GridCell>> possessionPath;
     //public void Possess()
@@ -32,18 +33,21 @@ public class Possession : MonoBehaviour
 
     public void Possess()
     {
-        if (!isPossessed)
+        if (possessionCooldown == 0)
         {
-            possessionTime = 5;
-            Debug.Log("Possessed");
-            Debug.Log("Requested : " + playerClass.GetComponent<PlayerClass>().RequestedEnemy);
-            GameObject enemy = playerClass.GetComponent<PlayerClass>().RequestedEnemy;
-            playerClass.GetComponent<PlayerClass>().possessedEnemy = enemy;
-            Smoothcamera.cam.RenderWithShader(Shader.Find("Fog"), "fog");
-            Smoothcamera.Target = enemy.transform;
-            isPossessed = true;
+            if (!isPossessed)
+            {
+                possessionTime = 5;
+                Debug.Log("Possessed");
+                Debug.Log("Requested : " + playerClass.GetComponent<PlayerClass>().RequestedEnemy);
+                GameObject enemy = playerClass.GetComponent<PlayerClass>().RequestedEnemy;
+                playerClass.GetComponent<PlayerClass>().possessedEnemy = enemy;
+                Smoothcamera.cam.RenderWithShader(Shader.Find("Fog"), "fog");
+                Smoothcamera.Target = enemy.transform;
+                isPossessed = true;
+            }
         }
-        //camera.transform.position = enemy.transform.position;
+        
     }
 
     public void attackPossessed()
@@ -79,6 +83,7 @@ public class Possession : MonoBehaviour
         Smoothcamera.Target = playerClass.transform;
 
         isPossessed = false;
+        possessionCooldown = 5;
     }
 
     IEnumerator MovePossessed(Dictionary<GameObject, List<GridCell>> path)
@@ -93,6 +98,7 @@ public class Possession : MonoBehaviour
             path[person].Last().occupied = true;
             path[person].Last().occupiedBy = person;
 
+            person.GetComponent<Characters>().isWalking = true;
         
             while (path[person].Count > 0)
 
@@ -166,7 +172,8 @@ public class Possession : MonoBehaviour
 
 
             }
-          
+            person.GetComponent<Characters>().isWalking = false;
+
             i++;
             Debug.Log(i);
         }

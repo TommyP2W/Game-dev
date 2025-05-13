@@ -12,10 +12,12 @@ public class orcTrapper : MonoBehaviour, Characters
 
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 8;
-    public Attacksvulnerablities.attackTypes vulnerability { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public Attacksvulnerablities.attackTypes attackType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public RegOrcAnimationController controller;
+    public GameObject prefab;
+
 
     [SerializeField] public GameObject trap;
     // Attack function for enemy orc warrior
@@ -89,8 +91,10 @@ public class orcTrapper : MonoBehaviour, Characters
         controller = gameObject.GetComponent<RegOrcAnimationController>();
         currentHealth = maxHealth;
         chasing = false;
-
+        vulnerability = Attacksvulnerablities.attackTypes.Sharp;
         attackType = Attacksvulnerablities.attackTypes.Sharp;
+        Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+
     }
 
     // Update is called once per frame
@@ -105,6 +109,8 @@ public class orcTrapper : MonoBehaviour, Characters
         {
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            StatManager.experience += 4;
+
             gameObject.SetActive(false);
         }
     }

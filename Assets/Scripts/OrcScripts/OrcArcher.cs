@@ -66,6 +66,7 @@ public class OrcArcher : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
+        StatManager.experience += 2;
     }
 
     public void actionSelector()

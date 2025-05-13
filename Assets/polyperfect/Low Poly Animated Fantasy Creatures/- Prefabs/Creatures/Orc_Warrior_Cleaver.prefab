@@ -2361,7 +2361,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  trap: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
+  trap: {fileID: 7041771643410295519, guid: a500997875d3eb14a8d2b816a48d6e0a, type: 3}
 --- !u!95 &9030679635572591937
 Animator:
   serializedVersion: 5

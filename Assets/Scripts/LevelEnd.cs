@@ -68,15 +68,15 @@ public class LevelEnd : MonoBehaviour
     public void Update()
     {
         
-        if (!EndTurn.turnEnd)
-        {
-            checkEnemies();
+        //if (!EndTurn.turnEnd)
+        //{
+        //    checkEnemies();
 
-        }
-        if (noEnemies)
-        {
-            intermission();
-        }
+        //}
+        //if (noEnemies)
+        //{
+        //    intermission();
+        //}
        
     }
 }

@@ -19,6 +19,7 @@ public class EndTurn : MonoBehaviour
     private GameObject endButton;
     private GameObject HealthSlider;
     private GameObject StaminaSlider;
+    private GameObject possessionButtons;
     public static int CoroutinesActive = 0; // Number of coroutines running at this moment
     public Dictionary<GameObject, List<GridCell>> requestedMovements;
     public GameObject[] enemiesArr;
@@ -39,6 +40,7 @@ public class EndTurn : MonoBehaviour
         gridTest = GameObject.FindGameObjectWithTag("Player").GetComponent<GridTest>();
         player = GameObject.FindGameObjectWithTag("Player");
         enemiesArr = GameObject.FindGameObjectsWithTag("Enemy");
+        possessionButtons = GameObject.Find("PossessionButtons");
     }
 
     public void SetEnemyDestination(GameObject[] enemies)
@@ -245,10 +247,24 @@ public class EndTurn : MonoBehaviour
         enemiesArr = GameObject.FindGameObjectsWithTag("Enemy");
 
         requestedMovements = new Dictionary<GameObject, List<GridCell>>();
-      
-      
+
+        player.GetComponent<PlayerClass>().currentStamina = player.GetComponent<PlayerClass>().maxStamina;
         // If there is a path, the turn has ended, and no other corotuines are running
         // This stops the player being able to move while other enemies are also still moving previously
+
+        if (Possession.possessionCooldown != 0) {
+            Possession.possessionCooldown--;
+            if (possessionButtons.activeInHierarchy)
+            {
+                possessionButtons.SetActive(false);
+            }
+        } else
+        {
+            if (!possessionButtons.activeInHierarchy)
+            {
+                possessionButtons.SetActive(true);
+            }
+        }
 
         if (playerReqMovement.Count > 0)
         {
