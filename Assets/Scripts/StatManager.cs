@@ -22,6 +22,12 @@ public class StatManager : MonoBehaviour
     public static bool armourClass = false;
     public static bool staminaClass = false;
 
+    public static bool finishedLevel2 = false;
+    public static bool finishedLevel3 = false;
+    public static bool finishedLevel4 = false;
+    public static bool finishedLevel5 = false;
+
+
 
     private void Awake()
     {

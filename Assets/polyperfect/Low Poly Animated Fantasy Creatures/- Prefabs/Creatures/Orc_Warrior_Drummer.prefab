@@ -2385,6 +2385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playDrumAction: 0
   controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!54 &3367016924609631820
 Rigidbody:
   m_ObjectHideFlags: 0

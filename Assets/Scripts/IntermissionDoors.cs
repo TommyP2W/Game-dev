@@ -6,13 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class IntermissionDoors : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     public TextMeshProUGUI text;
-    void Start()
-    {
-        
-    }
+  
 
     public void OnTriggerEnter(Collider other)
     {
@@ -37,28 +33,25 @@ public class IntermissionDoors : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (other.tag == "DoorLevel2")
+            if (other.tag == "DoorLevel2" && !StatManager.finishedLevel2)
             {
                 SceneManager.LoadScene("Level2");
             }
-            else if (other.tag == "DoorLevel3")
+            else if (other.tag == "DoorLevel3" && !StatManager.finishedLevel3)
             {
                 SceneManager.LoadScene("Level3");
             }
-            else if (other.tag == "DoorLevel4")
+            else if (other.tag == "DoorLevel4" && !StatManager.finishedLevel4)
             {
-
+                SceneManager.LoadScene("Level4");
             }
-            else if (other.tag == "DoorLevel5")
+            else if (other.tag == "DoorLevel5" && !StatManager.finishedLevel5)
             {
-
+                SceneManager.LoadScene("Level5");
             }
         }
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

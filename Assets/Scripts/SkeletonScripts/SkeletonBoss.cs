@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SkeletonBoss : MonoBehaviour, Characters
 {
@@ -11,7 +12,7 @@ public class SkeletonBoss : MonoBehaviour, Characters
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
-    public int armour_class { get; set; } = 12;
+    public int armour_class { get; set; } = 18;
     public GameObject requestedEnemy { get; set; } = null;
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
     public Attacksvulnerablities.attackTypes attackType { get; set; }
@@ -113,6 +114,7 @@ public class SkeletonBoss : MonoBehaviour, Characters
         {
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            SceneManager.LoadScene("Menu");
             gameObject.SetActive(false);
         }
     }

@@ -851,6 +851,7 @@ GameObject:
   - component: {fileID: 5528919858551539373}
   - component: {fileID: 1075615244820090025}
   - component: {fileID: 6883425562284017255}
+  - component: {fileID: 503110753019948971}
   m_Layer: 0
   m_Name: Skeleton_Soldier
   m_TagString: Enemy
@@ -921,6 +922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2d37444dbea2d448d55c8949b4bc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!65 &5528919858551539373
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -990,6 +993,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &503110753019948971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663621085713489773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2d37444dbea2d448d55c8949b4bc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!1 &3806413189295872454
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,37 +43,42 @@ public class Skeleton_controller : MonoBehaviour
     public void OnTriggerEnter(Collider other)
 
     {
-        if (!EndTurn.turnEnd)
-        {
+        
             if (other.tag == "Player")
             {
 
                 gameObject.GetComponent<Characters>().chasing = true;
             }
-        }
+        
     }
 
 
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
+        if (EndTurn.CoroutinesActive == 0)
         {
-            foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
+            if (other.tag == "Player")
             {
-                if (cell.occupiedBy == player)
-                {
 
-                    gameObject.GetComponent<Characters>().attackAction = true;
+                foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
+                {
+                    if (cell.occupiedBy == player)
+                    {
+
+                        gameObject.GetComponent<Characters>().attackAction = true;
+                    }
+
                 }
             }
+
         }
         else
         {
             gameObject.GetComponent<Characters>().attackAction = false;
 
             anim.SetBool("isAttacking", false);
-           
+
         }
     }
 

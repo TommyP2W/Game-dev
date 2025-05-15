@@ -6,12 +6,13 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
 {
     public int currentHealth { get; set; }
     public int maxHealth { get; set; } = 30;
-    public bool chasing { get; set; }
-    public bool isWalking { get; set; }
-    public bool attackAction { get; set; }
+    public bool chasing { get; set; } = false;
+    public bool isWalking { get; set; } = false;
+    public bool attackAction { get; set; } = false;
     public int armour_class { get; set; } = 15;
     public GameObject requestedEnemy { get; set; } = null;
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
+    public int damage_upper = 25;
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
     public Skeleton_controller controller;
@@ -27,7 +28,44 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
 
     public void attack()
     {
-        attackAction = false;
+        SoundManager.instance.playSwordSlash();
+        if (requestedEnemy == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            gameObject.transform.LookAt(player.GetComponent<Transform>());
+            int damage = UnityEngine.Random.Range(1, damage_upper);
+            // If the attack misses or not
+            if (damage > player.GetComponent<PlayerClass>().armor_class)
+            {
+
+                controller.anim.SetBool("isAttacking", true);
+                if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
+                {
+                    Debug.Log("Original damage" + damage);
+                    damage = (int)(damage * 1.5f);
+                }
+                player.GetComponent<PlayerClass>().currentHealth -= damage;
+
+                textController.showText(gameObject, player, "Attack", damage: damage);
+
+
+
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, player, "Attack");
+            }
+        }
+        else
+        {
+            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
+            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 12);
+            controller.anim.SetBool("isAttacking", true);
+            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
+            requestedEnemy = null;
+        }
     }
 
     public void death()
@@ -57,6 +95,7 @@ public class Skeleton_Warrior : MonoBehaviour, Characters
         {
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
+            SoundManager.instance.playSkeletonWarriorDeath();
             gameObject.SetActive(false);
         }
     }

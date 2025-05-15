@@ -18,7 +18,7 @@ public class dwarfClass : MonoBehaviour, Characters
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
-    public dwarfController controller;
+    public DwarfController controller;
     public GameObject prefab;
 
     // Attack function for enemy orc warrior
@@ -57,7 +57,7 @@ public class dwarfClass : MonoBehaviour, Characters
     // Start is called before the first frame update
     void Start()
     {
-        controller = gameObject.GetComponent<dwarfController>();
+        controller = gameObject.GetComponent<DwarfController>();
         currentHealth = maxHealth;
         chasing = false;
         Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);

@@ -31,7 +31,7 @@ public class SkeletonMageAnimController : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (!EndTurn.turnEnd)
+        if (!EndTurn.turnEnd && other.tag == "Player")
         {
             anim.SetBool("isSummoning", true);
             anim.SetBool("isAttacking", false);
@@ -43,7 +43,7 @@ public class SkeletonMageAnimController : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (!EndTurn.turnEnd)
+        if (!EndTurn.turnEnd && other.tag == "Player")
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 0.1f)
             {
@@ -59,11 +59,7 @@ public class SkeletonMageAnimController : MonoBehaviour
             {
                 anim.SetBool("isSummoning", true);
                 anim.SetBool("isAttacking", false);
-                //if (postProcessing.profile.TryGetSettings(out vin) && vin.intensity.value > 0f)
-                //{
-                //    //Debug.Log("we have got here");
-                //    vin.intensity.value = Mathf.Clamp(vin.intensity.value - (fadeSpeed * Time.deltaTime), 0.0f, 5f);
-                //}
+              
             }
         }
     }

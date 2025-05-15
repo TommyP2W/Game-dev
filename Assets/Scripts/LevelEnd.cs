@@ -40,6 +40,18 @@ public class LevelEnd : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                if (SceneManager.GetActiveScene().name == "Level2")
+                {
+                    StatManager.finishedLevel2 = true;
+                } else if (SceneManager.GetActiveScene().name == "Level3")
+                {
+                    StatManager.finishedLevel3 = true;
+                } else if (SceneManager.GetActiveScene().name == "Level4") {
+                    StatManager.finishedLevel4 = true;
+                } else if (SceneManager.GetActiveScene().name == "Level5")
+                {
+                    StatManager.finishedLevel5 = true;
+                }
                 SceneManager.LoadScene("Intermission");
             }
 
@@ -68,15 +80,5 @@ public class LevelEnd : MonoBehaviour
     public void Update()
     {
         
-        //if (!EndTurn.turnEnd)
-        //{
-        //    checkEnemies();
-
-        //}
-        //if (noEnemies)
-        //{
-        //    intermission();
-        //}
-       
     }
 }

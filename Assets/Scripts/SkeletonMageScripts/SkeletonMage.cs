@@ -19,7 +19,9 @@ public class SkeletonMage : MonoBehaviour, Characters
     public GameObject requestedEnemy { get; set; } = null;
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
     public Attacksvulnerablities.attackTypes attackType { get; set  ; }
-
+    public bool hasSummoned = false;
+    public bool hasPolyMorphed = false;
+    public int polyMorphCooldown = 5;
     public SkeletonMageAnimController controller;
     public GameObject prefab;
 
@@ -72,7 +74,10 @@ public class SkeletonMage : MonoBehaviour, Characters
         if (other.tag == "Player")
         {
             SpawnSkeletons();
-            playerSmall();
+            if (UnityEngine.Random.Range(1, 3) == 2)
+            {
+                playerSmall();
+            }
         }
     }
     // Update is called once per frame

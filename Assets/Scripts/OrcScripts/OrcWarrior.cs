@@ -21,6 +21,7 @@ public class OrcWarrior : MonoBehaviour, Characters
     // Attack function for enemy orc warrior
     public void attack()
     {
+        SoundManager.instance.playEnemySwordSlash();
         if (requestedEnemy == null)
         {
             gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
@@ -47,24 +48,7 @@ public class OrcWarrior : MonoBehaviour, Characters
     }
 
     // If trigger enter player, chase
-    private void OnTriggerEnter(Collider other)
-    {
-        // If collided with player
-        if (other.CompareTag("Player"))
-        {
-            chasing = true;
-        }
-    }
-    // If trigger exit player, stop chasing
-    public void OnTriggerExit(Collider other)
-    {
-        if (!EndTurn.turnEnd)
-        {
-            chasing = false;
-        }
-    }
   
-
 
     // Start is called before the first frame update
     void Start()
@@ -90,7 +74,7 @@ public class OrcWarrior : MonoBehaviour, Characters
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
             StatManager.experience += 3;
-
+            SoundManager.instance.playOrcDeath();
             gameObject.SetActive(false);
         }
 

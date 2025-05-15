@@ -42,6 +42,7 @@ public class OrcDrummer : MonoBehaviour, Characters
         controller.anim.SetBool("Drum_Playing", true);
         GameObject[] gameobjects = GameObject.FindGameObjectsWithTag("Enemy");
         textController.showText(gameObject, gameObject, "Drumming");
+        SoundManager.instance.playOrcDrum();
         if (gameobjects == null)
         {
             // Debug.Log("null");

@@ -60,7 +60,7 @@ public class Sanity : MonoBehaviour
     }
     public void sanity_consequence()
     {
-        if (Random.Range(risk, 10) == risk)
+        if (Random.Range(risk, 15) == risk)
         {
             List<GridCell> neighbours = GridTest.getNeighbours(GridManager.gridLayout[(GridManager.grid.WorldToCell(transform.position))]);
             StartCoroutine(spawnGhosts(neighbours));

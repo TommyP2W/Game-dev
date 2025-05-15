@@ -2094,11 +2094,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 2048
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4.608559
+  m_Radius: 7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7928308022888034991
 GameObject:

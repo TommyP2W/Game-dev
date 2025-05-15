@@ -49,6 +49,7 @@ public class PlayerClass : MonoBehaviour
         {
             if (requested_attack.Equals("Melee") && currentStamina >= 2)
             {
+                SoundManager.instance.playSwordSlash();
                 // Checking if the enemy is within melee range
                 foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
                 {

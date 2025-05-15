@@ -27,7 +27,7 @@ public class RegOrcAnimationController : MonoBehaviour
         
             if (other.tag == "Player")
             {
-                Debug.Log("sdadajsdasdasdsad");
+        
                 gameObject.GetComponent<Characters>().attackAction = false;
                 gameObject.GetComponent<Characters>().chasing = false;
 
@@ -39,40 +39,45 @@ public class RegOrcAnimationController : MonoBehaviour
     public void OnTriggerEnter(Collider other)
 
     {
-       
             if (other.tag == "Player")
             {
-
+               
+          
+                SoundManager.instance.playOrcSurprised();
                 gameObject.GetComponent<Characters>().chasing = true;
             }
+     }
+
+       
         
-    }
+    
 
 
 
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (!EndTurn.turnEnd && EndTurn.CoroutinesActive == 0)
+        if (EndTurn.CoroutinesActive == 0)
         {
-            if (other.tag == "Player") { 
+            if (other.tag == "Player")
+            {
 
                 foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)]))
-            {
-                if (cell.occupiedBy == player)
                 {
+                    if (cell.occupiedBy == player)
+                    {
 
-                    gameObject.GetComponent<Characters>().attackAction = true;
+                        gameObject.GetComponent<Characters>().attackAction = true;
+                    }
+
                 }
-            
-            }
-            if (gameObject.GetComponent<Characters>().attackAction == false)
-            {
-                if (gameObject.name == "OrcShaman")
+                if (gameObject.GetComponent<Characters>().attackAction == false)
                 {
-                    gameObject.GetComponent<OrcShaman>().healAction = true;
+                    if (gameObject.name == "OrcShaman")
+                    {
+                        gameObject.GetComponent<OrcShaman>().healAction = true;
+                    }
                 }
-            }
                 if (gameObject.GetComponent<OrcArcher>() != null)
                 {
                     if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 5f)
@@ -97,7 +102,21 @@ public class RegOrcAnimationController : MonoBehaviour
         {
 
             anim.SetBool("isAttacking", false);
-  
+
+            if (EndTurn.turnEnd)
+            {
+                if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                {
+                    if (hit.collider.gameObject.layer == 14)
+                    {
+
+                        Debug.Log("orc mode activated");
+                        Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                        gameObject.GetComponent<Characters>().chasing = true;
+                    }
+
+                }
+            }
         }
     }
 
@@ -109,6 +128,7 @@ public class RegOrcAnimationController : MonoBehaviour
 
     public void Update()
     {
+
         if (gameObject.GetComponent<Characters>().isWalking)
         {
             anim.SetBool("isWalking", true);

@@ -23,6 +23,7 @@ public class orcTrapper : MonoBehaviour, Characters
     // Attack function for enemy orc warrior
     public void attack()
     {
+        SoundManager.instance.playEnemySwordSlash();
         if (requestedEnemy == null)
         {
             gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
@@ -110,7 +111,7 @@ public class orcTrapper : MonoBehaviour, Characters
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
             StatManager.experience += 4;
-
+            SoundManager.instance.playOrcDeath();
             gameObject.SetActive(false);
         }
     }

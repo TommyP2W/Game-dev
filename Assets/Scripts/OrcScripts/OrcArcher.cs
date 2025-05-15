@@ -26,6 +26,7 @@ public class OrcArcher : MonoBehaviour, Characters
     public void attack()
     {
         // If the attack is directed at the player
+        SoundManager.instance.playEnemyArrowFire();
         if (requestedEnemy == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
