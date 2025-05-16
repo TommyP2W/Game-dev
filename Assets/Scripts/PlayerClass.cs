@@ -6,12 +6,13 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 
 public class PlayerClass : MonoBehaviour
 {
     public int currentHealth { get; set; }
-    public int maxHealth { get; set; } = 5;
+    public int maxHealth { get; set; } = 100;
     public int maxStamina { get; set; } = 10;
     public int currentStamina { get; set; }
     public bool chasing { get; set; }
@@ -35,7 +36,7 @@ public class PlayerClass : MonoBehaviour
     public GameObject RequestedEnemy;
     public GameObject possessedEnemy;
 
-    //public GameObject DeathScreen;
+    public GameObject DeathScreen;
 
 
     public Attacksvulnerablities.attackTypes attackType;
@@ -116,11 +117,10 @@ public class PlayerClass : MonoBehaviour
 
     //}
 
-    //public void death()
-    //{
-    //    DeathScreen.SetActive(true);
-
-    //}
+    public void death()
+    {
+        DeathScreen.SetActive(true);
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -142,10 +142,13 @@ public class PlayerClass : MonoBehaviour
                 hurt.intensity.Override(((float)(maxHealth - currentHealth) * 0.01f));
             }
         }
-        //if (currentHealth <= 0)
-        //{
-        //    death();
-        //}
+        if (currentHealth <= 0)
+        {
+            if (EndTurn.CoroutinesActive == 0)
+            {
+                death();
+            }
+        }
     }
     public void Start()
     {
@@ -183,8 +186,8 @@ public class PlayerClass : MonoBehaviour
 
         cam = GameObject.FindGameObjectWithTag("CameraPivot");
         vim = GameObject.Find("pp").GetComponent<Volume>();
-        //DeathScreen = GameObject.Find("DeathScreen");
-        //DeathScreen.SetActive(false);
+        DeathScreen = GameObject.Find("DeathScreen");
+        DeathScreen.SetActive(false);
 
     }
 

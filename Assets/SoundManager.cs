@@ -104,17 +104,19 @@ public class SoundManager : MonoBehaviour
     public void Awake()
 
     {
-        //if (SceneManager.GetActiveScene().name == "menu")
-        //{
-        //    Destroy(gameObject);
-        //}
-        //if (instance != null && this != instance)
-        //{
-        //    Destroy(gameObject);
-        //}
-
+    
+    
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+    
+
+      
     }
     // Update is called once per frame
     void Update()

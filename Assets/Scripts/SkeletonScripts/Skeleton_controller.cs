@@ -71,7 +71,7 @@ public class Skeleton_controller : MonoBehaviour
                             if (hit.collider.gameObject.layer == 14)
                             {
                                 Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
-                                gameObject.GetComponent<OrcArcher>().attackAction = true;
+                                gameObject.GetComponent<skeleton_CrossBow>().attackAction = true;
                             }
                         }
 

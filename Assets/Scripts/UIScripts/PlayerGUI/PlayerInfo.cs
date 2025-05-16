@@ -21,6 +21,8 @@ public class PlayerInfo :MonoBehaviour {
     private GameObject sanityBar;
     public StatManager stats;
 
+    private TextMeshProUGUI playerLevel;
+
     private TextMeshProUGUI DamageTierInfo;
     private TextMeshProUGUI MaxHealthInfo;
     private TextMeshProUGUI MaxStaminaInfo;
@@ -95,6 +97,7 @@ public class PlayerInfo :MonoBehaviour {
         MaxStaminaInfo = GameObject.Find("MaxStaminaInfo").GetComponent<TextMeshProUGUI>();
         ACInfo = GameObject.Find("ACInfo").GetComponent<TextMeshProUGUI>();
         STInfo = GameObject.Find("MaxStaminaInfo").GetComponent<TextMeshProUGUI>();
+        playerLevel = GameObject.Find("PlayerLevel").GetComponent<TextMeshProUGUI>();
 
 
         //PlayerInfoWindow.SetActive(false);
@@ -120,6 +123,7 @@ public class PlayerInfo :MonoBehaviour {
         DamageTierInfo.text = "Damage Tier : " + StatManager.damageTier;
         MaxHealthInfo.text = "Max Health : " + playerClass.maxHealth;
         MaxStaminaInfo.text = "Max Stamina : " + playerClass.maxStamina;
+        playerLevel.text = "Player Level : " + StatManager.playerLevel;
         sanityBar.GetComponent<Slider>().value = (float)playerClass.current_sanity / 100;
         experienceBar.GetComponent<Slider>().value = (float)StatManager.experience * 0.01f;
 

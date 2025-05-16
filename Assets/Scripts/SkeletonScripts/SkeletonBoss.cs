@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class SkeletonBoss : MonoBehaviour, Characters
     public int statRetention = 0;
     public Skeleton_controller controller;
     public GameObject prefab;
+    public GameObject victoryScreen;
     public void actionSelector()
     {
         if (statRetention > 0)
@@ -145,6 +147,8 @@ public class SkeletonBoss : MonoBehaviour, Characters
         currentHealth = maxHealth;
         controller = GetComponent<Skeleton_controller>();
         Instantiate(prefab, transform.position + Vector3.up, Quaternion.identity, transform);
+        victoryScreen = GameObject.Find("VictoryScreen");
+        victoryScreen.SetActive(false);
 
     }
 
@@ -160,7 +164,7 @@ public class SkeletonBoss : MonoBehaviour, Characters
         {
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
-            SceneManager.LoadScene("Menu");
+            victoryScreen.SetActive(true);
             gameObject.SetActive(false);
         }
     }

@@ -132,15 +132,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.519
+      value: 27.489653
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.325
+      value: 0.256
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.324
+      value: 12.528568
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
       propertyPath: m_LocalRotation.w
@@ -180,6 +180,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8069543201433782141}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7422294818784729534}
   m_SourcePrefab: {fileID: 100100000, guid: 13454f9011858064daef4127a53be4ef, type: 3}
 --- !u!4 &7956932317720638396 stripped
 Transform:
@@ -203,3 +206,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50005f952cb089c43a4b618694a89e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &7422294818784729534
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7956932317721128860}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0064297, y: 0.52493584, z: 1.1111002}
+  m_Center: {x: 0.024310112, y: 0, z: -0.12858343}

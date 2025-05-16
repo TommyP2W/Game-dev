@@ -26,27 +26,33 @@ public class SkeletonClass : MonoBehaviour, Characters
 
     public void attack()
     {
+        SoundManager.instance.playUnarmedOrcAttack();
+        controller.anim.SetBool("isAttacking", true);
+
         if (requestedEnemy == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             gameObject.transform.LookAt(player.GetComponent<Transform>());
-            int damage = UnityEngine.Random.Range(1, damage_upper);
+            int AC_Check = UnityEngine.Random.Range(1, 20);
             // If the attack misses or not
-            if (damage > player.GetComponent<PlayerClass>().armor_class)
+            if (AC_Check > player.GetComponent<PlayerClass>().armor_class)
             {
 
-                controller.anim.SetBool("isAttacking", true);
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
                 if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
                 {
-                    Debug.Log("Original damage" + damage);
-                    damage = (int)(damage * 1.5f);
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
                 }
+
                 player.GetComponent<PlayerClass>().currentHealth -= damage;
 
                 textController.showText(gameObject, player, "Attack", damage: damage);
-
-
-
                 attackAction = false;
             }
             else
@@ -57,12 +63,35 @@ public class SkeletonClass : MonoBehaviour, Characters
         }
         else
         {
-            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
-            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 12);
-            controller.anim.SetBool("isAttacking", true);
-            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
-            requestedEnemy = null;
+            int AC_Check = UnityEngine.Random.Range(1, 20);
+            // If the attack misses or not
+            if (AC_Check > requestedEnemy.GetComponent<Characters>().armour_class)
+            {
+
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
+                if (requestedEnemy.GetComponent<Characters>().vulnerability == attackType)
+                {
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
+                }
+
+                requestedEnemy.GetComponent<Characters>().currentHealth -= damage;
+
+                textController.showText(gameObject, requestedEnemy, "Attack", damage: damage);
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, requestedEnemy, "Attack");
+            }
         }
+
     }
 
     public void death()

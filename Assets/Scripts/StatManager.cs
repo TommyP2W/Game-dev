@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatManager : MonoBehaviour
@@ -26,14 +27,58 @@ public class StatManager : MonoBehaviour
     public static bool finishedLevel3 = false;
     public static bool finishedLevel4 = false;
     public static bool finishedLevel5 = false;
+    public static StatManager instance;
 
 
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        instance = this;
         DontDestroyOnLoad(gameObject);
+        healthTier = 0;
+        damageTier = 0;
+        playerLevel = 0;
+        armourTier = 0;
+        staminaTier = 0;
+        damageClass = false;
+        armourClass = false;
+        staminaClass = false;
 
+        finishedLevel2 = false;
+        finishedLevel3 = false;
+        finishedLevel4 = false;
+        finishedLevel5 = false;
     }
+
+    public static void resetStats()
+    {
+           healthTier = 0;
+        damageTier = 0;
+       playerLevel = 0;
+       armourTier = 0;
+       staminaTier = 0;
+
+       experience = 0;
+
+        prevHealth = 0;
+         prevDamage = 0;
+        prevArmour = 0;
+       prevStamina = 0;
+
+        damageClass = false;
+         armourClass = false;
+         staminaClass = false;
+
+        finishedLevel2 = false;
+        finishedLevel3 = false;
+        finishedLevel4 = false;
+        finishedLevel5 = false;
+    }
+
     void Start()
     {
         healthTier = 0;
@@ -41,6 +86,14 @@ public class StatManager : MonoBehaviour
         playerLevel = 0;
         armourTier = 0;
         staminaTier = 0;
+        damageClass = false;
+        armourClass = false;
+        staminaClass = false;
+
+        finishedLevel2 = false;
+        finishedLevel3 = false;
+        finishedLevel4 = false;
+        finishedLevel5 = false;
         // DontDestroyOnLoad(gameObject);
     }
 
