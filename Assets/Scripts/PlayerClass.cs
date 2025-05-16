@@ -11,7 +11,7 @@ using UnityEngine.TextCore.Text;
 public class PlayerClass : MonoBehaviour
 {
     public int currentHealth { get; set; }
-    public int maxHealth { get; set; } = 100;
+    public int maxHealth { get; set; } = 5;
     public int maxStamina { get; set; } = 10;
     public int currentStamina { get; set; }
     public bool chasing { get; set; }
@@ -27,15 +27,15 @@ public class PlayerClass : MonoBehaviour
     public int risk = 0;
 
     public int armor_class = 7;
-    private float shake = 0.0f;
-    private float shakeAmount = 0.7f;
-    private float decreaseFactor = 1.0f;
+
 
     private GameObject cam;
     public List<GridCell> ReqPlayerMovement;
     public PlayerAnimationController playerAnimController;
     public GameObject RequestedEnemy;
     public GameObject possessedEnemy;
+
+    //public GameObject DeathScreen;
 
 
     public Attacksvulnerablities.attackTypes attackType;
@@ -113,13 +113,14 @@ public class PlayerClass : MonoBehaviour
 
     //public void healthVisual()
     //{
-        
+
     //}
 
-    public void death()
-    {
-        
-    }
+    //public void death()
+    //{
+    //    DeathScreen.SetActive(true);
+
+    //}
 
     // Start is called before the first frame update
     void Awake()
@@ -127,7 +128,6 @@ public class PlayerClass : MonoBehaviour
         ReqPlayerMovement = new List<GridCell>();
         playerAnimController = gameObject.GetComponent<PlayerAnimationController>();
     }
-
   
     // Update is called once per frame
     void Update()
@@ -139,9 +139,13 @@ public class PlayerClass : MonoBehaviour
         {
             if (vim.profile.TryGet<Vignette>(out hurt))
             {
-                hurt.intensity.Override(-((float)currentHealth / 100));
+                hurt.intensity.Override(((float)(maxHealth - currentHealth) * 0.01f));
             }
         }
+        //if (currentHealth <= 0)
+        //{
+        //    death();
+        //}
     }
     public void Start()
     {
@@ -179,10 +183,12 @@ public class PlayerClass : MonoBehaviour
 
         cam = GameObject.FindGameObjectWithTag("CameraPivot");
         vim = GameObject.Find("pp").GetComponent<Volume>();
+        //DeathScreen = GameObject.Find("DeathScreen");
+        //DeathScreen.SetActive(false);
 
     }
 
-public IEnumerator LightningCountdown(float interval = 2)
+    public IEnumerator LightningCountdown(float interval = 2)
     {
         while (interval > 0)
         {

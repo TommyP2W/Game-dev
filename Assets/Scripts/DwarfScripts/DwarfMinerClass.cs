@@ -26,16 +26,19 @@ public class DwarfMinerClass : MonoBehaviour, Characters
     public void attack()
     {
         // If the attack is directed at the player
+
         if (requestedEnemy == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             gameObject.transform.LookAt(player.GetComponent<Transform>());
+            controller.anim.SetBool("isAttacking", true);
+            SoundManager.instance.playDwarfMelee();
             int damage = UnityEngine.Random.Range(20, damage_upper);
             // If the attack misses or not
             if (damage > player.GetComponent<PlayerClass>().armor_class)
             {
 
-                controller.anim.SetBool("isAttacking", true);
+        
                 if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
                 {
                     Debug.Log("Original damage" + damage);
@@ -59,7 +62,6 @@ public class DwarfMinerClass : MonoBehaviour, Characters
         {
             gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
             requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 12);
-            controller.anim.SetBool("isAttacking", true);
             Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
             requestedEnemy = null;
         }

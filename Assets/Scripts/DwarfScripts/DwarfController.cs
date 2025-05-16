@@ -10,21 +10,17 @@ public class DwarfController : MonoBehaviour
     public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
-    private Vignette vin;
     public LayerMask playerLayer;
-    float fadeSpeed = 0.1f;
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-        vin = new Vignette();
 
     }
     public void OnTriggerExit(Collider other)
 
     {
-
         if (other.tag == "Player")
         {
 
@@ -34,27 +30,24 @@ public class DwarfController : MonoBehaviour
             anim.SetBool("isAttacking", false);
 
         }
-
     }
     public void OnTriggerEnter(Collider other)
 
     {
         if (other.tag == "Player")
         {
+
+
+            SoundManager.instance.playDwarfSurprised();
             gameObject.GetComponent<Characters>().chasing = true;
         }
     }
 
 
-
-
-
-
-
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (EndTurn.CoroutinesActive == 0)
+        if (EndTurn.CoroutinesActive == 0 && !EndTurn.turnEnd)
         {
             if (other.tag == "Player")
             {
@@ -68,23 +61,41 @@ public class DwarfController : MonoBehaviour
                     }
 
                 }
-            }
-            else
-            {
 
-                anim.SetBool("isAttacking", false);
-
-                if (EndTurn.turnEnd)
+                if (gameObject.GetComponent<dwarfRanged>() != null)
                 {
-                    if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                    if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 10f)
                     {
-                        if (hit.collider.gameObject.layer == 14)
+                        //Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                        int layerMask = 1 << LayerMask.NameToLayer("Player");
+                        if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f, layerMask))
                         {
-                            Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
-                            gameObject.GetComponent<Characters>().chasing = true;
+
+                            if (hit.collider.gameObject.layer == 14)
+                            {
+                                Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                                gameObject.GetComponent<Characters>().attackAction = true;
+                            }
                         }
 
                     }
+                }
+            }
+        }
+        else
+        {
+            anim.SetBool("isAttacking", false);
+
+            if (EndTurn.turnEnd)
+            {
+                if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                {
+                    if (hit.collider.gameObject.layer == 14)
+                    {
+
+                        gameObject.GetComponent<Characters>().chasing = true;
+                    }
+
                 }
             }
         }
@@ -110,5 +121,7 @@ public class DwarfController : MonoBehaviour
         }
     }
 }
+
+
 
 

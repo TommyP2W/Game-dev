@@ -13,6 +13,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private LayerMask casteLayer;
     [SerializeField] private LayerMask gateLayer;
+    [SerializeField] private LayerMask floorBlocker;
 
     public static Grid grid;
 
@@ -43,6 +44,11 @@ public class GridManager : MonoBehaviour
                 }
                 if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, gateLayer))
                 {
+                    cell.walkable = false;
+                }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, floorBlocker))
+                {
+                    Debug.Log("hsudasdjsad hit something");
                     cell.walkable = false;
                 }
                 // So here I am adding the grid cell position, and an abstracted real position of a cell on the grid
@@ -78,12 +84,16 @@ public class GridManager : MonoBehaviour
                 {
                     gridLayout[cellGridPos].walkable = false;
                 }
+                if (Physics.Raycast(positionOnMap + Vector3.up * 20f, Vector3.down, 20f, floorBlocker))
+                {
+                    gridLayout[cellGridPos].walkable = false;
+                }
             }
         }
         checkingUpdates = false;
     }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<Grid>();
         gridLayout = new Dictionary<Vector3Int, GridCell>();

@@ -25,7 +25,6 @@ public class InventoryItems
     public int stackSize { get; set; }
     public InventoryItems(InventoryItem data)
     {
-        data = data;
         AddToStack();
 
     }

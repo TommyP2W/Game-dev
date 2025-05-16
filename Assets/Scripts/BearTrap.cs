@@ -24,11 +24,12 @@ public class BearTrap : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             other.GetComponent<PlayerClass>().currentHealth -= 5;
-            //gameObject.SetActive(false);
             PlayerClass.movementBlocked = true;
+
             other.GetComponent<PlayerClass>().RequestedEnemy = null;
             trapActivated = true;
             slider = true;
+            SoundManager.instance.playBearTrap();
             AttackManager.trapSlider.SetActive(true);
         }
     }

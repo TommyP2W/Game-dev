@@ -61,6 +61,13 @@ public class UIanager : MonoBehaviour
             {
                 gameObject.GetComponent<TextMeshProUGUI>().text = "Gained 4 XP!";
             }
+        } else if (option.Equals("healItemPickup"))
+        {
+            gameObject.GetComponent<TextMeshProUGUI>().text = "Healed 10 HP!";
+        } else if (option.Equals("SanityRegenBuilding"))
+        {
+            gameObject.GetComponent<TextMeshProUGUI>().text = "Reconnected with the light! Restored 20HP!";
+
         }
 
         showing = true;

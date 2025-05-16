@@ -10,54 +10,51 @@ public class RegOrcAnimationController : MonoBehaviour
     public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
-    private Vignette vin;
     public LayerMask playerLayer;
-    float fadeSpeed = 0.1f;
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-        vin = new Vignette();
-        
+
     }
     public void OnTriggerExit(Collider other)
-        
+
     {
-        
-            if (other.tag == "Player")
-            {
-        
-                gameObject.GetComponent<Characters>().attackAction = false;
-                gameObject.GetComponent<Characters>().chasing = false;
 
-                anim.SetBool("isAttacking", false);
+        if (other.tag == "Player")
+        {
 
-            }
-        
+            gameObject.GetComponent<Characters>().attackAction = false;
+            gameObject.GetComponent<Characters>().chasing = false;
+
+            anim.SetBool("isAttacking", false);
+
+        }
+
     }
     public void OnTriggerEnter(Collider other)
 
     {
-            if (other.tag == "Player")
-            {
-               
-          
-                SoundManager.instance.playOrcSurprised();
-                gameObject.GetComponent<Characters>().chasing = true;
-            }
-     }
+        if (other.tag == "Player")
+        {
 
-       
-        
-    
+
+            SoundManager.instance.playOrcSurprised();
+            gameObject.GetComponent<Characters>().chasing = true;
+        }
+    }
+
+
+
+
 
 
 
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (EndTurn.CoroutinesActive == 0)
+        if (EndTurn.CoroutinesActive == 0 && !EndTurn.turnEnd)
         {
             if (other.tag == "Player")
             {
@@ -80,13 +77,13 @@ public class RegOrcAnimationController : MonoBehaviour
                 }
                 if (gameObject.GetComponent<OrcArcher>() != null)
                 {
-                    if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 5f)
+                    if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 10f)
                     {
-                        // Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
-
-                        if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                        //Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                        int layerMask = 1 << LayerMask.NameToLayer("Player");
+                        if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f, layerMask))
                         {
-
+                          
                             if (hit.collider.gameObject.layer == 14)
                             {
                                 Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
@@ -110,8 +107,6 @@ public class RegOrcAnimationController : MonoBehaviour
                     if (hit.collider.gameObject.layer == 14)
                     {
 
-                        Debug.Log("orc mode activated");
-                        Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
                         gameObject.GetComponent<Characters>().chasing = true;
                     }
 
@@ -133,11 +128,14 @@ public class RegOrcAnimationController : MonoBehaviour
         {
             anim.SetBool("isWalking", true);
             anim.SetBool("isAttacking", false);
-        } else
+        }
+        else
         {
             anim.SetBool("isWalking", false);
         }
     }
 }
+
+
 
 

@@ -60,10 +60,15 @@ public class Sanity : MonoBehaviour
     }
     public void sanity_consequence()
     {
-        if (Random.Range(risk, 15) == risk)
+        if (risk > 1)
         {
-            List<GridCell> neighbours = GridTest.getNeighbours(GridManager.gridLayout[(GridManager.grid.WorldToCell(transform.position))]);
-            StartCoroutine(spawnGhosts(neighbours));
+            if (Random.Range(risk, 15) == risk)
+            {
+                List<GridCell> neighbours = GridTest.getNeighbours(GridManager.gridLayout[(GridManager.grid.WorldToCell(transform.position))]);
+                StartCoroutine(spawnGhosts(neighbours));
+                risk = 0;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().current_sanity = 100;
+            }
         }
 
     }

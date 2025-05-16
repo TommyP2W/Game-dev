@@ -1,30 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
 
 public class Skeleton_controller : MonoBehaviour
 {
+
+    // Start is called before the first frame update
     public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
-    private Vignette vin;
-    float fadeSpeed = 0.1f;
+    public LayerMask playerLayer;
     void Start()
     {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         postProcessing = GameObject.FindGameObjectWithTag("postProcessing").GetComponent<PostProcessVolume>();
-
-        if (anim == null)
-        {
-            Debug.Log("ANIM NULL");
-        }
-        else
-        {
-            Debug.Log("ANIM NOT NULL");
-        }
 
     }
     public void OnTriggerExit(Collider other)
@@ -32,7 +22,7 @@ public class Skeleton_controller : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("sdadajsdasdasdsad");
+
             gameObject.GetComponent<Characters>().attackAction = false;
             gameObject.GetComponent<Characters>().chasing = false;
 
@@ -43,20 +33,18 @@ public class Skeleton_controller : MonoBehaviour
     public void OnTriggerEnter(Collider other)
 
     {
-        
-            if (other.tag == "Player")
-            {
-
-                gameObject.GetComponent<Characters>().chasing = true;
-            }
-        
+        if (other.tag == "Player")
+        {
+            SoundManager.instance.playSkeletonSurprised();
+            gameObject.GetComponent<Characters>().chasing = true;
+        }
     }
 
 
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        if (EndTurn.CoroutinesActive == 0)
+        if (EndTurn.CoroutinesActive == 0 && !EndTurn.turnEnd)
         {
             if (other.tag == "Player")
             {
@@ -70,20 +58,55 @@ public class Skeleton_controller : MonoBehaviour
                     }
 
                 }
-            }
+              
+                if (gameObject.GetComponent<skeleton_CrossBow>() != null)
+                {
+                    if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= 10f)
+                    {
+                        //Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                        int layerMask = 1 << LayerMask.NameToLayer("Player");
+                        if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f, layerMask))
+                        {
 
+                            if (hit.collider.gameObject.layer == 14)
+                            {
+                                Debug.DrawRay(gameObject.transform.position, player.transform.position - gameObject.transform.position, Color.red);
+                                gameObject.GetComponent<OrcArcher>().attackAction = true;
+                            }
+                        }
+
+                    }
+                }
+            }
         }
         else
         {
-            gameObject.GetComponent<Characters>().attackAction = false;
-
             anim.SetBool("isAttacking", false);
 
+            if (EndTurn.turnEnd)
+            {
+                if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position).normalized, out RaycastHit hit, 20f))
+                {
+                    if (hit.collider.gameObject.layer == 14)
+                    {
+
+                        gameObject.GetComponent<Characters>().chasing = true;
+                    }
+
+                }
+            }
         }
+    }
+
+
+    public void EndAttack()
+    {
+        anim.SetBool("isAttacking", false);
     }
 
     public void Update()
     {
+
         if (gameObject.GetComponent<Characters>().isWalking)
         {
             anim.SetBool("isWalking", true);
@@ -94,8 +117,8 @@ public class Skeleton_controller : MonoBehaviour
             anim.SetBool("isWalking", false);
         }
     }
-    public void EndAttack()
-    {
-        anim.SetBool("isAttacking", false);
-    }
 }
+
+
+
+

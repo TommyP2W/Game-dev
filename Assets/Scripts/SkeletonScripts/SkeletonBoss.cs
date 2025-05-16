@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SkeletonBoss : MonoBehaviour, Characters
@@ -12,7 +9,8 @@ public class SkeletonBoss : MonoBehaviour, Characters
     public bool chasing { get; set; }
     public bool isWalking { get; set; }
     public bool attackAction { get; set; }
-    public int armour_class { get; set; } = 18;
+    public int armour_class { get; set; } = 15;
+    public int damage_upper = 19;
     public GameObject requestedEnemy { get; set; } = null;
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
     public Attacksvulnerablities.attackTypes attackType { get; set; }
@@ -44,20 +42,68 @@ public class SkeletonBoss : MonoBehaviour, Characters
     {
         if (requestedEnemy == null)
         {
-            gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 18);
-            Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
-            controller.anim.SetBool("isAttacking", true);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            gameObject.transform.LookAt(player.GetComponent<Transform>());
+            int AC_Check = UnityEngine.Random.Range(1, 20);
+            // If the attack misses or not
+            if (AC_Check > player.GetComponent<PlayerClass>().armor_class)
+            {
 
+                controller.anim.SetBool("isAttacking", true);
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
+                if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
+                {
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
+                }
+
+                player.GetComponent<PlayerClass>().currentHealth -= damage;
+
+                textController.showText(gameObject, player, "Attack", damage: damage);
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, player, "Attack");
+            }
         }
         else
         {
-            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
-            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 18);
-            controller.anim.SetBool("isAttacking", true);
-            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
-            requestedEnemy = null;
+            int AC_Check = UnityEngine.Random.Range(1, 20);
+            // If the attack misses or not
+            if (AC_Check > requestedEnemy.GetComponent<Characters>().armour_class)
+            {
+
+                controller.anim.SetBool("isAttacking", true);
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
+                if (requestedEnemy.GetComponent<Characters>().vulnerability == attackType)
+                {
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
+                }
+                requestedEnemy.GetComponent<Characters>().currentHealth -= damage;
+
+                textController.showText(gameObject, requestedEnemy, "Attack", damage: damage);
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, requestedEnemy, "Attack");
+            }
         }
+
 
 
     }

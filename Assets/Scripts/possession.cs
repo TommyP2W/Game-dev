@@ -54,14 +54,20 @@ public class Possession : MonoBehaviour
     {
         GameObject enemy = playerClass.GetComponent<PlayerClass>().RequestedEnemy;
         playerClass.GetComponent<PlayerClass>().current_sanity -= 5;
-        foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(playerClass.GetComponent<PlayerClass>().possessedEnemy.transform.position)]))
-        {
-            if (cell.occupiedBy == enemy)
+        if (!playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<OrcArcher>()) { 
+            foreach (GridCell cell in GridTest.getNeighbours(GridManager.gridLayout[GridManager.grid.WorldToCell(playerClass.GetComponent<PlayerClass>().possessedEnemy.transform.position)]))
             {
-                playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().requestedEnemy = enemy;
-                playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().attack();
+                if (cell.occupiedBy == enemy)
+                {
+                    playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().requestedEnemy = enemy;
+                    playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().attack();
 
+                }
             }
+        } else
+        {
+            playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().requestedEnemy = enemy;
+            playerClass.GetComponent<PlayerClass>().possessedEnemy.GetComponent<Characters>().attack();
         }
     }
 

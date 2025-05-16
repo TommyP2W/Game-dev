@@ -1,12 +1,8 @@
 
 
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerInfo :MonoBehaviour {
@@ -15,7 +11,6 @@ public class PlayerInfo :MonoBehaviour {
     private GameObject slider;
     //private int healthTier = 0;
     //private int damageTier = 0;
-    private int playerLevel = 0;
     //private int armourTier = 0;
     //private int staminaTier = 0;
 

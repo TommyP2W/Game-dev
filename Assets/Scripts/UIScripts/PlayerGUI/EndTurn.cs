@@ -449,6 +449,7 @@ public class EndTurn : MonoBehaviour
         StaminaSlider.GetComponentInChildren<Slider>().value = (float)player.GetComponent<PlayerClass>().currentStamina / 10;
         if (CoroutinesActive > 0)
         {
+            Debug.Log("no coroutines active " + CoroutinesActive);
             endButton.GetComponentInChildren<TextMeshProUGUI>().text = "Loading...";
         }
         else

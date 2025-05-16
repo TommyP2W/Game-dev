@@ -1,9 +1,6 @@
 
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 
 public class Drummer_animation_controller : MonoBehaviour
@@ -12,8 +9,6 @@ public class Drummer_animation_controller : MonoBehaviour
     public Animator anim;
     private GameObject player;
     private PostProcessVolume postProcessing;
-    private Vignette vin;
-    float fadeSpeed = 0.1f;
 
     void Start()
     {

@@ -25,6 +25,8 @@ public class FOWPlane : MonoBehaviour
             for (int i = 0; i < hiddenEnemies.Count; i++)
             {
                 hiddenEnemies[i].SetActive(true);
+                GridManager.gridLayout[GridManager.grid.WorldToCell(hiddenEnemies[i].transform.position)].occupiedBy = hiddenEnemies[i];
+                GridManager.gridLayout[GridManager.grid.WorldToCell(hiddenEnemies[i].transform.position)].occupied = true;
             }
                gameObject.GetComponent<MeshRenderer>().enabled = false;
         }

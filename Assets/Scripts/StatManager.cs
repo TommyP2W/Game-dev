@@ -41,7 +41,7 @@ public class StatManager : MonoBehaviour
         playerLevel = 0;
         armourTier = 0;
         staminaTier = 0;
-       // DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

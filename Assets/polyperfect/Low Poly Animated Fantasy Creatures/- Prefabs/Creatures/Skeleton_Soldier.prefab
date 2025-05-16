@@ -849,9 +849,9 @@ GameObject:
   - component: {fileID: -4412026010200650037}
   - component: {fileID: 5045442119996747044}
   - component: {fileID: 5528919858551539373}
-  - component: {fileID: 1075615244820090025}
   - component: {fileID: 6883425562284017255}
   - component: {fileID: 503110753019948971}
+  - component: {fileID: 8137601422580585840}
   m_Layer: 0
   m_Name: Skeleton_Soldier
   m_TagString: Enemy
@@ -922,6 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2d37444dbea2d448d55c8949b4bc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage_upper: 25
   controller: {fileID: 0}
   prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
 --- !u!65 &5528919858551539373
@@ -945,27 +946,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!65 &1075615244820090025
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3663621085713489773}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.718979, y: 0.97891283, z: 4.1455803}
-  m_Center: {x: -0.2156601, y: 1.0105436, z: 1.5727901}
 --- !u!54 &6883425562284017255
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1005,8 +985,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2d37444dbea2d448d55c8949b4bc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage_upper: 25
   controller: {fileID: 0}
   prefab: {fileID: 4533097227375619228, guid: cd691f0921ae53741844b111013cd15a, type: 3}
+--- !u!135 &8137601422580585840
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663621085713489773}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3806413189295872454
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class OrcWarrior : MonoBehaviour, Characters
 
     public bool attackAction { get; set; }
     public int armour_class { get; set; } = 8;
+    public int damage_upper = 15;
     public Attacksvulnerablities.attackTypes vulnerability { get; set; }
     public Attacksvulnerablities.attackTypes attackType { get; set; }
 
@@ -24,24 +25,73 @@ public class OrcWarrior : MonoBehaviour, Characters
         SoundManager.instance.playEnemySwordSlash();
         if (requestedEnemy == null)
         {
-            gameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth -= UnityEngine.Random.Range(1, 12);
-            controller.anim.SetBool("isAttacking", true);
-            Debug.Log("Player Health " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerClass>().currentHealth);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            gameObject.transform.LookAt(player.GetComponent<Transform>());
+            int AC_Check = UnityEngine.Random.Range(1, 20);
+            // If the attack misses or not
+            if (AC_Check > player.GetComponent<PlayerClass>().armor_class)
+            {
 
-            attackAction = false;
-        } else
-        {
-            gameObject.transform.LookAt(requestedEnemy.GetComponent<Transform>());
-            requestedEnemy.GetComponent<Characters>().currentHealth -= UnityEngine.Random.Range(1, 12);
-            controller.anim.SetBool("isAttacking", true);
-            Debug.Log("Enemy Health " + requestedEnemy.GetComponent<Characters>().currentHealth);
-            requestedEnemy = null;
+                controller.anim.SetBool("isAttacking", true);
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
+                if (player.GetComponent<PlayerClass>().vulnerabilities == attackType)
+                {
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
+                }
+
+                player.GetComponent<PlayerClass>().currentHealth -= damage;
+
+                textController.showText(gameObject, player, "Attack", damage: damage);
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, player, "Attack");
+            }
         }
+        else
+        {
+            int AC_Check = UnityEngine.Random.Range(1, 20);
+            // If the attack misses or not
+            if (AC_Check > requestedEnemy.GetComponent<Characters>().armour_class)
+            {
+
+                controller.anim.SetBool("isAttacking", true);
+                int damage = UnityEngine.Random.Range(1, damage_upper);
+
+                if (requestedEnemy.GetComponent<Characters>().vulnerability == attackType)
+                {
+                    if (UnityEngine.Random.Range(0, 4) == 3)
+                    {
+                        Debug.Log("Original damage" + damage);
+                        damage = (int)(damage * 1.5f);
+
+                    }
+                }
+
+                requestedEnemy.GetComponent<Characters>().currentHealth -= damage;
+
+                textController.showText(gameObject, requestedEnemy, "Attack", damage: damage);
+                attackAction = false;
+            }
+            else
+
+            {
+                textController.showText(gameObject, requestedEnemy, "Attack");
+            }
+        }
+
     }
 
-    // Death function, if dead, deactivate
-    public void death()
+// Death function, if dead, deactivate
+public void death()
     {
 
         controller.anim.SetBool("Die", true);
