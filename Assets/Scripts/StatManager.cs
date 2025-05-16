@@ -19,6 +19,8 @@ public class StatManager : MonoBehaviour
     public static int prevArmour = 0;
     public static int prevStamina = 0;
 
+    public bool upgradePlayerLevel = false;
+
     public static bool damageClass = false;
     public static bool armourClass = false;
     public static bool staminaClass = false;
@@ -52,6 +54,7 @@ public class StatManager : MonoBehaviour
         finishedLevel3 = false;
         finishedLevel4 = false;
         finishedLevel5 = false;
+
     }
 
     public static void resetStats()
@@ -97,13 +100,23 @@ public class StatManager : MonoBehaviour
         // DontDestroyOnLoad(gameObject);
     }
 
+    public void upgradePlayerLevelHelper()
+    {
+        upgradePlayerLevel = false;
+        experience = 0;
+        playerLevel++;
+    }
     // Update is called once per frame
     void Update()
     {
         if (experience >= 100)
         {
-            experience = 0;
-            playerLevel++;
+            upgradePlayerLevel = true;
+            
+        }
+        if (upgradePlayerLevel)
+        {
+            upgradePlayerLevelHelper();
         }
     }
 }

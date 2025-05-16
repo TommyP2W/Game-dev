@@ -97,7 +97,6 @@ public class SkeletonClass : MonoBehaviour, Characters
     public void death()
     {
         controller.anim.SetBool("Die", true);
-        StatManager.experience += 4;
 
     }
 
@@ -131,6 +130,8 @@ public class SkeletonClass : MonoBehaviour, Characters
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupiedBy = null;
             GridManager.gridLayout[GridManager.grid.WorldToCell(gameObject.transform.position)].occupied = false;
             SoundManager.instance.playSkeletonDeath();
+            StatManager.experience += 4;
+
             gameObject.SetActive(false);
         }
     }
