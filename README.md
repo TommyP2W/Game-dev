@@ -14,3 +14,14 @@ Game features 4~ unique buildings, 17 unique enemies, and 2 unique traps. In add
 
 For performance, occlusion culling and object pooling are in use.
 
+## Gallery
+
+<p align="center">
+  <img src="Assets/gitimage/g1.png" width="300"/>
+  <img src="Assets/gitimage/g2.png" width="300"/>
+  <img src="Assets/gitimage/g3.png" width="300"/>
+</p>
+<p align="center">
+  <img src="Assets/gitimage/g4.png" width="300"/>
+  <img src="Assets/gitimage/g5.png" width="300"/>
+</p>
