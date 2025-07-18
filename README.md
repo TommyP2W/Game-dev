@@ -1,6 +1,6 @@
 # Game development project
 Games Dev project using Unity.
-Takes the scene of a night in a fantasy realm, whos kingdom has been pillaged and destroyed by evil forces. The knight takes it upon themselves to seek out their own sense of justice in uncertain times.
+Takes the scene of a knight in a fantasy realm, whose kingdom has been pillaged and destroyed by evil forces. The knight takes it upon themselves to seek out their sense of justice in uncertain times.
 
 ## Game information
 
